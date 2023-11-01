@@ -1,6 +1,6 @@
 ## **`Information for the Final Project Repository`**
 
-### **_`Title: ???`_**
+### **_`Title: Training Management`_**
 
 ---
 
@@ -29,8 +29,8 @@ _(silahkan edit sesuai kebutuhan, ex:)_
 - [Use Case](https://app.diagrams.net/#G1jHGeIh6094Q2XT86Cr0EcJbQhAS30CZH#%7B%22pageId%22%3A%22TZ_4jlJ09En2gp_IAIqu%22%7D)
 - [Activity Diagram](#)
 - [Entity Relational Diagram](https://app.diagrams.net/#G1jHGeIh6094Q2XT86Cr0EcJbQhAS30CZH#%7B%22pageId%22%3A%22-_AWoauFsW7a9lPpSMXo%22%7D)
-- [Data Dummy](#)
-- [Progress of Project](#)
+- [Data Dummy](https://docs.google.com/spreadsheets/d/1HpJriQ-dFvGpesLSj0dO1c2d4bXg0ltOTtcoJ-ggdZY/edit?usp=sharing)
+- [Progress of Project](https://trello.com/b/80spuHqf/mcc-81-kel-3)
 
 ---
 
