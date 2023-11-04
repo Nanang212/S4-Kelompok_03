@@ -1,0 +1,49 @@
+package id.co.mii.serverapp.services.base;
+
+import id.co.mii.serverapp.models.base.BaseEntity;
+import id.co.mii.serverapp.repositories.base.BaseRepository;
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+@Primary
+public class BaseService<E extends BaseEntity, T> {
+  @Autowired
+  private BaseRepository<E, T> repository;
+
+  public List<E> getAll() {
+    return repository.findAll()
+            .stream()
+            .filter(e -> !e.getIsDeleted())
+            .collect(Collectors.toList());
+  }
+
+  public E getById(T id) {
+    return repository
+            .findById(id)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Entity is not found"));
+  }
+
+  public E create(E entity) {
+    return repository.save(entity);
+  }
+
+  public E update(T id, E entity) {
+    getById(id);
+    entity.setId((Integer) id);
+    return repository.save(entity);
+  }
+
+  public void delete(T id) {
+    E entity = getById(id);
+    entity.setIsDeleted(true);
+    repository.save(entity);
+  }
+}
