@@ -36,6 +36,22 @@ public class EmployeeController {
             .body(employeeService.getAll());
   }
 
+  @PreAuthorize("hasAnyAuthority('READ_ADMIN', 'READ_TRAINER')")
+  @GetMapping("/trainer")
+  public ResponseEntity<List<Employee>> getAllTrainer() {
+    return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(employeeService.getAllByRoleId(2));
+  }
+
+  @PreAuthorize("hasAnyAuthority('READ_ADMIN', 'READ_TRAINER', 'READ_TRAINEE')")
+  @GetMapping("/trainee")
+  public ResponseEntity<List<Employee>> getAllTrainee() {
+    return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(employeeService.getAllByRoleId(3));
+  }
+
   @PreAuthorize("hasAuthority('READ_ADMIN')")
   @GetMapping("/{id}")
   public ResponseEntity<Employee> getById(@PathVariable Integer id) {
