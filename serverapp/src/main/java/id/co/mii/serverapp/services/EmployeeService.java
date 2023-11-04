@@ -24,33 +24,6 @@ public class EmployeeService extends BaseService<Employee, Integer> {
   private EmployeeRepository employeeRepository;
   private UserRepository userRepository;
   private RoleService roleService;
-  private ModelMapper modelMapper;
-
-  public Employee create(EmployeeRequest employeeRequest) {
-    if (!StringUtils.isEmptyOrNull(employeeRequest.getUsername())) {
-      if (userRepository.existsByUsername(employeeRequest.getUsername())) {
-        throw new ResponseStatusException(HttpStatus.CONFLICT, "Username already used !!!");
-      }
-    }
-    if (!StringUtils.isEmptyOrNull(employeeRequest.getEmail())) {
-      if (employeeRepository.existsByEmail(employeeRequest.getEmail())) {
-        throw new ResponseStatusException(HttpStatus.CONFLICT, "Email already used !!!");
-      }
-    }
-    if (!StringUtils.isEmptyOrNull(employeeRequest.getPhone())) {
-      if (employeeRepository.existsByPhone(employeeRequest.getPhone())) {
-        throw new ResponseStatusException(HttpStatus.CONFLICT, "Phone number already used !!!");
-      }
-    }
-    Employee employee = modelMapper.map(employeeRequest, Employee.class);
-    User user = modelMapper.map(employeeRequest, User.class);
-
-    user.setEmployee(employee);
-    user.setRoles(mapToRoles(employeeRequest.getRoleIds()));
-    employee.setUser(user);
-
-    return employeeRepository.save(employee);
-  }
 
   public Employee update(Integer id, EmployeeRequest employeeRequest) {
     Employee updatedEmployee = getById(id);

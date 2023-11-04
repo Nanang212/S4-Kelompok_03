@@ -19,10 +19,8 @@ public class BaseService<E extends BaseEntity, T> {
   private BaseRepository<E, T> repository;
 
   public List<E> getAll() {
-    return repository.findAll()
-            .stream()
-            .filter(e -> !e.getIsDeleted())
-            .collect(Collectors.toList());
+    return repository
+            .findAll();
   }
 
   public E getById(T id) {
@@ -43,7 +41,6 @@ public class BaseService<E extends BaseEntity, T> {
 
   public void delete(T id) {
     E entity = getById(id);
-    entity.setIsDeleted(true);
-    repository.save(entity);
+    repository.delete(entity);
   }
 }

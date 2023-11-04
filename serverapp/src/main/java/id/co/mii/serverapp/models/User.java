@@ -18,12 +18,13 @@ public class User extends BaseEntity {
   @Column(unique = true)
   private String username;
   private String password;
+  private Boolean isEnable = true;
   @OneToOne
   @MapsId
   @JoinColumn(name = "employee")
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   private Employee employee;
-  @ManyToMany(fetch = FetchType.LAZY)
+  @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(
           name = "user_role",
           joinColumns = @JoinColumn(name = "user_id"),
