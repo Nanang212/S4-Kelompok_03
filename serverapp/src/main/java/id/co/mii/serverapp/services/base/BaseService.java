@@ -19,8 +19,7 @@ public class BaseService<E extends BaseEntity, T> {
   private BaseRepository<E, T> repository;
 
   public List<E> getAll() {
-    return repository
-            .findAll();
+    return repository.findAll();
   }
 
   public E getById(T id) {

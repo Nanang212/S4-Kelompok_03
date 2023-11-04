@@ -15,12 +15,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/employees")
 @AllArgsConstructor
-//@PreAuthorize("hasAnyRole('ADMIN', 'TRAINER', 'TRAINEE')")
-@PreAuthorize("hasRole('ADMIN')")
+@PreAuthorize("hasAnyRole('ADMIN', 'TRAINER', 'TRAINEE')")
 public class EmployeeController {
   private EmployeeService employeeService;
   private AuthService authService;
 
+  @PreAuthorize("hasAuthority('CREATE_ADMIN')")
   @PostMapping
   public ResponseEntity<Employee> create(@RequestBody EmployeeRequest employeeRequest) {
     return ResponseEntity
@@ -28,6 +28,7 @@ public class EmployeeController {
             .body(authService.registration(employeeRequest));
   }
 
+  @PreAuthorize("hasAuthority('READ_ADMIN')")
   @GetMapping
   public ResponseEntity<List<Employee>> getAll() {
     return ResponseEntity
@@ -35,6 +36,23 @@ public class EmployeeController {
             .body(employeeService.getAll());
   }
 
+  @PreAuthorize("hasAnyAuthority('READ_ADMIN', 'READ_TRAINER')")
+  @GetMapping("/trainer")
+  public ResponseEntity<List<Employee>> getAllTrainer() {
+    return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(employeeService.getAllByRoleId(2));
+  }
+
+  @PreAuthorize("hasAnyAuthority('READ_ADMIN', 'READ_TRAINER', 'READ_TRAINEE')")
+  @GetMapping("/trainee")
+  public ResponseEntity<List<Employee>> getAllTrainee() {
+    return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(employeeService.getAllByRoleId(3));
+  }
+
+  @PreAuthorize("hasAuthority('READ_ADMIN')")
   @GetMapping("/{id}")
   public ResponseEntity<Employee> getById(@PathVariable Integer id) {
     return ResponseEntity
@@ -42,6 +60,7 @@ public class EmployeeController {
             .body(employeeService.getById(id));
   }
 
+  @PreAuthorize("hasAuthority('UPDATE_ADMIN')")
   @PutMapping("/{id}")
   public ResponseEntity<Employee> update(@PathVariable Integer id, @RequestBody EmployeeRequest employeeRequest) {
     return ResponseEntity
@@ -49,6 +68,7 @@ public class EmployeeController {
             .body(employeeService.update(id, employeeRequest));
   }
 
+  @PreAuthorize("hasAuthority('DELETE_ADMIN')")
   @DeleteMapping("/{id}")
   public ResponseEntity<Employee> delete(@PathVariable Integer id) {
     employeeService.delete(id);

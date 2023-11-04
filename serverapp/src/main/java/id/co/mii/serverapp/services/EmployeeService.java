@@ -1,5 +1,6 @@
 package id.co.mii.serverapp.services;
 
+import id.co.mii.serverapp.models.AppUserDetails;
 import id.co.mii.serverapp.models.Employee;
 import id.co.mii.serverapp.models.Role;
 import id.co.mii.serverapp.models.User;
@@ -11,10 +12,14 @@ import id.co.mii.serverapp.utils.StringUtils;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -24,6 +29,25 @@ public class EmployeeService extends BaseService<Employee, Integer> {
   private EmployeeRepository employeeRepository;
   private UserRepository userRepository;
   private RoleService roleService;
+
+  public Employee getLoggedInEmployee() {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    AppUserDetails userDetails = (AppUserDetails) authentication.getPrincipal();
+    return findByUsername(userDetails.getUsername());
+  }
+
+  public Employee findByUsername(String username) {
+    return employeeRepository.findByUserUsername(username)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Employee not found"));
+  }
+
+  public List<Employee> getAllByRoleId(Integer roleId) {
+    Role role = roleService.getById(roleId);
+    return getAll()
+            .stream()
+            .filter(employee -> employee.getUser().getRoles().contains(role))
+            .collect(Collectors.toList());
+  }
 
   public Employee update(Integer id, EmployeeRequest employeeRequest) {
     Employee updatedEmployee = getById(id);
