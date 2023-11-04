@@ -19,7 +19,8 @@ public class BaseService<E extends BaseEntity, T> {
   private BaseRepository<E, T> repository;
 
   public List<E> getAll() {
-    return repository.findAll()
+    return repository
+            .findAll()
             .stream()
             .filter(e -> !e.getIsDeleted())
             .collect(Collectors.toList());
@@ -28,6 +29,7 @@ public class BaseService<E extends BaseEntity, T> {
   public E getById(T id) {
     return repository
             .findById(id)
+            .filter(e -> !e.getIsDeleted())
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Entity is not found"));
   }
 
