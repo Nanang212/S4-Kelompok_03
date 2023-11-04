@@ -18,9 +18,9 @@ public class AppUserDetails implements UserDetails {
     List<GrantedAuthority> authorities = new ArrayList<>();
     user.getRoles().forEach(role -> {
       authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));
-//      role.getPrivileges().forEach(privilege -> {
-//        authorities.add(new SimpleGrantedAuthority(privilege.getName().toUpperCase()));
-//      });
+      role.getPrivileges().forEach(privilege -> {
+        authorities.add(new SimpleGrantedAuthority(privilege.getName().toUpperCase()));
+      });
     });
     return authorities;
   }
