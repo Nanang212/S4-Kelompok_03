@@ -21,6 +21,4 @@ public class BaseEntity {
   private LocalDateTime updatedAt = LocalDateTime.now();
   private String createdBy;
   private String updatedBy;
-  @Column(name = "soft_delete")
-  private Boolean isDeleted = false;
 }

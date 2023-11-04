@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.nio.file.AccessDeniedException;
@@ -27,6 +28,13 @@ public class ErrorUtils {
             .body(new ErrorResponse("Forbidden", exception.getMessage(), HttpStatus.FORBIDDEN.value()));
   }
 
+  @ExceptionHandler(HttpClientErrorException.Unauthorized.class)
+  public ResponseEntity<ErrorResponse> error(HttpClientErrorException.Unauthorized exception) {
+    return ResponseEntity
+            .status(HttpStatus.UNAUTHORIZED)
+            .body(new ErrorResponse(HttpStatus.UNAUTHORIZED.getReasonPhrase(), exception.getMessage(), HttpStatus.UNAUTHORIZED.value()));
+  }
+
 //  @ExceptionHandler(BadCredentialsException.class)
 //  public ResponseEntity<ErrorResponse> error(BadCredentialsException exception) {
 //    return ResponseEntity
@@ -39,7 +47,7 @@ public class ErrorUtils {
     exception.printStackTrace();
     return ResponseEntity
             .status(HttpStatus.INTERNAL_SERVER_ERROR)
-            .body(new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), "Internal server error: " + exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR.value()));
+            .body(new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR.value()));
   }
 
   @NoArgsConstructor

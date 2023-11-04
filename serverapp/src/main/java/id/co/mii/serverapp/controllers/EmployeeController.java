@@ -2,10 +2,12 @@ package id.co.mii.serverapp.controllers;
 
 import id.co.mii.serverapp.models.Employee;
 import id.co.mii.serverapp.models.dto.requests.EmployeeRequest;
+import id.co.mii.serverapp.services.AuthService;
 import id.co.mii.serverapp.services.EmployeeService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,14 +15,17 @@ import java.util.List;
 @RestController
 @RequestMapping("/employees")
 @AllArgsConstructor
+//@PreAuthorize("hasAnyRole('ADMIN', 'TRAINER', 'TRAINEE')")
+@PreAuthorize("hasRole('ADMIN')")
 public class EmployeeController {
   private EmployeeService employeeService;
+  private AuthService authService;
 
   @PostMapping
   public ResponseEntity<Employee> create(@RequestBody EmployeeRequest employeeRequest) {
     return ResponseEntity
             .status(HttpStatus.CREATED)
-            .body(employeeService.create(employeeRequest));
+            .body(authService.registration(employeeRequest));
   }
 
   @GetMapping

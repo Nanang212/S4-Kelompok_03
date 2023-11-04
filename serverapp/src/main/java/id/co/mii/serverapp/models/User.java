@@ -18,6 +18,7 @@ public class User extends BaseEntity {
   @Column(unique = true)
   private String username;
   private String password;
+  private Boolean isEnable = true;
   @OneToOne
   @MapsId
   @JoinColumn(name = "employee")

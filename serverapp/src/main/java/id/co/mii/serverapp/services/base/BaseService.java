@@ -20,16 +20,12 @@ public class BaseService<E extends BaseEntity, T> {
 
   public List<E> getAll() {
     return repository
-            .findAll()
-            .stream()
-            .filter(e -> !e.getIsDeleted())
-            .collect(Collectors.toList());
+            .findAll();
   }
 
   public E getById(T id) {
     return repository
             .findById(id)
-            .filter(e -> !e.getIsDeleted())
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Entity is not found"));
   }
 
@@ -45,7 +41,6 @@ public class BaseService<E extends BaseEntity, T> {
 
   public void delete(T id) {
     E entity = getById(id);
-    entity.setIsDeleted(true);
-    repository.save(entity);
+    repository.delete(entity);
   }
 }
