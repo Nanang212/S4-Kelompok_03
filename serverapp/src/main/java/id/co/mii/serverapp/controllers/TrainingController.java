@@ -29,4 +29,34 @@ public class TrainingController {
             .status(HttpStatus.OK)
             .body(trainingService.getAll());
   }
+
+  @GetMapping("/trainer/{username}")
+  public ResponseEntity<List<Training>> getAllTrainingByTrainer(@PathVariable String username) {
+    return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(trainingService.getAllByUsername(username));
+  }
+
+
+  @GetMapping("/{id}")
+  public ResponseEntity<Training> getById(@PathVariable Integer id) {
+    return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(trainingService.getById(id));
+  }
+
+  @PutMapping("/{id}")
+  public ResponseEntity<Training> update(@PathVariable Integer id, @RequestBody TrainingRequest trainingRequest) {
+    return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(trainingService.update(id, trainingRequest));
+  }
+
+  @DeleteMapping("/{id}")
+  public ResponseEntity<?> delete(@PathVariable Integer id) {
+    trainingService.delete(id);
+    return ResponseEntity
+            .status(HttpStatus.NO_CONTENT)
+            .body(null);
+  }
 }

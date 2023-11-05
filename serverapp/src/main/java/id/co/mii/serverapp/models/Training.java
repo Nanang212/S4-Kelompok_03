@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import id.co.mii.serverapp.models.base.BaseEntity;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -14,6 +15,7 @@ import java.util.Date;
 import java.util.List;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -26,6 +28,7 @@ public class Training extends BaseEntity {
   private String address;
   private String platformUrl;
   private Boolean isOnline;
+  private Integer duration;
   @ManyToOne
   @JoinColumn(name = "trainer")
   private Employee trainer;
