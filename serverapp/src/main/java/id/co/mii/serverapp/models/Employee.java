@@ -1,11 +1,13 @@
 package id.co.mii.serverapp.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import id.co.mii.serverapp.models.base.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -24,4 +26,7 @@ public class Employee extends BaseEntity {
   @OneToOne(mappedBy = "employee", cascade = CascadeType.ALL)
   @PrimaryKeyJoinColumn
   private User user;
+  @OneToMany(mappedBy = "trainer", cascade = CascadeType.ALL)
+  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+  private List<Training> trainings;
 }
