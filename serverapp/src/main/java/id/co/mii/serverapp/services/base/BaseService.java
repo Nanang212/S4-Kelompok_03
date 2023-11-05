@@ -1,7 +1,9 @@
 package id.co.mii.serverapp.services.base;
 
+import id.co.mii.serverapp.models.Employee;
 import id.co.mii.serverapp.models.base.BaseEntity;
 import id.co.mii.serverapp.repositories.base.BaseRepository;
+import id.co.mii.serverapp.services.EmployeeService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
@@ -9,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,6 +32,8 @@ public class BaseService<E extends BaseEntity, T> {
   }
 
   public E create(E entity) {
+    entity.setCreatedAt(LocalDateTime.now());
+    entity.setUpdatedAt(LocalDateTime.now());
     return repository.save(entity);
   }
 
