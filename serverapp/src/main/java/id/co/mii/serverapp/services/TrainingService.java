@@ -3,6 +3,7 @@ package id.co.mii.serverapp.services;
 import id.co.mii.serverapp.models.Employee;
 import id.co.mii.serverapp.models.Role;
 import id.co.mii.serverapp.models.Training;
+import id.co.mii.serverapp.models.TrainingRegister;
 import id.co.mii.serverapp.models.dto.requests.TrainingRequest;
 import id.co.mii.serverapp.repositories.TrainingRepository;
 import id.co.mii.serverapp.services.base.BaseService;
@@ -15,6 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -24,41 +26,41 @@ public class TrainingService extends BaseService<Training, Integer> {
   private TrainingRepository trainingRepository;
   private RoleService roleService;
 
-  public Training registerTraineeToTraining(Integer trainingId, Integer traineeId) {
-    Training training = getById(trainingId);
-    Employee trainee = employeeService.getById(traineeId);
-    List<Employee> trainees = training.getTrainees();
-    Employee loggedInEmp = employeeService.getLoggedInEmployee();
-
-    if (!loggedInEmp.equals(trainee)) {
-      Role admin = roleService.getById(1);
-      if (!loggedInEmp.getUser().getRoles().contains(admin)) {
-        throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Cannot register other trainee");
-      }
-    }
-    if (trainees.contains(trainee)) {
-      throw new ResponseStatusException(HttpStatus.CONFLICT, "Trainee " + trainee.getName() + " is already participating");
-    }
-    if (!trainee.getAttendedTrainings().isEmpty()) {
-      trainee.getAttendedTrainings().forEach(tr -> {
-        Date traineeStartDate = tr.getStartDate();
-        Date traineeEndDate = tr.getEndDate();
-        Date trainingStartDate = training.getStartDate();
-        Date trainingEndDate = training.getEndDate();
-        if (trainingStartDate.equals(traineeStartDate)
-                || (trainingStartDate.after(traineeStartDate) && trainingStartDate.before(traineeEndDate))) {
-          throw new ResponseStatusException(HttpStatus.CONFLICT, "Trainee " + trainee.getName() + " is having other attended training");
-        }
-        if (trainingEndDate.equals(traineeEndDate)
-                || (trainingEndDate.after(traineeStartDate) && trainingEndDate.before(traineeEndDate))) {
-          throw new ResponseStatusException(HttpStatus.CONFLICT, "Trainee " + trainee.getName() + " is having other attended training");
-        }
-      });
-    }
-    trainees.add(trainee);
-    training.setTrainees(trainees);
-    return trainingRepository.save(training);
-  }
+//  public Training registerTraineeToTraining(Integer trainingId, Integer traineeId) {
+//    Training training = getById(trainingId);
+//    Employee trainee = employeeService.getById(traineeId);
+//    List<Employee> trainees = training.getTrainees();
+//    Employee loggedInEmp = employeeService.getLoggedInEmployee();
+//
+//    if (!loggedInEmp.equals(trainee)) {
+//      Role admin = roleService.getById(1);
+//      if (!loggedInEmp.getUser().getRoles().contains(admin)) {
+//        throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Cannot register other trainee");
+//      }
+//    }
+//    if (trainees.contains(trainee)) {
+//      throw new ResponseStatusException(HttpStatus.CONFLICT, "Trainee " + trainee.getName() + " is already participating");
+//    }
+//    if (!trainee.getAttendedTrainings().isEmpty()) {
+//      trainee.getAttendedTrainings().forEach(tr -> {
+//        Date traineeStartDate = tr.getStartDate();
+//        Date traineeEndDate = tr.getEndDate();
+//        Date trainingStartDate = training.getStartDate();
+//        Date trainingEndDate = training.getEndDate();
+//        if (trainingStartDate.equals(traineeStartDate)
+//                || (trainingStartDate.after(traineeStartDate) && trainingStartDate.before(traineeEndDate))) {
+//          throw new ResponseStatusException(HttpStatus.CONFLICT, "Trainee " + trainee.getName() + " is having other attended training");
+//        }
+//        if (trainingEndDate.equals(traineeEndDate)
+//                || (trainingEndDate.after(traineeStartDate) && trainingEndDate.before(traineeEndDate))) {
+//          throw new ResponseStatusException(HttpStatus.CONFLICT, "Trainee " + trainee.getName() + " is having other attended training");
+//        }
+//      });
+//    }
+//    trainees.add(trainee);
+//    training.setTrainees(trainees);
+//    return trainingRepository.save(training);
+//  }
 
   public List<Training> getAllByTrainer(String username) {
     Employee employee = employeeService.findByUsername(username);
@@ -66,24 +68,28 @@ public class TrainingService extends BaseService<Training, Integer> {
     if (!employee.getUser().getRoles().contains(trainerRole)) {
       throw new ResponseStatusException(HttpStatus.CONFLICT, employee.getName() + " is not Trainer");
     }
-    return employee.getTaughtTrainings();
+    return employee.getTrainings();
   }
 
   public List<Training> getAllByTrainee(String username) {
-    Employee employee = employeeService.findByUsername(username);
+    Employee trainee = employeeService.findByUsername(username);
     Role trainerRole = roleService.getById(3);
-    if (!employee.getUser().getRoles().contains(trainerRole)) {
-      throw new ResponseStatusException(HttpStatus.CONFLICT, employee.getName() + " is not Trainee");
+    if (!trainee.getUser().getRoles().contains(trainerRole)) {
+      throw new ResponseStatusException(HttpStatus.CONFLICT, trainee.getName() + " is not Trainee");
     }
-    return employee.getAttendedTrainings();
+    return trainee.getTrainingRegisters()
+            .stream()
+            .filter(trainingRegister -> trainingRegister.getStatus().equalsIgnoreCase("success"))
+            .map(TrainingRegister::getTraining)
+            .collect(Collectors.toList());
   }
 
   public Training create(TrainingRequest trainingRequest) {
     Training training = modelMapper.map(trainingRequest, Training.class);
     Employee currentEmp = employeeService.getLoggedInEmployee();
     Employee trainer = null;
-//    if (trainingRequest.getTrainerId() != null) {
-//      trainer = employeeService.getById(trainingRequest.getTrainerId());
+    if (trainingRequest.getTrainerId() != null) {
+      trainer = employeeService.getById(trainingRequest.getTrainerId());
 //      trainer.getTrainings()
 //              .forEach(tr -> {
 //                Date trainerStartDate = tr.getStartDate();
@@ -99,7 +105,7 @@ public class TrainingService extends BaseService<Training, Integer> {
 //                  throw new ResponseStatusException(HttpStatus.CONFLICT, "Trainer " + tr.getTrainer().getName() + " is having other mentoring schedule");
 //                }
 //              });
-//    }
+    }
     training.setTrainer(trainer);
     training.setCreatedBy(currentEmp.getUser().getUsername());
     training.setUpdatedBy(currentEmp.getUser().getUsername());

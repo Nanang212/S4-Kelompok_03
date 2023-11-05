@@ -1,7 +1,10 @@
 package id.co.mii.serverapp.controllers;
 
 import id.co.mii.serverapp.models.Training;
+import id.co.mii.serverapp.models.TrainingRegister;
+import id.co.mii.serverapp.models.dto.requests.TrainingRegisterRequest;
 import id.co.mii.serverapp.models.dto.requests.TrainingRequest;
+import id.co.mii.serverapp.services.TrainingRegisterService;
 import id.co.mii.serverapp.services.TrainingService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,12 +18,34 @@ import java.util.List;
 @RequestMapping("/trainings")
 public class TrainingController {
   private TrainingService trainingService;
+  private TrainingRegisterService trainingRegisterService;
+
+  @PostMapping("/register")
+  public ResponseEntity<TrainingRegister> trainingRegistration(@RequestBody TrainingRegisterRequest trainingRegisterRequest) {
+    return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(trainingRegisterService.create(trainingRegisterRequest));
+  }
 
   @PostMapping
   public ResponseEntity<Training> create(@RequestBody TrainingRequest trainingRequest) {
     return ResponseEntity
             .status(HttpStatus.CREATED)
             .body(trainingService.create(trainingRequest));
+  }
+
+  @GetMapping("/register")
+  public ResponseEntity<List<TrainingRegister>> getAllTrainingRegister() {
+    return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(trainingRegisterService.getAll());
+  }
+
+  @GetMapping("/register/{id}")
+  public ResponseEntity<TrainingRegister> getTrainingRegisterById(@PathVariable Integer id) {
+    return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(trainingRegisterService.getById(id));
   }
 
   @GetMapping
@@ -58,11 +83,11 @@ public class TrainingController {
             .body(trainingService.update(id, trainingRequest));
   }
 
-  @PutMapping("/register/{trainingId}/trainee/{traineeId}")
-  public ResponseEntity<Training> registerTrainee(@PathVariable Integer trainingId, @PathVariable Integer traineeId) {
+  @PutMapping("/register/{id}")
+  public ResponseEntity<TrainingRegister> updateTrainingRegister(@PathVariable Integer id, @RequestBody TrainingRegisterRequest trainingRegisterRequest) {
     return ResponseEntity
             .status(HttpStatus.OK)
-            .body(trainingService.registerTraineeToTraining(trainingId, traineeId));
+            .body(trainingRegisterService.update(id, trainingRegisterRequest));
   }
 
   @DeleteMapping("/{id}")
