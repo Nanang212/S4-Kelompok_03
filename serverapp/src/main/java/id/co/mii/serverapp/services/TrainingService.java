@@ -24,13 +24,58 @@ public class TrainingService extends BaseService<Training, Integer> {
   private TrainingRepository trainingRepository;
   private RoleService roleService;
 
-  public List<Training> getAllByUsername(String username) {
+  public Training registerTraineeToTraining(Integer trainingId, Integer traineeId) {
+    Training training = getById(trainingId);
+    Employee trainee = employeeService.getById(traineeId);
+    List<Employee> trainees = training.getTrainees();
+    Employee loggedInEmp = employeeService.getLoggedInEmployee();
+
+    if (!loggedInEmp.equals(trainee)) {
+      Role admin = roleService.getById(1);
+      if (!loggedInEmp.getUser().getRoles().contains(admin)) {
+        throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Cannot register other trainee");
+      }
+    }
+    if (trainees.contains(trainee)) {
+      throw new ResponseStatusException(HttpStatus.CONFLICT, "Trainee " + trainee.getName() + " is already participating");
+    }
+    if (!trainee.getAttendedTrainings().isEmpty()) {
+      trainee.getAttendedTrainings().forEach(tr -> {
+        Date traineeStartDate = tr.getStartDate();
+        Date traineeEndDate = tr.getEndDate();
+        Date trainingStartDate = training.getStartDate();
+        Date trainingEndDate = training.getEndDate();
+        if (trainingStartDate.equals(traineeStartDate)
+                || (trainingStartDate.after(traineeStartDate) && trainingStartDate.before(traineeEndDate))) {
+          throw new ResponseStatusException(HttpStatus.CONFLICT, "Trainee " + trainee.getName() + " is having other attended training");
+        }
+        if (trainingEndDate.equals(traineeEndDate)
+                || (trainingEndDate.after(traineeStartDate) && trainingEndDate.before(traineeEndDate))) {
+          throw new ResponseStatusException(HttpStatus.CONFLICT, "Trainee " + trainee.getName() + " is having other attended training");
+        }
+      });
+    }
+    trainees.add(trainee);
+    training.setTrainees(trainees);
+    return trainingRepository.save(training);
+  }
+
+  public List<Training> getAllByTrainer(String username) {
     Employee employee = employeeService.findByUsername(username);
     Role trainerRole = roleService.getById(2);
     if (!employee.getUser().getRoles().contains(trainerRole)) {
       throw new ResponseStatusException(HttpStatus.CONFLICT, employee.getName() + " is not Trainer");
     }
-    return employee.getTrainings();
+    return employee.getTaughtTrainings();
+  }
+
+  public List<Training> getAllByTrainee(String username) {
+    Employee employee = employeeService.findByUsername(username);
+    Role trainerRole = roleService.getById(3);
+    if (!employee.getUser().getRoles().contains(trainerRole)) {
+      throw new ResponseStatusException(HttpStatus.CONFLICT, employee.getName() + " is not Trainee");
+    }
+    return employee.getAttendedTrainings();
   }
 
   public Training create(TrainingRequest trainingRequest) {

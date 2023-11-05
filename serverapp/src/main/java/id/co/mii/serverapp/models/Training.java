@@ -10,10 +10,9 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
-
+// TODO : Ubah relasi training - trainee menjadi many to many tipe ke 3
 @Data
 @Builder
 @AllArgsConstructor
@@ -32,4 +31,11 @@ public class Training extends BaseEntity {
   @ManyToOne
   @JoinColumn(name = "trainer")
   private Employee trainer;
+  @ManyToMany(fetch = FetchType.LAZY)
+  @JoinTable(
+          name = "training_register",
+          joinColumns = @JoinColumn(name = "training"),
+          inverseJoinColumns = @JoinColumn(name = "trainee")
+  )
+  private List<Employee> trainees;
 }

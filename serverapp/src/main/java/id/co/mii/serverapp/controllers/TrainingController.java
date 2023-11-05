@@ -34,9 +34,15 @@ public class TrainingController {
   public ResponseEntity<List<Training>> getAllTrainingByTrainer(@PathVariable String username) {
     return ResponseEntity
             .status(HttpStatus.OK)
-            .body(trainingService.getAllByUsername(username));
+            .body(trainingService.getAllByTrainer(username));
   }
 
+  @GetMapping("/trainee/{username}")
+  public ResponseEntity<List<Training>> getAllTrainingByTrainee(@PathVariable String username) {
+    return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(trainingService.getAllByTrainee(username));
+  }
 
   @GetMapping("/{id}")
   public ResponseEntity<Training> getById(@PathVariable Integer id) {
@@ -50,6 +56,13 @@ public class TrainingController {
     return ResponseEntity
             .status(HttpStatus.OK)
             .body(trainingService.update(id, trainingRequest));
+  }
+
+  @PutMapping("/register/{trainingId}/trainee/{traineeId}")
+  public ResponseEntity<Training> registerTrainee(@PathVariable Integer trainingId, @PathVariable Integer traineeId) {
+    return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(trainingService.registerTraineeToTraining(trainingId, traineeId));
   }
 
   @DeleteMapping("/{id}")
