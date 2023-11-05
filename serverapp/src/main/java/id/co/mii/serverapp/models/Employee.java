@@ -28,5 +28,8 @@ public class Employee extends BaseEntity {
   private User user;
   @OneToMany(mappedBy = "trainer", cascade = CascadeType.ALL)
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-  private List<Training> trainings;
+  private List<Training> taughtTrainings;
+  @ManyToMany(mappedBy = "trainees")
+  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+  private List<Training> attendedTrainings;
 }

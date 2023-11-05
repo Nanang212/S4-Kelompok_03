@@ -22,6 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -63,7 +64,12 @@ public class AuthService {
 
     user.setEmployee(employee);
     user.setRoles(mapToRoles(employeeRequest.getRoleIds()));
+    user.setCreatedAt(LocalDateTime.now());
+    user.setUpdatedAt(LocalDateTime.now());
+
     employee.setUser(user);
+    employee.setCreatedAt(LocalDateTime.now());
+    employee.setUpdatedAt(LocalDateTime.now());
 
     return employeeRepository.save(employee);
   }
