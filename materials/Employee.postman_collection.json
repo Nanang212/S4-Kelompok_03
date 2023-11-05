@@ -1,0 +1,91 @@
+{
+	"info": {
+		"_postman_id": "04a68825-45f7-45f4-a490-a5e66a691d7c",
+		"name": "Employee",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "20687796"
+	},
+	"item": [
+		{
+			"name": "create",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Usep\",\r\n    \"phone\": \"082\",\r\n    \"email\": \"usep@yopmail.com\",\r\n    \"address\": \"Jl. Raya\",\r\n    \"jobPosition\": \"Developer\",\r\n    \"username\": \"usep\",\r\n    \"password\": \"usep\",\r\n    \"roleIds\": [2]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{BASE_URL}}/employees"
+			},
+			"response": []
+		},
+		{
+			"name": "get all",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{BASE_URL}}/employees"
+			},
+			"response": []
+		},
+		{
+			"name": "get all trainer",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{BASE_URL}}/employees/trainer"
+			},
+			"response": []
+		},
+		{
+			"name": "get all trainee",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{BASE_URL}}/employees/trainee"
+			},
+			"response": []
+		},
+		{
+			"name": "get by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{BASE_URL}}/employees/1"
+			},
+			"response": []
+		},
+		{
+			"name": "update",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"user2\",\r\n    \"phone\": \"1234\",\r\n    \"email\": \"user2updated@yopmail.com\",\r\n    \"address\": \"Jl. Raya\",\r\n    \"jobPosition\": \"HR\",\r\n    \"username\": \"user2\",\r\n    \"password\": \"user2\",\r\n    \"roleIds\": [2]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{BASE_URL}}/employees/5"
+			},
+			"response": []
+		},
+		{
+			"name": "update Copy",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "{{BASE_URL}}/employees/4"
+			},
+			"response": []
+		}
+	]
+}
