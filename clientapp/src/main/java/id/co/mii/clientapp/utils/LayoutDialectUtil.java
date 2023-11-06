@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 public class LayoutDialectUtil {
 
     @Bean
-    public LayoutDialect layoutDialect() {
+    LayoutDialect layoutDialect() {
         return new LayoutDialect();
     }
 }

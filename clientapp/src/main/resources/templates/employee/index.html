@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layouts/main}"
+>
+  <head>
+    <title>Employee</title>
+  </head>
+  <body>
+    <!-- Content -->
+    <section class="container mt-5" layout:fragment="content">
+      <div class="mx-10">
+        <div class="flex justify-between">
+          <p class="font-bold text-4xl">List Of Employee</p>
+
+          <button
+            type="button"
+            class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-full"
+            data-bs-toggle="modal"
+            data-bs-target="#create"
+          >
+            + Add Employee
+          </button>
+        </div>
+        <div class="py-8">
+          <table
+            id="table-employee"
+            class="table table-hover table-bordered table-striped text-center py-5"
+          >
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <!-- Isi tabel di sini -->
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <div layout:fragment="script">
+      <script th:src="@{/js/employee.js}"></script>
+    </div>
+  </body>
+</html>
