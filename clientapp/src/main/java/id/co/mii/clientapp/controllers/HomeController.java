@@ -23,4 +23,10 @@ public class HomeController {
         model.addAttribute("title", "MCC 81");
         return "auth/register";
     }
+
+    @GetMapping("/dashboard")
+    public String dashboardview(Model model) {
+        model.addAttribute("title", "MCC 81");
+        return "dashboard/index";
+    }
 }
