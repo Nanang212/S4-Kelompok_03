@@ -1,15 +1,14 @@
 package id.co.mii.serverapp.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import id.co.mii.serverapp.models.base.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -24,6 +23,14 @@ public class TrainingRegister extends BaseEntity {
   @ManyToOne
   @JoinColumn(name = "trainee")
   private Employee trainee;
-  private String status;
-  private String attachment;
+  @ManyToOne
+  @JoinColumn(name = "current_status")
+  private Status currentStatus;
+  @Lob
+  @Column(columnDefinition="LONGBLOB")
+  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+  private byte[] attachment;
+  @OneToMany(mappedBy = "trainingRegister", cascade = CascadeType.ALL)
+  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+  private List<History> histories;
 }

@@ -1,19 +1,16 @@
 package id.co.mii.serverapp.services;
 
-import id.co.mii.serverapp.models.Employee;
-import id.co.mii.serverapp.models.Role;
-import id.co.mii.serverapp.models.Training;
-import id.co.mii.serverapp.models.TrainingRegister;
+import id.co.mii.serverapp.models.*;
 import id.co.mii.serverapp.models.dto.requests.TrainingRegisterRequest;
 import id.co.mii.serverapp.repositories.TrainingRegisterRepository;
 import id.co.mii.serverapp.services.base.BaseService;
-import id.co.mii.serverapp.utils.StringUtils;
 import lombok.AllArgsConstructor;
-import org.modelmapper.ModelMapper;
+import lombok.SneakyThrows;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Service
@@ -23,8 +20,17 @@ public class TrainingRegisterService extends BaseService<TrainingRegister, Integ
   private EmployeeService employeeService;
   private TrainingRegisterRepository trainingRegisterRepository;
   private RoleService roleService;
+  private StatusService statusService;
+  private HistoryService historyService;
 
+  public byte[] getAtachmentById(Integer id) {
+    TrainingRegister trainingRegister = getById(id);
+    return trainingRegister.getAttachment();
+  }
+
+  @SneakyThrows
   public TrainingRegister create(TrainingRegisterRequest trainingRegisterRequest) {
+    Status pending = statusService.getById(2);
     Training training = trainingService.getById(trainingRegisterRequest.getTrainingId());
     Employee trainee = employeeService.getById(trainingRegisterRequest.getTraineeId());
     Employee loggedInEmp = employeeService.getLoggedInEmployee();
@@ -35,7 +41,7 @@ public class TrainingRegisterService extends BaseService<TrainingRegister, Integ
       }
     }
     trainee.getTrainingRegisters().forEach(trainingRegister -> {
-      if (trainingRegister.getStatus().equalsIgnoreCase("success")) {
+      if (trainingRegister.getCurrentStatus().equals(statusService.getById(1))) {
         Date traineeStartDate = trainingRegister.getTraining().getStartDate();
         Date traineeEndDate = trainingRegister.getTraining().getEndDate();
         Date trainingStartDate = training.getStartDate();
@@ -50,13 +56,29 @@ public class TrainingRegisterService extends BaseService<TrainingRegister, Integ
         }
       }
     });
-    return trainingRegisterRepository.save(new TrainingRegister(training, trainee, "Pending", null));
+    TrainingRegister trainingRegister = new TrainingRegister();
+    trainingRegister.setTraining(training);
+    trainingRegister.setTrainee(trainee);
+    trainingRegister.setAttachment(trainingRegisterRequest.getAttachment().getBytes());
+    trainingRegister.setCurrentStatus(pending);
+    trainingRegister.setCreatedBy(loggedInEmp.getUser().getUsername());
+    trainingRegister.setUpdatedBy(loggedInEmp.getUser().getUsername());
+
+    TrainingRegister savedTrainingRegister = create(trainingRegister);
+
+    History history = new History();
+    history.setTrainingRegister(savedTrainingRegister);
+    history.setStatus(pending);
+    historyService.create(history);
+    return savedTrainingRegister;
   }
 
   public TrainingRegister update(Integer id, TrainingRegisterRequest trainingRegisterRequest) {
     TrainingRegister trainingRegister = getById(id);
-    if (!StringUtils.isEmptyOrNull(trainingRegisterRequest.getStatus())) {
-      trainingRegister.setStatus(trainingRegisterRequest.getStatus());
+    if (trainingRegisterRequest.getStatusId() != null) {
+      Status currentStatus = statusService.getById(trainingRegisterRequest.getStatusId());
+      trainingRegister.setCurrentStatus(currentStatus);
+      historyService.create(new History(trainingRegister, currentStatus, trainingRegisterRequest.getNotes()));
     }
     return trainingRegisterRepository.save(trainingRegister);
   }

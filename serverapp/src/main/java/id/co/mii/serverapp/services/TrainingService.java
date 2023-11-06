@@ -1,9 +1,6 @@
 package id.co.mii.serverapp.services;
 
-import id.co.mii.serverapp.models.Employee;
-import id.co.mii.serverapp.models.Role;
-import id.co.mii.serverapp.models.Training;
-import id.co.mii.serverapp.models.TrainingRegister;
+import id.co.mii.serverapp.models.*;
 import id.co.mii.serverapp.models.dto.requests.TrainingRequest;
 import id.co.mii.serverapp.repositories.TrainingRepository;
 import id.co.mii.serverapp.services.base.BaseService;
@@ -25,6 +22,7 @@ public class TrainingService extends BaseService<Training, Integer> {
   private EmployeeService employeeService;
   private TrainingRepository trainingRepository;
   private RoleService roleService;
+  private StatusService statusService;
 
 //  public Training registerTraineeToTraining(Integer trainingId, Integer traineeId) {
 //    Training training = getById(trainingId);
@@ -79,7 +77,7 @@ public class TrainingService extends BaseService<Training, Integer> {
     }
     return trainee.getTrainingRegisters()
             .stream()
-            .filter(trainingRegister -> trainingRegister.getStatus().equalsIgnoreCase("success"))
+            .filter(trainingRegister -> trainingRegister.getCurrentStatus().equals(statusService.getById(1)))
             .map(TrainingRegister::getTraining)
             .collect(Collectors.toList());
   }

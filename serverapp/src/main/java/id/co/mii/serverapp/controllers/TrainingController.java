@@ -8,6 +8,7 @@ import id.co.mii.serverapp.services.TrainingRegisterService;
 import id.co.mii.serverapp.services.TrainingService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,8 +21,8 @@ public class TrainingController {
   private TrainingService trainingService;
   private TrainingRegisterService trainingRegisterService;
 
-  @PostMapping("/register")
-  public ResponseEntity<TrainingRegister> trainingRegistration(@RequestBody TrainingRegisterRequest trainingRegisterRequest) {
+  @PostMapping(value = "/register", consumes = "multipart/form-data")
+  public ResponseEntity<TrainingRegister> trainingRegistration(TrainingRegisterRequest trainingRegisterRequest) {
     return ResponseEntity
             .status(HttpStatus.OK)
             .body(trainingRegisterService.create(trainingRegisterRequest));
@@ -76,6 +77,14 @@ public class TrainingController {
             .body(trainingService.getById(id));
   }
 
+  @GetMapping("/register/attachment/{id}")
+  public ResponseEntity<byte[]> getAttachmentByTrainingRegister(@PathVariable Integer id) {
+    return ResponseEntity
+            .status(HttpStatus.OK)
+            .contentType(MediaType.IMAGE_PNG)
+            .body(trainingRegisterService.getAtachmentById(id));
+  }
+
   @PutMapping("/{id}")
   public ResponseEntity<Training> update(@PathVariable Integer id, @RequestBody TrainingRequest trainingRequest) {
     return ResponseEntity
@@ -88,6 +97,14 @@ public class TrainingController {
     return ResponseEntity
             .status(HttpStatus.OK)
             .body(trainingRegisterService.update(id, trainingRegisterRequest));
+  }
+
+  @DeleteMapping("/register/{id}")
+  public ResponseEntity<?> deleteTrainingRegister(@PathVariable Integer id) {
+    trainingRegisterService.delete(id);
+    return ResponseEntity
+            .status(HttpStatus.NO_CONTENT)
+            .body(null);
   }
 
   @DeleteMapping("/{id}")

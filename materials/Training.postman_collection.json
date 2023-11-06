@@ -7,6 +7,72 @@
 	},
 	"item": [
 		{
+			"name": "Training register",
+			"item": [
+				{
+					"name": "get all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/trainings/register",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"trainings",
+								"register"
+							],
+							"query": [
+								{
+									"key": "title",
+									"value": "Mastering spring boot",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"trainingId\": 1,\r\n    \"traineeId\": 6\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{BASE_URL}}/trainings/register"
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"status\": \"Success\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{BASE_URL}}/trainings/register/2"
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "create",
 			"request": {
 				"method": "POST",
@@ -62,7 +128,7 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": "{{BASE_URL}}/trainings/trainee/ridwan"
+				"url": "{{BASE_URL}}/trainings/trainee/fazri"
 			},
 			"response": []
 		},
@@ -94,9 +160,9 @@
 			"response": []
 		},
 		{
-			"name": "register trainee",
+			"name": "training register",
 			"request": {
-				"method": "PUT",
+				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
@@ -107,7 +173,7 @@
 						}
 					}
 				},
-				"url": "{{BASE_URL}}/trainings/register/8/trainee/6"
+				"url": "{{BASE_URL}}/trainings/register"
 			},
 			"response": []
 		},
