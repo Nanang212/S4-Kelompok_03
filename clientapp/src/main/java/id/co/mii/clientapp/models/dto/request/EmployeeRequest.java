@@ -1,5 +1,6 @@
 package id.co.mii.clientapp.models.dto.request;
 
+import java.util.Collections;
 import java.util.Set;
 
 import lombok.AllArgsConstructor;
@@ -17,5 +18,5 @@ public class EmployeeRequest {
   private String jobPosition;
   private String username;
   private String password;
-  private Set<Integer> roleIds;
+  private Set<Integer> roleIds = Collections.singleton(3);
 }
