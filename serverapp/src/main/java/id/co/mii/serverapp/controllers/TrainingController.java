@@ -82,7 +82,7 @@ public class TrainingController {
     return ResponseEntity
             .status(HttpStatus.OK)
             .contentType(MediaType.IMAGE_PNG)
-            .body(trainingRegisterService.getAtachmentById(id));
+            .body(trainingRegisterService.getAttachmentById(id));
   }
 
   @PutMapping("/{id}")

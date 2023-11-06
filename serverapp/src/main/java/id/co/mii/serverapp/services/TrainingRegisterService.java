@@ -23,7 +23,7 @@ public class TrainingRegisterService extends BaseService<TrainingRegister, Integ
   private StatusService statusService;
   private HistoryService historyService;
 
-  public byte[] getAtachmentById(Integer id) {
+  public byte[] getAttachmentById(Integer id) {
     TrainingRegister trainingRegister = getById(id);
     return trainingRegister.getAttachment();
   }
