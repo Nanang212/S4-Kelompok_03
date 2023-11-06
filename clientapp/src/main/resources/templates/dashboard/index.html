@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/main}"
+>
+  <head>
+    <title>[[${isActive}]]</title>
+  </head>
+  <body>
+    <!-- Content -->
+    <section class="container mx-10 mt-5" layout:fragment="content">
+      <h1>hahahaha</h1>
+    </section>
+
+    <div layout:fragment="script">
+      <script th:src="@{/js/region.js}"></script>
+    </div>
+  </body>
+</html>
