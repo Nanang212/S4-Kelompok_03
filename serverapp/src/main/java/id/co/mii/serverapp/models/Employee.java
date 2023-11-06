@@ -4,11 +4,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import id.co.mii.serverapp.models.base.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -28,8 +30,8 @@ public class Employee extends BaseEntity {
   private User user;
   @OneToMany(mappedBy = "trainer", cascade = CascadeType.ALL)
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-  private List<Training> taughtTrainings;
-  @ManyToMany(mappedBy = "trainees")
+  private List<Training> trainings;
+  @OneToMany(mappedBy = "trainee", cascade = CascadeType.ALL)
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-  private List<Training> attendedTrainings;
+  private List<TrainingRegister> trainingRegisters;
 }

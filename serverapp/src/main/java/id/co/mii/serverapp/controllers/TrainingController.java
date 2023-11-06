@@ -1,10 +1,14 @@
 package id.co.mii.serverapp.controllers;
 
 import id.co.mii.serverapp.models.Training;
+import id.co.mii.serverapp.models.TrainingRegister;
+import id.co.mii.serverapp.models.dto.requests.TrainingRegisterRequest;
 import id.co.mii.serverapp.models.dto.requests.TrainingRequest;
+import id.co.mii.serverapp.services.TrainingRegisterService;
 import id.co.mii.serverapp.services.TrainingService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,12 +19,34 @@ import java.util.List;
 @RequestMapping("/trainings")
 public class TrainingController {
   private TrainingService trainingService;
+  private TrainingRegisterService trainingRegisterService;
+
+  @PostMapping(value = "/register", consumes = "multipart/form-data")
+  public ResponseEntity<TrainingRegister> trainingRegistration(TrainingRegisterRequest trainingRegisterRequest) {
+    return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(trainingRegisterService.create(trainingRegisterRequest));
+  }
 
   @PostMapping
   public ResponseEntity<Training> create(@RequestBody TrainingRequest trainingRequest) {
     return ResponseEntity
             .status(HttpStatus.CREATED)
             .body(trainingService.create(trainingRequest));
+  }
+
+  @GetMapping("/register")
+  public ResponseEntity<List<TrainingRegister>> getAllTrainingRegister() {
+    return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(trainingRegisterService.getAll());
+  }
+
+  @GetMapping("/register/{id}")
+  public ResponseEntity<TrainingRegister> getTrainingRegisterById(@PathVariable Integer id) {
+    return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(trainingRegisterService.getById(id));
   }
 
   @GetMapping
@@ -51,6 +77,14 @@ public class TrainingController {
             .body(trainingService.getById(id));
   }
 
+  @GetMapping("/register/attachment/{id}")
+  public ResponseEntity<byte[]> getAttachmentByTrainingRegister(@PathVariable Integer id) {
+    return ResponseEntity
+            .status(HttpStatus.OK)
+            .contentType(MediaType.IMAGE_PNG)
+            .body(trainingRegisterService.getAtachmentById(id));
+  }
+
   @PutMapping("/{id}")
   public ResponseEntity<Training> update(@PathVariable Integer id, @RequestBody TrainingRequest trainingRequest) {
     return ResponseEntity
@@ -58,11 +92,19 @@ public class TrainingController {
             .body(trainingService.update(id, trainingRequest));
   }
 
-  @PutMapping("/register/{trainingId}/trainee/{traineeId}")
-  public ResponseEntity<Training> registerTrainee(@PathVariable Integer trainingId, @PathVariable Integer traineeId) {
+  @PutMapping("/register/{id}")
+  public ResponseEntity<TrainingRegister> updateTrainingRegister(@PathVariable Integer id, @RequestBody TrainingRegisterRequest trainingRegisterRequest) {
     return ResponseEntity
             .status(HttpStatus.OK)
-            .body(trainingService.registerTraineeToTraining(trainingId, traineeId));
+            .body(trainingRegisterService.update(id, trainingRegisterRequest));
+  }
+
+  @DeleteMapping("/register/{id}")
+  public ResponseEntity<?> deleteTrainingRegister(@PathVariable Integer id) {
+    trainingRegisterService.delete(id);
+    return ResponseEntity
+            .status(HttpStatus.NO_CONTENT)
+            .body(null);
   }
 
   @DeleteMapping("/{id}")
