@@ -1,4 +1,4 @@
-package id.co.mii.serverapp.models.dto.requests;
+package id.co.mii.clientapp.models.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;

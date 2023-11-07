@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layouts/main}"
+>
+<head>
+  <title>Training</title>
+</head>
+<body>
+<!-- Content -->
+<section class="container mx-10 mt-5" layout:fragment="content">
+  <div class="flex justify-between align-middle">
+    <h1 class="fw-bold">List of Training</h1>
+    <button
+            data-modal-target="addTrainingModal"
+            data-modal-toggle="addTrainingModal"
+            class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            type="button">
+      Toggle
+    </button>
+  </div>
+  <table
+          id="table-training"
+          class="table-fixed display"
+  >
+    <thead class="table-light">
+    <tr>
+      <th class="col">No</th>
+      <th class="col">Name</th>
+      <th class="col">Start Date</th>
+      <th class="col">End Date</th>
+      <th class="col">Trainer</th>
+      <th class="col">Action</th>
+    </tr>
+    </thead>
+  </table>
+
+  <!-- Add training modal -->
+  <div id="addTrainingModal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative w-full max-w-md max-h-full">
+      <!-- Modal content -->
+      <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+        <button type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="addTrainingModal">
+          <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+          </svg>
+          <span class="sr-only">Close modal</span>
+        </button>
+        <div class="px-6 py-6 lg:px-8">
+          <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Add new training</h3>
+          <form class="space-y-6" action="#">
+            <div>
+              <label for="inputTitleTraining" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Title</label>
+              <input type="text" name="inputTitleTraining" id="inputTitleTraining" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required>
+            </div>
+            <div>
+              <label for="inputStartDateTraining" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Start date</label>
+              <input type="datetime-local" name="inputStartDateTraining" id="inputStartDateTraining" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required>
+            </div>
+            <div>
+              <label for="inputEndDateTraining" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">End date</label>
+              <input type="datetime-local" name="inputEndDateTraining" id="inputEndDateTraining" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required>
+            </div>
+            <div>
+              <label for="inputQuotaTraining" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Quota</label>
+              <input type="number" name="inputQuotaTraining" id="inputQuotaTraining" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required>
+            </div>
+            <div>
+              <label for="inputDurationTraining" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Duration</label>
+              <input type="number" name="inputDurationTraining" id="inputDurationTraining" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
+            </div>
+            <div>
+              <label for="inputAddressTraining" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address</label>
+              <textarea name="inputAddressTraining" id="inputAddressTraining" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"></textarea>
+            </div>
+            <div>
+              <label for="inputUrlTraining" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Platform url</label>
+              <input type="text" name="inputUrlTraining" id="inputUrlTraining" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
+            </div>
+            <div>
+              <div class="relative mt-2">
+                <label for="inputLocationTraining" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Location</label>
+                <select id="inputLocationTraining" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                  <option selected>Choose type</option>
+                  <option value="online">Online</option>
+                  <option value="onsite">Onsite</option>
+                </select>
+              </div>
+            </div>
+            <button id="btnSaveTraining" type="submit" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Save</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Detail training modal -->
+  <div id="detailTrainingModal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative w-full max-w-md max-h-full">
+      <!-- Modal content -->
+      <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+        <button type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="detailTrainingModal">
+          <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+          </svg>
+          <span class="sr-only">Close modal</span>
+        </button>
+        <div class="px-6 py-6 lg:px-8">
+          <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Detail training</h3>
+          <form class="space-y-6" action="#">
+            <div>
+              <label for="detailTitleTraining" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Title</label>
+              <input type="text" name="detailTitleTraining" id="detailTitleTraining" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" readonly>
+            </div>
+            <div>
+              <label for="detailStartDateTraining" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Start date</label>
+              <input type="datetime-local" name="detailStartDateTraining" id="detailStartDateTraining" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" readonly>
+            </div>
+            <div>
+              <label for="detailEndDateTraining" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">End date</label>
+              <input type="datetime-local" name="detailEndDateTraining" id="detailEndDateTraining" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" readonly>
+            </div>
+            <div>
+              <label for="detailQuotaTraining" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Quota</label>
+              <input type="number" name="detailQuotaTraining" id="detailQuotaTraining" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" readonly>
+            </div>
+            <div>
+              <label for="detailDurationTraining" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Duration</label>
+              <input type="number" name="detailDurationTraining" id="detailDurationTraining" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" readonly>
+            </div>
+            <div>
+              <label for="detailAddressTraining" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address</label>
+              <textarea name="detailAddressTraining" id="detailAddressTraining" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" readonly></textarea>
+            </div>
+            <div>
+              <label for="detailUrlTraining" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Platform url</label>
+              <input type="text" name="detailUrlTraining" id="detailUrlTraining" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" readonly>
+            </div>
+            <div>
+              <div class="relative mt-2">
+                <label for="detailLocationTraining" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Location</label>
+                <select id="detailLocationTraining" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                  <option disabled value="online">Online</option>
+                  <option disabled value="onsite">Onsite</option>
+                </select>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Update training modal -->
+  <div id="updateTrainingModal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative w-full max-w-md max-h-full">
+      <!-- Modal content -->
+      <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+        <button type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="updateTrainingModal">
+          <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+          </svg>
+          <span class="sr-only">Close modal</span>
+        </button>
+        <div class="px-6 py-6 lg:px-8">
+          <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Update training</h3>
+          <form class="space-y-6" action="#">
+            <div>
+              <label for="updateTitleTraining" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Title</label>
+              <input type="text" name="updateTitleTraining" id="updateTitleTraining" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required>
+            </div>
+            <div>
+              <label for="updateStartDateTraining" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Start date</label>
+              <input type="datetime-local" name="updateStartDateTraining" id="updateStartDateTraining" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required>
+            </div>
+            <div>
+              <label for="updateEndDateTraining" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">End date</label>
+              <input type="datetime-local" name="updateEndDateTraining" id="updateEndDateTraining" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required>
+            </div>
+            <div>
+              <label for="updateQuotaTraining" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Quota</label>
+              <input type="number" name="updateQuotaTraining" id="updateQuotaTraining" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required>
+            </div>
+            <div>
+              <label for="updateDurationTraining" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Duration</label>
+              <input type="number" name="updateDurationTraining" id="updateDurationTraining" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
+            </div>
+            <div>
+              <label for="updateAddressTraining" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address</label>
+              <textarea name="updateAddressTraining" id="updateAddressTraining" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"></textarea>
+            </div>
+            <div>
+              <label for="updateUrlTraining" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Platform url</label>
+              <input type="text" name="updateUrlTraining" id="updateUrlTraining" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
+            </div>
+            <div>
+              <div class="relative mt-2">
+                <label for="updateLocationTraining" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Location</label>
+                <select id="updateLocationTraining" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                  <option value="online">Online</option>
+                  <option value="onsite">Onsite</option>
+                </select>
+              </div>
+            </div>
+            <button id="btnUpdateTraining" type="submit" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Save</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<div layout:fragment="script">
+  <!-- <script th:src="@{/js/region.js}"></script> -->
+  <script th:src="@{/js/training.js}"></script>
+</div>
+</body>
+</html>

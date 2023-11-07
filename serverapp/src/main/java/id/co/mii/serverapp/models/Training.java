@@ -22,20 +22,13 @@ public class Training extends BaseEntity {
   private Date startDate;
   private Date endDate;
   private Integer quota;
+  private Integer duration;
   private String address;
   private String platformUrl;
   private Boolean isOnline;
-  private Integer duration;
   @ManyToOne
   @JoinColumn(name = "trainer")
   private Employee trainer;
-//  @ManyToMany(fetch = FetchType.LAZY)
-//  @JoinTable(
-//          name = "training_register",
-//          joinColumns = @JoinColumn(name = "training"),
-//          inverseJoinColumns = @JoinColumn(name = "trainee")
-//  )
-//  private List<Employee> trainees;
   @OneToMany(mappedBy = "training", cascade = CascadeType.ALL)
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   private List<TrainingRegister> trainingRegisters;
