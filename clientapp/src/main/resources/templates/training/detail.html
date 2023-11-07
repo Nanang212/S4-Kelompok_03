@@ -1,11 +1,87 @@
 <!DOCTYPE html>
 <html
-        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-        layout:decorate="~{layouts/main}"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layouts/main}"
 >
-<head>
-  <title>Training</title>
-</head>
-<body>
-<!-- Content -->
-<section class="container mx-10 mt-5" layout:fragment="content"></section>
+  <head>
+    <title>Detail Training</title>
+  </head>
+  <body>
+    <div class="container py-5" layout:fragment="content">
+      <div
+        class="w-full p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700"
+      >
+        <h5 class="mb-2 text-3xl font-bold text-gray-900 dark:text-white">
+          Detail Training
+        </h5>
+
+        <div class="flex flex-wrap items-center mt-10">
+          <div class="w-full md:w-5/12 px-4 mr-auto ml-auto">
+            <div
+              class="text-gray-600 p-3 text-center inline-flex items-center justify-center w-16 h-16 mb-6 shadow-lg rounded-full bg-gray-100"
+            >
+              <i class="fas fa-user-friends text-xl"></i>
+            </div>
+            <h3
+              class="text-3xl mb-2 font-semibold leading-normal"
+              th:text="${training.title}"
+            ></h3>
+            <p
+              class="text-lg font-light leading-relaxed mt-0 mb-4 text-gray-700"
+            >
+              English language training aims to improve communication skills in
+              English, open career opportunities, broaden horizons, and face
+              challenges in an increasingly globalized world. By mastering
+              English, individuals can actively participate in various aspects
+              of global life and develop a wider network of contacts.
+            </p>
+          </div>
+          <div class="w-full md:w-4/12 px-4 mr-auto ml-auto">
+            <div
+              class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded-lg bg-pink-600"
+            >
+              <img
+                alt="..."
+                src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1051&amp;q=80"
+                class="w-full align-middle rounded-t-lg"
+              />
+              <blockquote class="relative p-8 mb-4">
+                <svg
+                  preserveAspectRatio="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 583 95"
+                  class="absolute left-0 w-full block"
+                  style="height: 95px; top: -94px"
+                >
+                  <polygon
+                    points="-30,95 583,95 583,65"
+                    class="text-pink-600 fill-current"
+                  ></polygon>
+                </svg>
+                <h4
+                  class="text-xl font-bold text-white"
+                  th:text="${training.title}"
+                ></h4>
+                <p class="text-md mt-2 text-white font-semibold ">
+                  StartDate : <span class="font-light" th:text="${training.startDate}"></span>
+                  <br>
+                  EndDate : <span class="font-light" th:text="${training.endDate}"></span>
+                  <br>
+                  Quota : <span class="font-light" th:text="${training.quota}"></span>
+                  <br>
+                  Duration : <span class="font-light" th:text="${training.duration}"></span>
+                  <br>
+                  Address : <span class="font-light" th:text="${training.address}"></span>
+                  <br>
+                  Platform : <span class="font-light" th:text="${training.platformUrl}"></span>
+                  <br>
+                  Location : <span class="font-light" th:text="${training.isOnline}"></span>
+                </p>
+              </blockquote>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

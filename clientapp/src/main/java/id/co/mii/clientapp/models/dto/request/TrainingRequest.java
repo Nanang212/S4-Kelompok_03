@@ -17,6 +17,7 @@ public class TrainingRequest {
   @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm")
   private Date endDate;
   private Integer quota;
+  private String description;
   private Integer duration;
   private String address;
   private String platformUrl;
