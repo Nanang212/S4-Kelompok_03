@@ -17,8 +17,8 @@
             + Add Employee
           </button> -->
           <button
-            data-modal-target="create"
-            data-modal-toggle="create"
+            data-modal-target="createEmployeeModal"
+            data-modal-toggle="createEmployeeModal"
             class="block text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 rounded-full"
             type="submit"
           >
@@ -56,7 +56,7 @@
               <button
                 type="button"
                 class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                data-modal-hide="create"
+                data-modal-hide="detail"
               >
                 <svg
                   class="w-3 h-3"
@@ -84,7 +84,7 @@
                 <form class="space-y-6" id="create-form" action="#">
                   <div>
                     <label
-                      for="id"
+                      for="employeeId"
                       class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                       >Your Id</label
                     >
@@ -98,7 +98,7 @@
                   </div>
                   <div>
                     <label
-                      for="name"
+                      for="employeeName"
                       class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                       >Your Name</label
                     >
@@ -113,7 +113,7 @@
                   </div>
                   <div>
                     <label
-                      for="phone"
+                      for="employeePhone"
                       class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                       >Your Phone</label
                     >
@@ -128,7 +128,7 @@
                   </div>
                   <div>
                     <label
-                      for="email"
+                      for="employeeEmail"
                       class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                       >Your email</label
                     >
@@ -143,7 +143,7 @@
                   </div>
                   <div>
                     <label
-                      for="address"
+                      for="employeeAddress"
                       class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                       >Your Address</label
                     >
@@ -158,14 +158,14 @@
                   </div>
                   <div>
                     <label
-                      for="jobPosition"
+                      for="employeeJobPosition"
                       class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                       >Your Job Position</label
                     >
                     <input
                       type="text"
                       name="jobPosition"
-                      id="employeejobPosition"
+                      id="employeeJobPosition"
                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
 
                       readonly
@@ -173,7 +173,7 @@
                   </div>
                   <div>
                     <label
-                      for="username"
+                      for="employeeUserName"
                       class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                       >Your Username</label
                     >
@@ -188,7 +188,7 @@
                   </div>
                   <div>
                     <label
-                      for="password"
+                      for="employeeRolesName"
                       class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                       >Your Role</label
                     >
@@ -206,7 +206,6 @@
                     type="submit"
                     class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                     id="closeEmployeeButton"
-                    onclick="closeEmployee()"
                   >
                     Close
                   </button>
@@ -218,7 +217,7 @@
 
         <!-- Main modal create -->
         <div
-          id="create"
+          id="createEmployeeModal"
           tabindex="-1"
           aria-hidden="true"
           class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
@@ -229,7 +228,7 @@
               <button
                 type="button"
                 class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                data-modal-hide="create"
+                data-modal-hide="createEmployeeModal"
               >
                 <svg
                   class="w-3 h-3"
@@ -254,17 +253,17 @@
                 >
                   Add Employee
                 </h3>
-                <form class="space-y-6" id="create-form" action="#">
+                <form class="space-y-6">
                   <div>
                     <label
-                      for="name"
+                      for="inputEmployeeName"
                       class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                       >Your Name</label
                     >
                     <input
                       type="text"
                       name="name"
-                      id="create-name"
+                      id="inputEmployeeName"
                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       placeholder="Name"
                       required
@@ -272,14 +271,14 @@
                   </div>
                   <div>
                     <label
-                      for="phone"
+                      for="inputEmployeePhone"
                       class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                       >Your Phone</label
                     >
                     <input
                       type="text"
                       name="phone"
-                      id="create-phone"
+                      id="inputEmployeePhone"
                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       placeholder="Phone"
                       required
@@ -287,14 +286,14 @@
                   </div>
                   <div>
                     <label
-                      for="email"
+                      for="inputEmployeeEmail"
                       class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                       >Your email</label
                     >
                     <input
                       type="email"
                       name="email"
-                      id="create-email"
+                      id="inputEmployeeEmail"
                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       placeholder="name@company.com"
                       required
@@ -302,14 +301,14 @@
                   </div>
                   <div>
                     <label
-                      for="address"
+                      for="inputEmployeeAddress"
                       class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                       >Your Address</label
                     >
                     <input
                       type="text"
                       name="address"
-                      id="create-address"
+                      id="inputEmployeeAddress"
                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       placeholder="address"
                       required
@@ -317,14 +316,14 @@
                   </div>
                   <div>
                     <label
-                      for="jobPosition"
+                      for="inputEmployeeJobPosition"
                       class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                       >Your Job Position</label
                     >
                     <input
                       type="text"
                       name="jobPosition"
-                      id="create-jobPosition"
+                      id="inputEmployeeJobPosition"
                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       placeholder="Job-Position"
                       required
@@ -332,14 +331,14 @@
                   </div>
                   <div>
                     <label
-                      for="username"
+                      for="inputEmployeeUsername"
                       class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                       >Your Username</label
                     >
                     <input
                       type="text"
                       name="username"
-                      id="create-username"
+                      id="inputEmployeeUsername"
                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       placeholder="Username"
                       required
@@ -347,14 +346,14 @@
                   </div>
                   <div>
                     <label
-                      for="password"
+                      for="inputEmployeePassword"
                       class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                       >Your password</label
                     >
                     <input
                       type="password"
                       name="password"
-                      id="create-password"
+                      id="inputEmployeePassword"
                       placeholder="••••••••"
                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       required
@@ -365,7 +364,6 @@
                     type="submit"
                     class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                     id="createEmployeeButton"
-                    onclick="createEmployee()"
                   >
                     Save
                   </button>
@@ -376,142 +374,153 @@
         </div>
 
         <!-- Modal Update -->
-        <!-- <div
-          id="update"
-          class="fixed top-0 left-0 right-0 z-50 hidden w-full h-full overflow-x-hidden overflow-y-auto"
+        <div
+                id="updateEmployeeModal"
+                tabindex="-1"
+                aria-hidden="true"
+                class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
         >
-          <div class="relative w-full max-w-md p-4 mx-auto">
-            <div class="relative bg-white rounded-lg shadow">
-              <div class="absolute top-3 right-3">
-                <button
-                  type="button"
-                  class="text-gray-400 hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center"
-                  data-modal-hide="update"
+          <div class="relative w-full max-w-md max-h-full">
+            <!-- Modal content -->
+            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+              <button
+                      type="button"
+                      class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                      data-modal-hide="updateEmployeeModal"
+              >
+                <svg
+                        class="w-3 h-3"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 14 14"
                 >
-                  <svg
-                    class="w-3 h-3"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 14 14"
-                  >
-                    <path
-                      stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
-                    />
-                  </svg>
-                  <span class="sr-only">Close modal</span>
-                </button>
-              </div>
-              <div class="px-6 py-6">
-                <h3 class="mb-4 text-xl font-medium">Update Employee</h3>
-                <form class="space-y-6" id="update-form" action="#">
+                  <path
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                  />
+                </svg>
+                <span class="sr-only">Close modal</span>
+              </button>
+              <div class="px-6 py-6 lg:px-8">
+                <h3
+                        class="mb-4 text-xl font-medium text-gray-900 dark:text-white"
+                >
+                  Update Employee
+                </h3>
+                <form class="space-y-6">
                   <div>
-                    <label for="update-name" class="block text-sm font-medium"
-                      >Name</label
+                    <label
+                            for="updateEmployeeName"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >Your Name</label
                     >
                     <input
-                      type="text"
-                      name="name"
-                      id="update-name"
-                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                      placeholder="Name"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label for="update-phone" class="block text-sm font-medium"
-                      >Phone</label
-                    >
-                    <input
-                      type="text"
-                      name="phone"
-                      id="update-phone"
-                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                      placeholder="Phone"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label for="update-email" class="block text-sm font-medium"
-                      >Your email</label
-                    >
-                    <input
-                      type="email"
-                      name="email"
-                      id="update-email"
-                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                      placeholder="name@company.com"
-                      required
+                            type="text"
+                            name="name"
+                            id="updateEmployeeName"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                            placeholder="Name"
+                            required
                     />
                   </div>
                   <div>
                     <label
-                      for="update-address"
-                      class="block text-sm font-medium"
-                      >Address</label
+                            for="updateEmployeePhone"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >Your Phone</label
                     >
                     <input
-                      type="text"
-                      name="address"
-                      id="update-address"
-                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                      placeholder="Address"
-                      required
+                            type="text"
+                            name="phone"
+                            id="updateEmployeePhone"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                            placeholder="Phone"
+                            required
                     />
                   </div>
                   <div>
                     <label
-                      for="update-jobPosition"
-                      class="block text-sm font-medium"
-                      >Job Position</label
+                            for="updateEmployeeEmail"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >Your email</label
                     >
                     <input
-                      type="text"
-                      name="jobPosition"
-                      id="update-jobPosition"
-                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                      placeholder="Job Position"
-                      required
+                            type="email"
+                            name="email"
+                            id="updateEmployeeEmail"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                            placeholder="name@company.com"
+                            required
                     />
                   </div>
                   <div>
                     <label
-                      for="update-username"
-                      class="block text-sm font-medium"
-                      >Username</label
+                            for="updateEmployeeAddress"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >Your Address</label
                     >
                     <input
-                      type="text"
-                      name="username"
-                      id="update-username"
-                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                      placeholder="Username"
-                      required
+                            type="text"
+                            name="address"
+                            id="updateEmployeeAddress"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                            placeholder="address"
+                            required
                     />
                   </div>
                   <div>
                     <label
-                      for="update-password"
-                      class="block text-sm font-medium"
-                      >Your password</label
+                            for="updateEmployeeJobPosition"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >Your Job Position</label
                     >
                     <input
-                      type="password"
-                      name="password"
-                      id="update-password"
-                      placeholder="••••••••"
-                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                      required
+                            type="text"
+                            name="jobPosition"
+                            id="updateEmployeeJobPosition"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                            placeholder="Job-Position"
+                            required
                     />
                   </div>
+                  <div>
+                    <label
+                            for="updateEmployeeUsername"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >Your Username</label
+                    >
+                    <input
+                            type="text"
+                            name="username"
+                            id="updateEmployeeUsername"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                            placeholder="Username"
+                            required
+                    />
+                  </div>
+                  <div>
+                    <label
+                            for="updateEmployeePassword"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >Your password</label
+                    >
+                    <input
+                            type="password"
+                            name="password"
+                            id="updateEmployeePassword"
+                            placeholder="••••••••"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                    />
+                  </div>
+
                   <button
-                    type="submit"
-                    class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                    id="createEmployeeButton"
-                    onclick="createEmployee()"
+                          type="submit"
+                          class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                          id="updateEmployeeButton"
                   >
                     Save
                   </button>
@@ -519,7 +528,7 @@
               </div>
             </div>
           </div>
-        </div> -->
+        </div>
       </div>
     </section>
 

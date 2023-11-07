@@ -1,40 +1,8 @@
-function showEmployeeDetail(button) {
-  let employeeId = $(button).data("employeeId");
-
-  // Make an AJAX request to fetch employee details by ID
-  $.ajax({
-    method: "GET",
-    url: `/api/employee/${employeeId}`,
-    dataType: "JSON",
-    contentType: "application/json",
-    success: (res) => {
-      console.log(res);
-      // Populate the modal with employee details
-      $('#employeeDetailModalLabel').text(res.name);
-      $('#employeeId').text(res.id);
-      $('#employeeName').text(res.name);
-      $('#employeePhone').text(res.phone);
-      $('#employeeEmail').text(res.email);
-      $('#employeeAddress').text(res.address); // Add address
-      $('#employeeJobPosition').text(res.jobPosition); // Add job position
-      $('#employeeUserName').text(res.user.username);
-      $('#employeeRolesName').text(res.user.roles[0].name); // Add role name
-
-      // Show the modal
-      $("#employeeDetailModal").modal("show");
-    },
-    error: (err) => {
-      console.log(err);
-    },
-  });
-}
-
-
 $(document).ready(function () {
   $("#table-employee").DataTable({
     ajax: {
       method: "GET",
-      url: "api/employee",
+      url: `api/employee${new URLSearchParams(window.location.search).has('role') ? '?role='+new URLSearchParams(window.location.search).get('role') : ''}`,
       dataSrc: "",
     },
     columns: [
@@ -45,9 +13,9 @@ $(document).ready(function () {
           return meta.row + 1;
         },
       },
-      { data: "name" },
-      { data: "email" },
-      { data: "phone" },
+      {data: "name"},
+      {data: "email"},
+      {data: "phone"},
       {
         data: null,
         render: (data) => {
@@ -58,35 +26,29 @@ $(document).ready(function () {
                 data-modal-target="detail"
                 data-modal-toggle="detail"
                 class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                type="submit"
-                data-employeeId="${data.id}"
+                employeeId="${data.id}"
                 onclick="showEmployeeDetail(this)"
                 title="Detail ${data.name}"
-              >
-                <ion-icon name="information-circle" size="large"></ion-icon>
-              </button>
-
-                <!-- Button update modal -->
+                >
+                  <ion-icon name="information-circle" size="large"></ion-icon>
+                </button>
+              <!-- Button update modal -->
                 <button
                   type="button"
                   class="btn btn-warning btn-sm"
-                  data-bs-toggle="modal"
-                  data-bs-target="#updateRegionModal"
-                  data-id="${data.id}"
-                  data-name="${data.name}"
-                  title="Update ${data.name}"
-                  onclick="openUpdateModal(this)"
+                  data-modal-target="updateEmployeeModal"
+                  data-modal-toggle="updateEmployeeModal"
+                  employeeId="${data.id}"
+                  onclick="updateEmployee(this)"
                 >
                   <ion-icon name="create" size="large"></ion-icon>
-                </button>
+              </button>
                 <!-- Button delete modal -->
                 <button
                   type="button"
                   class="btn btn-danger btn-sm"
-                  title="Delete ${data.name}"
-                  regionId="${data.id}"
-                  regionName="${data.name}"
-                  onclick="confirmDelete(this)"
+                  employeeId="${data.id}"
+                  onclick="deleteEmployee(this)"
                 >
                   <ion-icon name="trash" size="large"></ion-icon>
                 </button>
@@ -97,6 +59,33 @@ $(document).ready(function () {
     ],
   });
 });
+
+function showEmployeeDetail(button) {
+  let employeeId = button.getAttribute("employeeId");
+
+  // Make an AJAX request to fetch employee details by ID
+  $.ajax({
+    method: "GET",
+    url: `api/employee/${employeeId}`,
+    dataType: "JSON",
+    contentType: "application/json",
+    success: (res) => {
+      // Populate the modal with employee details
+      $('#employeeDetailModalLabel').text(res.name);
+      $('#employeeId').val(res.id);
+      $('#employeeName').val(res.name);
+      $('#employeePhone').val(res.phone);
+      $('#employeeEmail').val(res.email);
+      $('#employeeAddress').val(res.address); // Add address
+      $('#employeeJobPosition').val(res.jobPosition); // Add job position
+      $('#employeeUserName').val(res.user.username);
+      $('#employeeRolesName').val(res.user.roles[0].name); // Add role name
+    },
+    error: (err) => {
+      console.log(err);
+    },
+  });
+}
 
 function showToast(type, text) {
   Swal.fire({
@@ -114,39 +103,141 @@ function openCreateEmployeeModal() {
   $("#CreateEmployee").modal("show");
 }
 
+$('#createEmployeeButton').one('click', (event) => {
+  event.preventDefault()
+  createEmployee()
+})
+
 function createEmployee() {
-  let employeeName = $("#create-name").val();
-  let employeePhone = $("#create-phone").val();
-  let employeeEmail = $("#create-email").val();
-  let employeeAddress = $("#create-address").val();
-  let employeeJobPosition = $("#create-jobPosition").val();
-  let employeeUsername = $("#create-username").val();
-  let employeePassword = $("#create-password").val();
+  let employeeName = $("#inputEmployeeName").val();
+  let employeePhone = $("#inputEmployeePhone").val();
+  let employeeEmail = $("#inputEmployeeEmail").val();
+  let employeeAddress = $("#inputEmployeeAddress").val();
+  let employeeJobPosition = $("#inputEmployeeJobPosition").val();
+  let employeeUsername = $("#inputEmployeeUsername").val();
+  let employeePassword = $("#inputEmployeePassword").val();
 
   let newData = {
     name: employeeName,
     email: employeeEmail,
     phone: employeePhone,
-    phone: employeeAddress,
-    phone: employeeJobPosition,
+    address: employeeAddress,
+    jobPosition: employeeJobPosition,
     username: employeeUsername,
     password: employeePassword,
   };
-  console.log(newData);
 
   $.ajax({
     type: "POST",
     url: "api/employee",
     contentType: "application/json",
     data: JSON.stringify(newData),
-    beforeSend: setHeaders(), //buat headers
+    beforeSend: function () {
+      setCsrf()
+    }, //buat headers
     success: function (response) {
-      $("#create").modal("hide");
       $("#table-employee").DataTable().ajax.reload();
+      $("#inputEmployeeName").val('');
+      $("#inputEmployeePhone").val('');
+      $("#inputEmployeeEmail").val('');
+      $("#inputEmployeeAddress").val('');
+      $("#inputEmployeeJobPosition").val('');
+      $("#inputEmployeeUsername").val('');
+      $("#inputEmployeePassword").val('');
       showToast("success", "Employee added successfully");
     },
     error: function (error) {
       showToast("error", "Failed to create employee");
     },
   });
+}
+
+function updateEmployee(button) {
+  let employeeId = button.getAttribute("employeeId")
+  $.ajax({
+    method: "GET",
+    url: `api/employee/${employeeId}`,
+    dataType: "JSON",
+    contentType: "application/json",
+    success: (res) => {
+      $('#updateEmployeeName').val(res.name);
+      $('#updateEmployeePhone').val(res.phone);
+      $('#updateEmployeeEmail').val(res.email);
+      $('#updateEmployeeAddress').val(res.address);
+      $('#updateEmployeeJobPosition').val(res.jobPosition);
+      $('#updateEmployeeUsername').val(res.user.username);
+      $('#updateEmployeeButton').one("click", (event) => {
+        event.preventDefault()
+        $.ajax({
+          method: "PUT",
+          url: `api/employee/${res.id}`,
+          dataType: "JSON",
+          contentType: "application/json",
+          data: JSON.stringify({
+            name: $('#updateEmployeeName').val(),
+            phone: $('#updateEmployeePhone').val(),
+            email: $('#updateEmployeeEmail').val(),
+            address: $('#updateEmployeeAddress').val(), // Add address
+            jobPosition: $('#updateEmployeeJobPosition').val(), // Add job position
+            username: $('#updateEmployeeUsername').val()
+          }),
+          beforeSend : function () {
+            setCsrf();
+          },
+          success: (res) => {
+            $("#updateEmployeeModal").hide();
+            showToast("success", "Employee updated successfully");
+          },
+          error: (error) => {
+            showToast("error", "Failed to update employee");
+          },
+        });
+      })
+    },
+    error: (error) => {
+      console.log(error)
+    },
+  });
+}
+
+function deleteEmployee(button) {
+  let id = button.getAttribute('employeeId')
+  Swal.fire({
+    title: `Are you sure want to delete training ?`,
+    text: "You won't be able to revert this!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, delete it!'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      $.ajax({
+        method: "DELETE",
+        url: `api/employee/${id}`,
+        dataType: "JSON",
+        contentType: "application/json",
+        beforeSend: function () {
+          setCsrf()
+        },
+        success: (res) => {
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Training successfully deleted...",
+            showConfirmButton: false,
+            timer: 2000,
+          });
+          $("#table-employee").DataTable().ajax.reload();
+        },
+        error: (err) => {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Something is wrong !!!",
+          });
+        },
+      });
+    }
+  })
 }
