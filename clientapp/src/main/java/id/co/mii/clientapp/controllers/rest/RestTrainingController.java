@@ -4,6 +4,8 @@ import id.co.mii.clientapp.models.Training;
 import id.co.mii.clientapp.models.dto.request.TrainingRequest;
 import id.co.mii.clientapp.services.TrainingService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,7 +37,10 @@ public class RestTrainingController {
   }
 
   @DeleteMapping("/{id}")
-  public Training delete(@PathVariable Integer id) {
-    return trainingService.delete(id);
+  public ResponseEntity<?> delete(@PathVariable Integer id) {
+    trainingService.delete(id);
+    return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(new Training());
   }
 }
