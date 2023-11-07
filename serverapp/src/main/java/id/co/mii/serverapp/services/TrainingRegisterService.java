@@ -22,7 +22,7 @@ public class TrainingRegisterService extends BaseService<TrainingRegister, Integ
   private RoleService roleService;
   private StatusService statusService;
   private HistoryService historyService;
-
+// TODO : Buat validasi untuk quota
   public byte[] getAttachmentById(Integer id) {
     TrainingRegister trainingRegister = getById(id);
     return trainingRegister.getAttachment();
