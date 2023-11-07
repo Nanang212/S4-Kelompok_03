@@ -52,6 +52,14 @@ public class EmployeeController {
             .body(employeeService.getAllByRoleId(3));
   }
 
+  @PreAuthorize("hasAnyAuthority('READ_ADMIN', 'READ_TRAINER', 'READ_TRAINEE')")
+  @GetMapping("/current")
+  public ResponseEntity<Employee> getLoggedInEmp() {
+    return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(employeeService.getLoggedInEmployee());
+  }
+
   @PreAuthorize("hasAuthority('READ_ADMIN')")
   @GetMapping("/{id}")
   public ResponseEntity<Employee> getById(@PathVariable Integer id) {
