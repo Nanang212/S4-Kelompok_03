@@ -43,8 +43,9 @@ public class BaseService<E extends BaseEntity, T> {
     return repository.save(entity);
   }
 
-  public void delete(T id) {
+  public E delete(T id) {
     E entity = getById(id);
     repository.delete(entity);
+    return entity;
   }
 }

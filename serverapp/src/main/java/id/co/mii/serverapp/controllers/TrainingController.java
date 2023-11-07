@@ -24,8 +24,15 @@ public class TrainingController {
   @PostMapping(value = "/register", consumes = "multipart/form-data")
   public ResponseEntity<TrainingRegister> trainingRegistration(TrainingRegisterRequest trainingRegisterRequest) {
     return ResponseEntity
-            .status(HttpStatus.OK)
+            .status(HttpStatus.CREATED)
             .body(trainingRegisterService.create(trainingRegisterRequest));
+  }
+
+  @PostMapping(value = "/register/cancel", consumes = "multipart/form-data")
+  public ResponseEntity<TrainingRegister> trainingCancellation(TrainingRegisterRequest trainingRegisterRequest) {
+    return ResponseEntity
+            .status(HttpStatus.CREATED)
+            .body(trainingRegisterService.createCancellation(trainingRegisterRequest));
   }
 
   @PostMapping
@@ -101,17 +108,15 @@ public class TrainingController {
 
   @DeleteMapping("/register/{id}")
   public ResponseEntity<?> deleteTrainingRegister(@PathVariable Integer id) {
-    trainingRegisterService.delete(id);
     return ResponseEntity
-            .status(HttpStatus.NO_CONTENT)
-            .body(null);
+            .status(HttpStatus.OK)
+            .body(trainingRegisterService.delete(id));
   }
 
   @DeleteMapping("/{id}")
   public ResponseEntity<?> delete(@PathVariable Integer id) {
-    trainingService.delete(id);
     return ResponseEntity
-            .status(HttpStatus.NO_CONTENT)
-            .body(null);
+            .status(HttpStatus.OK)
+            .body(trainingService.delete(id));
   }
 }
