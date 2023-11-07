@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TrainingRegister {
+  private Integer id;
   private Training training;
   private Employee trainee;
   private Status currentStatus;
