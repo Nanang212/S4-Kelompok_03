@@ -5,17 +5,22 @@
   lang="en"
 >
   <head>
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <!-- default header name is X-CSRF-TOKEN -->
+    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
     <meta charset="UTF-8" />
     <title>Hello TailWind CSS</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;700;900&display=swap"
       rel="stylesheet"
     />
+
     <!-- Data Table -->
     <link
       rel="stylesheet"
       href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css"
     />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.0.0/flowbite.min.css" rel="stylesheet" />
 
     <link rel="stylesheet" th:href="@{/css/style.css}" />
     <link rel="stylesheet" th:href="@{/css/tailwind.css}" />
@@ -457,7 +462,7 @@
                       >
                         <img
                           class="object-cover rounded-full w-9 h-9"
-                          src="build/images/avatar.jpg"
+                          src="#"
                           alt="Ahmed kamel"
                         />
                       </span>
@@ -492,7 +497,7 @@
                       >
                         <img
                           class="object-cover rounded-full w-9 h-9"
-                          src="build/images/avatar-1.jpg"
+                          src="#"
                           alt="Ahmed kamel"
                         />
                       </span>
@@ -527,7 +532,7 @@
                       >
                         <img
                           class="object-cover rounded-full w-9 h-9"
-                          src="build/images/avatar.jpg"
+                          src="#"
                           alt="Ahmed kamel"
                         />
                       </span>
@@ -563,7 +568,7 @@
                         >
                           <img
                             class="object-cover rounded-full w-9 h-9"
-                            src="build/images/avatar.jpg"
+                            src="#"
                             alt="Ahmed kamel"
                           />
                         </span>
@@ -618,6 +623,8 @@
     ></script>
     <!-- Data Table -->
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.0.0/flowbite.min.js"></script>
+
     <!-- sweetalert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script th:src="@{/js/script.js}"></script>
