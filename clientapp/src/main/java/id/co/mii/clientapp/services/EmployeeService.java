@@ -23,6 +23,15 @@ public class EmployeeService {
     @Autowired
     private RestTemplate restTemplate;
 
+    public Employee getLoggedInUser() {
+        return restTemplate.exchange(
+                url.concat("/current"),
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<Employee>() {}
+        ).getBody();
+    }
+
     public List<Employee> getAll() {
         return restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<List<Employee>>() {
         }).getBody();
