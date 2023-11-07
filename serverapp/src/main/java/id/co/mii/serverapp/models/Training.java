@@ -9,7 +9,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
-// TODO : Ubah relasi training - trainee menjadi many to many tipe ke 3
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Builder

@@ -280,7 +280,11 @@ function deleteTraining(button) {
           $("#table-training").DataTable().ajax.reload();
         },
         error: (err) => {
-          console.log(err);
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Something is wrong !!!",
+          });
         },
       });
     }

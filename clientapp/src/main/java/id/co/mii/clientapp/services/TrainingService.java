@@ -45,8 +45,8 @@ public class TrainingService {
             .getBody();
   }
 
-  public Training delete(Integer id) {
-    return restTemplate
+  public void delete(Integer id) {
+    restTemplate
             .exchange(url.concat("/" + id), HttpMethod.DELETE, null, Training.class)
             .getBody();
   }
