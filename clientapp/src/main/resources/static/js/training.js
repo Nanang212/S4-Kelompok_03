@@ -40,10 +40,7 @@ $(document).ready(function () {
                 <button
                   type="button"
                   class="btn btn-primary btn-sm"
-                  data-modal-target="detailTrainingModal"
-                  data-modal-toggle="detailTrainingModal"
-                  trainingId="${data.id}"
-                  onclick="showTrainingDetail(this)"
+                  onclick="window.location.href='/training/${data.id}'"
                 >
                   <ion-icon name="information-circle" size="large"></ion-icon>
                 </button>
