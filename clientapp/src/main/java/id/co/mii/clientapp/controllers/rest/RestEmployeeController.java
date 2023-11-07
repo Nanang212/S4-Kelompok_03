@@ -2,14 +2,7 @@ package id.co.mii.clientapp.controllers.rest;
 
 import java.util.List;
 
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import id.co.mii.clientapp.models.Employee;
 import id.co.mii.clientapp.models.dto.request.EmployeeRequest;
@@ -26,7 +19,10 @@ public class RestEmployeeController {
     private AuthenticationSessionUtil session;
 
     @GetMapping
-    public List<Employee> getAll(){
+    public List<Employee> getAll(@RequestParam(required = false) String role){
+        if (role != null) {
+            return employeeService.getAllBy(role);
+        }
         return employeeService.getAll();
     }
 

@@ -72,6 +72,23 @@ $(document).ready(function () {
   });
 });
 
+function setRoles(type) {
+  $.ajax({
+    method: "GET",
+    url: `api/roles`,
+    dataType: "JSON",
+    contentType: "application/json",
+    success: (response) => {
+      $.each(response, (index, value) => {
+        $(`#role${type}Selection`).append(`<option value="${value.id}">${value.name}</option>`)
+      })
+    },
+    error: (err) => {
+      console.log(err);
+    },
+  });
+}
+
 function formatDate(inputDate) {
   const options = {
     year: 'numeric',
