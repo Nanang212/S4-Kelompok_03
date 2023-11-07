@@ -28,26 +28,12 @@ public class EmployeeService {
         }).getBody();
     }
 
-    // public List<Employee> getAllByRoleAdmin() {
-    //     // Ganti URL sesuai dengan endpoint yang sesuai dengan role admin
-    //     String adminUrl = url + "/admin";
-    //     return restTemplate.exchange(adminUrl, HttpMethod.GET, null, new ParameterizedTypeReference<List<Employee>>() {
-    //     }).getBody();
-    // }
-
-    // public List<Employee> getAllByRoleTrainer() {
-    //     // Ganti URL sesuai dengan endpoint yang sesuai dengan role trainer
-    //     String trainerUrl = url + "/trainer";
-    //     return restTemplate.exchange(trainerUrl, HttpMethod.GET, null, new ParameterizedTypeReference<List<Employee>>() {
-    //     }).getBody();
-    // }
-
-    // public List<Employee> getAllByRoleTrainee() {
-    //     // Ganti URL sesuai dengan endpoint yang sesuai dengan role trainee
-    //     String traineeUrl = url + "/trainee";
-    //     return restTemplate.exchange(traineeUrl, HttpMethod.GET, null, new ParameterizedTypeReference<List<Employee>>() {
-    //     }).getBody();
-    // }
+     public List<Employee> getAllBy(String role) {
+         String trainerUrl = url + "/" + role;
+         return restTemplate
+                 .exchange(trainerUrl, HttpMethod.GET, null, new ParameterizedTypeReference<List<Employee>>() {
+         }).getBody();
+     }
 
     public Employee getById(Integer id) {
         return restTemplate.exchange(url.concat("/" + id), HttpMethod.GET, null, Employee.class)
