@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/main}">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <!--  Datatable-->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
+  <title>Profile</title>
+</head>
+
+<style>
+  /* Styling untuk elemen-elemen pada halaman profil */
+#profile {
+  background-color: #f5f5f5;
+  padding: 20px;
+}
+
+.card {
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.col-md-4 {
+  padding: 20px;
+  text-align: center;
+  background-color: #007bff;
+  color: white;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.col-md-4 img {
+  width: 80px;
+  border-radius: 50%;
+}
+
+.col-md-4 h5 {
+  font-size: 1.5rem;
+  margin-bottom: 0;
+}
+
+.col-md-4 p {
+  font-size: 1rem;
+  margin: 5px 0;
+}
+
+/* Styling untuk tombol edit profile */
+#update-profile {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#update-profile:hover {
+  background-color: #218838;
+}
+
+</style>
+<body>
+  <section class="container mt-5" layout:fragment="content" th:attr="data-user=${user}" id="profile">
+
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col col-lg-6 mb-4 mb-lg-0">
+          <div class="card mb-3" style="border-radius: .5rem;">
+            <div class="row g-0">
+              <div class="col-md-4 gradient-custom text-center"
+                style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;">
+                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp" alt="Avatar"
+                  class="img-fluid my-5" style="width: 80px;" />
+                <h5 id="name"></h5>
+                <p id="role"></p>
+                <i class="far fa-edit mb-5"></i>
+              </div>
+              <div class="col-md-8">
+                <div class="card-body p-4">
+                  <h6>Profile Information</h6>
+                  <hr class="mt-0 mb-4">
+                  <div class="row pt-1">
+                    <div class="col-6 mb-3">
+                      <h6>Email</h6>
+                      <p class="text-muted" id="email"></p>
+                    </div>
+                    <div class="col-6 mb-3">
+                      <h6>Phone</h6>
+                      <p class="text-muted" id="phone"></p>
+                    </div>
+                  </div>
+
+                  <button
+                  type="button"
+                  class="btn btn-success fw-bold"
+                  data-bs-toggle="modal"
+                  data-bs-target="#updateModal"
+                  id="update-profile"
+          >
+            edit profile
+          </button>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Modal Update -->
+    <div class="modal fade" id="updateModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+      aria-labelledby="updateModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5 fw-bold" id="updateModalLabel">
+              Add Profilew
+            </h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form>
+            <div class="modal-body">
+              <div class="input-group mb-3">
+                <span class="input-group-text fw-bold">ID</span>
+                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="name"
+                  id="update-id" disabled />
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text fw-bold">Name</span>
+                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="name"
+                  id="update-name" required />
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text fw-bold">Email</span>
+                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="name"
+                  id="update-email" required />
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text fw-bold">Phone</span>
+                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="name"
+                  id="update-phone" required />
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                Close
+              </button>
+              <button id="saveupdateBtn" type="submit" class="btn btn-success">
+                Save
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </section>
+  <div layout:fragment="script">
+    <script th:src="@{/js/profil.js}"></script>
+  </div>
+</body>
+
+</html>

@@ -13,5 +13,4 @@ public class Role {
     private String id;
     private String name;
     private List<User> users;
-    
 }

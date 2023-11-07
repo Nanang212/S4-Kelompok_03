@@ -1,6 +1,6 @@
 package id.co.mii.clientapp.models;
 
-import java.util.List;
+import java.util.Set;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,11 +10,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
-    private Integer id;
     private String username;
     private String password;
-    private Boolean isEnabled = true;
-    private List<Role> roles;
-    
-    
+    private Boolean isEnable = true;
+    private Employee employee;
+    private Set<Role> roles;
 }

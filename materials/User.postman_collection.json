@@ -1,0 +1,19 @@
+{
+	"info": {
+		"_postman_id": "40ad3469-4914-4bad-98f8-c2835f46a2ac",
+		"name": "User",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "20687796"
+	},
+	"item": [
+		{
+			"name": "add role",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": "{{BASE_URL}}/users/6/add-role/3"
+			},
+			"response": []
+		}
+	]
+}

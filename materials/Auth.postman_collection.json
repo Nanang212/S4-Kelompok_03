@@ -1,0 +1,46 @@
+{
+	"info": {
+		"_postman_id": "e77501d4-2aa8-42f1-88ef-51efecd80226",
+		"name": "Auth",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "20687796"
+	},
+	"item": [
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"fazri\",\r\n    \"password\": \"fazri\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{BASE_URL}}/auth/login"
+			},
+			"response": []
+		},
+		{
+			"name": "registration",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"ridwan\",\r\n    \"phone\": \"0854\",\r\n    \"email\": \"ridwan@yopmail.com\",\r\n    \"address\": \"Jl. Raya\",\r\n    \"jobPosition\": \"Developer\",\r\n    \"username\": \"ridwan\",\r\n    \"password\": \"ridwan\",\r\n    \"roleIds\": [3]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{BASE_URL}}/auth/registration"
+			},
+			"response": []
+		}
+	]
+}

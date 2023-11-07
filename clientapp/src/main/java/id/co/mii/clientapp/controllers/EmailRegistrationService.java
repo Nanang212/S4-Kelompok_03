@@ -6,6 +6,9 @@ import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import id.co.mii.clientapp.models.Employee;
+import id.co.mii.clientapp.request.EmployeeRequest;
+
 // import id.co.mii.clientapp.models.Employee;
 // import id.co.mii.clientapp.request.EmployeeRequest;
 
@@ -20,17 +23,17 @@ public class EmailRegistrationService {
     @Autowired
     private RestTemplate restTemplate;
 
-    // public Employee registration(EmployeeRequest request){
-    //     Employee employee = restTemplate.exchange(
-    //         url.concat("/registration"), 
-    //         HttpMethod.POST,
-    //         new HttpEntity<EmployeeRequest>(request), 
-    //         Employee.class
-    //         ).getBody();
+    public Employee registration(EmployeeRequest request){
+        Employee employee = restTemplate.exchange(
+            url.concat("/registration"), 
+            HttpMethod.POST,
+            new HttpEntity<EmployeeRequest>(request), 
+            Employee.class
+            ).getBody();
 
-    //         System.out.println(employee);
-    //     return employee;
-    // }
+            System.out.println(employee);
+        return employee;
+    }
 
     public String isVerifyUser(String token){
       String api = restTemplate.exchange(
