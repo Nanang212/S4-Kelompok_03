@@ -60,8 +60,17 @@ public class RestEmployeeController {
   }
 
   @PutMapping("/{id}")
-  public Employee update(@PathVariable Integer id, @RequestBody EmployeeRequest employeeRequest) {
-    return employeeService.update(id, employeeRequest);
+  public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody EmployeeRequest employeeRequest) {
+    try {
+      return ResponseEntity
+              .status(HttpStatus.OK)
+              .body(employeeService.update(id, employeeRequest));
+    } catch (HttpClientErrorException exception) {
+      return ResponseEntity
+              .status(exception.getRawStatusCode())
+              .headers(exception.getResponseHeaders())
+              .body(exception.getResponseBodyAsString());
+    }
   }
 
   @DeleteMapping("/{id}")

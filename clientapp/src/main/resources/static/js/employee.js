@@ -2,7 +2,7 @@ $(document).ready(function () {
   $("#table-employee").DataTable({
     ajax: {
       method: "GET",
-      url: `api/employee${new URLSearchParams(window.location.search).has('role') ? '?role='+new URLSearchParams(window.location.search).get('role') : ''}`,
+      url: `/api/employee${new URLSearchParams(window.location.search).has('role') ? '?role='+new URLSearchParams(window.location.search).get('role') : ''}`,
       dataSrc: "",
     },
     columns: [
@@ -33,16 +33,14 @@ $(document).ready(function () {
                   <ion-icon name="information-circle" size="large"></ion-icon>
                 </button>
               <!-- Button update modal -->
-                <button
-                  type="button"
+                <a
+                  href="http://localhost:9090/employee/update/${data.id}"
                   class="btn btn-warning btn-sm"
-                  data-modal-target="updateEmployeeModal"
-                  data-modal-toggle="updateEmployeeModal"
                   employeeId="${data.id}"
-                  onclick="employee_update(${data.id})"
+                  onclick="updateEmployee(this)"
                 >
                   <ion-icon name="create" size="large"></ion-icon>
-              </button>
+              </a>
                 <!-- Button delete modal -->
                 <button
                   type="button"
@@ -64,56 +62,52 @@ function employee_detail(id){
   window.location.href='/employee/' + id;
 }
 
-function employee_update(id){
-  window.location.href='/employee/update/' + id;
-}
-
-function showEmployeeDetail(button) {
-  let employeeId = button.getAttribute("employeeId");
-
-  // Make an AJAX request to fetch employee details by ID
-  $.ajax({
-    method: "GET",
-    url: `api/employee/${employeeId}`,
-    dataType: "JSON",
-    contentType: "application/json",
-    success: (res) => {
-      // Populate the modal with employee details
-      $('#employeeDetailModalLabel').text(res.name);
-      $('#employeeId').val(res.id);
-      $('#employeeName').val(res.name);
-      $('#employeePhone').val(res.phone);
-      $('#employeeEmail').val(res.email);
-      $('#employeeAddress').val(res.address); // Add address
-      $('#employeeJobPosition').val(res.jobPosition); // Add job position
-      $('#employeeUserName').val(res.user.username);
-      $('#employeeRolesName').val(res.user.roles[0].name); // Add role name
-    },
-    error: (err) => {
-      console.log(err);
-    },
-  });
-}
-
 function showToast(type, text) {
-  Swal.fire({
+  return Swal.fire({
     toast: true,
     position: "top-end",
     showConfirmButton: false,
-    timer: 3000,
+    timer: 2000,
     icon: type,
     title: text,
   });
 }
 
-function openCreateEmployeeModal() {
-  document.getElementById("create-from").reset();
-  $("#CreateEmployee").modal("show");
-}
-
 $('#createEmployeeButton').one('click', (event) => {
   event.preventDefault()
   createEmployee()
+})
+
+$('#updateEmployeeButton').one("click", (event) => {
+  event.preventDefault()
+  let id = $('#updateEmployeeId').val()
+  $.ajax({
+    method: "PUT",
+    url: `/api/employee/${id}`,
+    dataType: "JSON",
+    contentType: "application/json",
+    data: JSON.stringify({
+      name: $('#updateEmployeeName').val(),
+      phone: $('#updateEmployeePhone').val(),
+      email: $('#updateEmployeeEmail').val(),
+      address: $('#updateEmployeeAddress').val(), // Add address
+      jobPosition: $('#updateEmployeeJobPosition').val(), // Add job position
+      username: $('#updateEmployeeUsername').val(),
+      password: $('#updateEmployeePassword').val()
+    }),
+    beforeSend : function () {
+      setCsrf();
+    },
+    success: (res) => {
+      $("#updateEmployeeModal").hide();
+      showToast("success", "Employee updated successfully").then(() => history.back());
+
+    },
+    error: (error) => {
+      let errorJsn = error.responseJSON
+      showToast("error", errorJsn.message).then(() => location.reload());
+    },
+  });
 })
 
 function createEmployee() {

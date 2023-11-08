@@ -60,4 +60,12 @@ public class EmployeeController {
     model.addAttribute("isActiveTrainee", true);
     return "redirect:/employee?role=" + "trainee";
   }
+
+  @GetMapping("/update/{id}")
+  public String updateView(@PathVariable Integer id, Model model) {
+//    model.addAttribute("loggedInEmployee", employeeService.getLoggedInUser());
+//    model.addAttribute("id", id);
+    model.addAttribute("employee", employeeService.getById(id));
+    return "employee/update";
+  }
 }

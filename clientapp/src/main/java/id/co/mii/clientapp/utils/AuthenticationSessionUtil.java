@@ -6,7 +6,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 @Configuration
 public class AuthenticationSessionUtil {
-    public Authentication authentication() {
+  public Authentication authentication() {
     return SecurityContextHolder.getContext().getAuthentication();
   }
 }
