@@ -25,7 +25,7 @@ $(document).ready(function () {
                 <button
                 data-modal-target="detail"
                 data-modal-toggle="detail"
-                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                class="btn btn-warning btn-sm"
                 employeeId="${data.id}"
                 onclick="showEmployeeDetail(this)"
                 title="Detail ${data.name}"
