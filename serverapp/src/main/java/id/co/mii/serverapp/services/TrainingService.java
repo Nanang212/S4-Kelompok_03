@@ -1,6 +1,7 @@
 package id.co.mii.serverapp.services;
 
 import id.co.mii.serverapp.models.*;
+import id.co.mii.serverapp.models.dto.requests.EmailRequest;
 import id.co.mii.serverapp.models.dto.requests.TrainingRequest;
 import id.co.mii.serverapp.repositories.TrainingRepository;
 import id.co.mii.serverapp.services.base.BaseService;
@@ -12,7 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,9 +26,9 @@ public class TrainingService extends BaseService<Training, Integer> {
   private TrainingRepository trainingRepository;
   private RoleService roleService;
   private StatusService statusService;
+  private EmailService emailService;
 
 // TODO : validasi input start date & end date
-  // TODO : Tambah deskripsi training
   public List<Training> getAllByTrainer(String username) {
     Employee employee = employeeService.findByUsername(username);
     Role trainerRole = roleService.getById(2);
@@ -73,6 +76,21 @@ public class TrainingService extends BaseService<Training, Integer> {
     training.setTrainer(trainer);
     training.setCreatedBy(currentEmp.getUser().getUsername());
     training.setUpdatedBy(currentEmp.getUser().getUsername());
+    employeeService.getAllByRoleId(3).forEach(employee -> {
+      EmailRequest emailRequest = new EmailRequest();
+      Map<String, Object> properties = new HashMap<>();
+      properties.put("id", training.getId());
+      properties.put("title", training.getTitle());
+      properties.put("startDate", training.getStartDate());
+      properties.put("endDate", training.getEndDate());
+      properties.put("quota", training.getQuota());
+      properties.put("trainingLink", "http://localhost:9090/training/" + training.getId());
+      emailRequest.setTo(employee.getEmail());
+      emailRequest.setSubject("New Training Appear");
+      emailRequest.setBody("training.html");
+      emailRequest.setProperties(properties);
+      emailService.sendHtmlMessage(emailRequest);
+    });
     return create(training);
   }
 

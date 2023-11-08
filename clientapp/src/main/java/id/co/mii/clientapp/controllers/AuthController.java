@@ -25,7 +25,7 @@ public class AuthController {
         if (session.authentication() instanceof AnonymousAuthenticationToken) {
             return "auth/login";
         }
-         return "redirect:/employee";
+         return "redirect:/training";
     }
 
     @PostMapping("/login")

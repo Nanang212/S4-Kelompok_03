@@ -12,6 +12,12 @@ public class HomeController {
     //     return "coba";
     // }
 
+    @GetMapping ("/landing")
+    public String landingview(Model model){
+    model.addAttribute("landing", "MCC 81");
+    return "auth/landing";
+    }
+
     @GetMapping("/login")
     public String loginview(Model model) {
         model.addAttribute("title", "MCC 81");
