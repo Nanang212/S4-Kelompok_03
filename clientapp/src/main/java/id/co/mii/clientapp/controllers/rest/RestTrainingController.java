@@ -1,7 +1,10 @@
 package id.co.mii.clientapp.controllers.rest;
 
 import id.co.mii.clientapp.models.Training;
+import id.co.mii.clientapp.models.TrainingRegister;
+import id.co.mii.clientapp.models.dto.request.TrainingRegisterRequest;
 import id.co.mii.clientapp.models.dto.request.TrainingRequest;
+import id.co.mii.clientapp.services.TrainingRegisterService;
 import id.co.mii.clientapp.services.TrainingService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,15 +18,26 @@ import java.util.List;
 @RequestMapping("/api/trainings")
 public class RestTrainingController {
   private TrainingService trainingService;
+  private TrainingRegisterService trainingRegisterService;
 
   @GetMapping
   public List<Training> getAll() {
     return trainingService.getAll();
   }
 
+  @GetMapping("/register")
+  public List<TrainingRegister> getAllTrainingRegister() {
+    return trainingRegisterService.getAll();
+  }
+
   @GetMapping("/{id}")
   public Training getById(@PathVariable Integer id) {
     return trainingService.getById(id);
+  }
+
+  @GetMapping("/register/{id}")
+  public TrainingRegister getTrainingRegisterById(@PathVariable Integer id) {
+    return trainingRegisterService.getById(id);
   }
 
   @PostMapping
@@ -34,6 +48,16 @@ public class RestTrainingController {
   @PutMapping("/{id}")
   public Training update(@PathVariable Integer id, @RequestBody TrainingRequest trainingRequest) {
     return trainingService.update(id, trainingRequest);
+  }
+
+  @PutMapping("/register/{id}")
+  public TrainingRegister updateTrainingRegister(@PathVariable Integer id, @RequestBody TrainingRegisterRequest trainingRegisterRequest) {
+    return trainingRegisterService.update(id, trainingRegisterRequest);
+  }
+
+  @DeleteMapping("/register/{id}")
+  public TrainingRegister deleteTrainingRegister(@PathVariable Integer id) {
+    return trainingRegisterService.delete(id);
   }
 
   @DeleteMapping("/{id}")

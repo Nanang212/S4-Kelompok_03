@@ -28,11 +28,11 @@ public class TrainingController {
             .body(trainingRegisterService.create(trainingRegisterRequest));
   }
 
-  @PostMapping(value = "/register/cancel", consumes = "multipart/form-data")
-  public ResponseEntity<TrainingRegister> trainingCancellation(TrainingRegisterRequest trainingRegisterRequest) {
+  @PostMapping(value = "/register/cancel/{id}")
+  public ResponseEntity<TrainingRegister> trainingCancellation(@PathVariable Integer id) {
     return ResponseEntity
             .status(HttpStatus.CREATED)
-            .body(trainingRegisterService.createCancellation(trainingRegisterRequest));
+            .body(trainingRegisterService.createCancellation(id));
   }
 
   @PostMapping
