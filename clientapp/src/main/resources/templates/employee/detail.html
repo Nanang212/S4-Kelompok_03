@@ -16,8 +16,8 @@
         </h5>
 
         <div class="flex items-center h-screen w-full justify-center">
-          <div class="max-w-xs">
-            <div class="bg-white shadow-xl rounded-lg py-2">
+          <div class="max-w-full">
+            <div class="bg-gray-100 shadow-xl rounded-lg py-2">
               <div class="photo-wrapper p-2">
                 <img
                   class="w-32 h-32 rounded-full mx-auto"
@@ -40,25 +40,25 @@
                         <td class="px-2 py-2 text-gray-500 font-semibold text-xl">
                           Address :
                         </td>
-                        <td class="px-2 py-2 text-lg" th:text="${employee.address}"></td>
+                        <td class="px-2 py-2 text-lg dark:text-black" th:text="${employee.address}"></td>
                       </tr>
                       <tr>
                         <td class="px-2 py-2 text-gray-500 font-semibold text-xl">
                           Phone :
                         </td>
-                        <td class="px-2 py-2 text-lg" th:text="${employee.phone}"></td>
+                        <td class="px-2 py-2 text-lg dark:text-black" th:text="${employee.phone}"></td>
                       </tr>
                       <tr>
                         <td class="px-2 py-2 text-gray-500 font-semibold text-xl">
                           Email :
                         </td>
-                        <td class="px-2 py-2 text-lg" th:text="${employee.email}"></td>
+                        <td class="px-2 py-2 text-lg dark:text-black" th:text="${employee.email}"></td>
                       </tr>
                       <tr>
                         <td class="px-2 py-2 text-gray-500 font-semibold text-xl">
                           Username :
                         </td>
-                        <td class="px-2 py-2 text-lg" th:text="${employee.user.username}"></td>
+                        <td class="px-2 py-2 text-lg dark:text-black" th:text="${employee.user.username}"></td>
                       </tr>
                    </div>
                   </tbody>

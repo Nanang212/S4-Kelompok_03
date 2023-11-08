@@ -55,4 +55,10 @@ public class AuthController {
     }
 
   }
+
+  @GetMapping("/change-password")
+  public String changePasswordview(Model model) {
+      model.addAttribute("title", "MCC 81");
+      return "auth/change-password";
+  }
 }
