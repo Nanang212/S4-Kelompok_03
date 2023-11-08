@@ -31,8 +31,9 @@ public class TrainingService extends BaseService<Training, Integer> {
 // TODO : validasi input start date & end date
   public List<Training> getAllByTrainer(String username) {
     Employee employee = employeeService.findByUsername(username);
+    Role admin = roleService.getById(1);
     Role trainerRole = roleService.getById(2);
-    if (!employee.getUser().getRoles().contains(trainerRole)) {
+    if (!employee.getUser().getRoles().contains(trainerRole) && !employee.getUser().getRoles().contains(admin)) {
       throw new ResponseStatusException(HttpStatus.CONFLICT, employee.getName() + " is not Trainer");
     }
     return employee.getTrainings();
@@ -40,10 +41,6 @@ public class TrainingService extends BaseService<Training, Integer> {
 
   public List<Training> getAllByTrainee(String username) {
     Employee trainee = employeeService.findByUsername(username);
-    Role trainerRole = roleService.getById(3);
-    if (!trainee.getUser().getRoles().contains(trainerRole)) {
-      throw new ResponseStatusException(HttpStatus.CONFLICT, trainee.getName() + " is not Trainee");
-    }
     return trainee.getTrainingRegisters()
             .stream()
             .filter(trainingRegister -> trainingRegister.getCurrentStatus().equals(statusService.getById(1)))

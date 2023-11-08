@@ -52,4 +52,11 @@ public class TrainingController {
   public String getAllRegisterTraining(Model model) {
     return "training/register/index";
   }
+
+  @GetMapping("/attend")
+  public String getAttendedTraining(Model model) {
+    Employee loggedInEmp = employeeService.getLoggedInUser();
+    model.addAttribute("trainings", trainingService.getAllByTrainee(loggedInEmp.getUser().getUsername()));
+    return "training/attend";
+  }
 }

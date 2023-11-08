@@ -12,6 +12,8 @@ import id.co.mii.clientapp.models.dto.request.LoginRequest;
 import id.co.mii.clientapp.services.AuthService;
 import id.co.mii.clientapp.utils.AuthenticationSessionUtil;
 import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.HttpClientErrorException;
 
 @Controller
 @AllArgsConstructor
@@ -36,19 +38,21 @@ public class AuthController {
        return "redirect:/training";
     }
 
-    @GetMapping("/register")
-    public String registerView(EmployeeRequest employeeRequest) {
-        return "auth/register";
+  @GetMapping("/register")
+  public String registerView(EmployeeRequest employeeRequest, @RequestParam(required = false) String error, Model model) {
+    model.addAttribute("message", error);
+    return "auth/register";
+  }
+
+  @PostMapping("/register")
+  public String register(EmployeeRequest employeeRequest, Model model) {
+    try {
+      authService.registration(employeeRequest);
+      return "redirect:/auth/login";
+    } catch (HttpClientErrorException e) {
+      e.printStackTrace();
+      return "redirect:/auth/register?error=" + e.getMessage();
     }
 
-    @PostMapping("/register")
-    public String register(EmployeeRequest employeeRequest, Model model) {
-        try {
-        authService.registration(employeeRequest);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-       return "auth/login";
-    }
+  }
 }

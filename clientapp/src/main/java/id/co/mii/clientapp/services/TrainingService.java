@@ -26,6 +26,13 @@ public class TrainingService {
             .getBody();
   }
 
+  public List<Training> getAllByTrainee(String username) {
+    return restTemplate
+            .exchange(url.concat("/trainee/" + username), HttpMethod.GET, null, new ParameterizedTypeReference<List<Training>>() {
+            })
+            .getBody();
+  }
+
   public Training getById(Integer id) {
     return restTemplate
             .exchange(url.concat("/" + id), HttpMethod.GET, null, Training.class)
