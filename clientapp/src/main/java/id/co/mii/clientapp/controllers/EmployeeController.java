@@ -24,11 +24,13 @@ public class EmployeeController {
 
     @GetMapping("/trainer")
     public String getAllTrainer(Model model) {
+        model.addAttribute("isActiveTrainer", true);
         return "redirect:/employee?role=" + "trainer";
     }
 
     @GetMapping("/trainee")
     public String getAllTrainee(Model model) {
+        model.addAttribute("isActiveTrainee", true);
         return "redirect:/employee?role=" + "trainee";
     }
 }

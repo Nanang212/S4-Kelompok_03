@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class HomeController {
 
-    @GetMapping
-    public String home() {
-        return "coba";
-    }
+    // @GetMapping
+    // public String home() {
+    //     return "coba";
+    // }
 
     @GetMapping("/login")
     public String loginview(Model model) {
@@ -28,5 +28,17 @@ public class HomeController {
     public String dashboardview(Model model) {
         model.addAttribute("title", "MCC 81");
         return "dashboard/index";
+    }
+
+    @GetMapping("/404")
+    public String error404view(Model model) {
+        model.addAttribute("title", "MCC 81");
+        return "page-error/404";
+    }
+
+    @GetMapping("/500")
+    public String error505view(Model model) {
+        model.addAttribute("title", "MCC 81");
+        return "page-error/500";
     }
 }

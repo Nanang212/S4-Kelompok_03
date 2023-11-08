@@ -27,18 +27,14 @@
               th:text="${training.title}"
             ></h3>
             <p
-              class="text-lg font-light leading-relaxed mt-0 mb-4 text-gray-700"
+              class="text-lg font-light leading-relaxed mt-0 mb-4 text-gray-700 dark:text-white"
+              th:text="${training.description}"
             >
-              English language training aims to improve communication skills in
-              English, open career opportunities, broaden horizons, and face
-              challenges in an increasingly globalized world. By mastering
-              English, individuals can actively participate in various aspects
-              of global life and develop a wider network of contacts.
             </p>
           </div>
           <div class="w-full md:w-4/12 px-4 mr-auto ml-auto">
             <div
-              class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded-lg bg-pink-600"
+              class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-pink-600"
             >
               <img
                 alt="..."
@@ -62,87 +58,123 @@
                   class="text-xl font-bold text-white"
                   th:text="${training.title}"
                 ></h4>
-                <p class="text-md mt-2 text-white font-semibold ">
-                  StartDate : <span class="font-light" th:text="${training.startDate}"></span>
-                  <br>
-                  EndDate : <span class="font-light" th:text="${training.endDate}"></span>
-                  <br>
-                  Quota : <span class="font-light" th:text="${training.quota}"></span>
-                  <br>
-                  Duration : <span class="font-light" th:text="${training.duration}"></span>
-                  <br>
-                  Address : <span class="font-light" th:text="${training.address}"></span>
-                  <br>
-                  Platform : <span class="font-light" th:text="${training.platformUrl}"></span>
-                  <br>
-                  Location : <span class="font-light" th:text="${training.isOnline}"></span>
-                </p>
-                <button
-                        data-modal-target="registerTraining"
-                        data-modal-toggle="registerTraining"
-                        class="block text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 rounded-full"
-                        type="submit"
-                >
-                  Add training
-                </button>
+                <div class="text-left">
+                  <p class="text-md mt-2 text-white font-semibold">
+                    StartDate :
+                    <span
+                      class="font-light"
+                      th:text="${training.startDate}"
+                    ></span>
+                    <br />
+                    EndDate :
+                    <span
+                      class="font-light"
+                      th:text="${training.endDate}"
+                    ></span>
+                    <br />
+                    Quota :
+                    <span class="font-light" th:text="${training.quota}"></span>
+                    <br />
+                    Duration :
+                    <span
+                      class="font-light"
+                      th:text="${training.duration}"
+                    ></span>
+                    <br />
+                    Address :
+                    <span
+                      class="font-light"
+                      th:text="${training.address}"
+                    ></span>
+                    <br />
+                    Platform :
+                    <span
+                      class="font-light"
+                      th:text="${training.platformUrl}"
+                    ></span>
+                    <br />
+                    Location :
+                    <span
+                      class="font-light"
+                      th:text="${training.isOnline}"
+                    ></span>
+                  </p>
+                </div>
+                <div class="pt-6 flex justify-end">
+                  <button
+                    data-modal-target="uploadFile"
+                    data-modal-toggle="uploadFile"
+                    class="block text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 rounded-full"
+                    type="submit"
+                  >
+                    Register
+                  </button>
+                </div>
                 <div
-                        id="registerTraining"
-                        tabindex="-1"
-                        aria-hidden="true"
-                        class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
+                  id="uploadFile"
+                  tabindex="-1"
+                  aria-hidden="true"
+                  class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
                 >
                   <div class="relative w-full max-w-md max-h-full">
                     <!-- Modal content -->
-                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                    <div
+                      class="relative bg-white rounded-lg shadow dark:bg-gray-700"
+                    >
                       <button
-                              type="button"
-                              class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                              data-modal-hide="registerTraining"
+                        type="button"
+                        class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                        data-modal-hide="registerTraining"
                       >
                         <svg
-                                class="w-3 h-3"
-                                aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 14 14"
+                          class="w-3 h-3"
+                          aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 14 14"
                         >
                           <path
-                                  stroke="currentColor"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                  stroke-width="2"
-                                  d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
                           />
                         </svg>
                         <span class="sr-only">Close modal</span>
                       </button>
                       <div class="px-6 py-6 lg:px-8">
                         <h3
-                                class="mb-4 text-xl font-medium text-gray-900 dark:text-white"
+                          class="mb-4 text-xl font-medium text-gray-900 dark:text-white"
                         >
-                          Add new training
+                          Add files
                         </h3>
-                        <form th:action="@{/training/register}" th:method="POST" th:object="${trainingRegisterRequest}" enctype="multipart/form-data">
-                          <input type="hidden" th:field="*{trainingId}">
-                          <input type="hidden" th:field="*{traineeId}">
-                          <input type="hidden" th:field="*{statusId}">
+                        <form
+                          th:action="@{/training/register}"
+                          th:method="POST"
+                          th:object="${trainingRegisterRequest}"
+                          enctype="multipart/form-data"
+                        >
+                          <input type="hidden" th:field="*{trainingId}" />
+                          <input type="hidden" th:field="*{traineeId}" />
+                          <input type="hidden" th:field="*{statusId}" />
                           <div>
                             <label
-                                    for="attachment"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                            >Attachment</label
+                              for="attachment"
+                              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                              >Attachment</label
                             >
                             <input
-                                    type="file"
-                                    id="attachment"
-                                    name="attachment"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                              type="file"
+                              id="attachment"
+                              name="attachment"
+                              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                             />
                           </div>
                           <button
-                                  id="btnRegisterTraining"
-                                  type="submit"
-                                  class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                            id="btnRegisterTraining"
+                            type="submit"
+                            class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                           >
                             Save
                           </button>
