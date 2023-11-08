@@ -30,7 +30,7 @@ public class EmployeeController {
   @GetMapping
   public String getAll(Model model) {
     List<String> roles = authenticationSessionUtil
-            .getAuthentication()
+            .authentication()
             .getAuthorities()
             .stream()
             .map(GrantedAuthority::getAuthority)
