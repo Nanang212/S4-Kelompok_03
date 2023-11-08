@@ -1,4 +1,9 @@
 $(document).ready(function () {
+  let trainingSection = document.getElementById("trainingSection");
+  let authorities;
+  if (trainingSection !== null) {
+    authorities = trainingSection.getAttribute("authorities");
+  }
   $("#table-training").DataTable({
     ajax: {
       method: "GET",
@@ -52,6 +57,7 @@ $(document).ready(function () {
                   data-modal-toggle="updateTrainingModal"
                   trainingId="${data.id}"
                   onclick="updateTraining(this)"
+                  ${authorities.includes('ADMIN') ? '' : 'hidden'}
                 >
                   <ion-icon name="create" size="large"></ion-icon>
                 </button>
@@ -61,6 +67,7 @@ $(document).ready(function () {
                   class="btn btn-danger btn-sm"
                   trainingId="${data.id}"
                   onclick="deleteTraining(this)"
+                  ${authorities.includes('ADMIN') ? '' : 'hidden'}
                 >
                   <ion-icon name="trash" size="large"></ion-icon>
                 </button>
@@ -71,23 +78,6 @@ $(document).ready(function () {
     ],
   });
 });
-
-function setRoles(type) {
-  $.ajax({
-    method: "GET",
-    url: `api/roles`,
-    dataType: "JSON",
-    contentType: "application/json",
-    success: (response) => {
-      $.each(response, (index, value) => {
-        $(`#role${type}Selection`).append(`<option value="${value.id}">${value.name}</option>`)
-      })
-    },
-    error: (err) => {
-      console.log(err);
-    },
-  });
-}
 
 function formatDate(inputDate) {
   const options = {

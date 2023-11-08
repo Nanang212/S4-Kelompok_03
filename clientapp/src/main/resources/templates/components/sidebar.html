@@ -63,16 +63,14 @@
               </span>
         </a>
         <div
+                sec:authorize="hasRole('ADMIN')"
                 role="menu"
                 x-show="open"
                 class="mt-2 space-y-2 px-7"
                 aria-label="Dashboards"
         >
-          <!-- active & hover classes 'text-gray-700 dark:text-light' -->
-          <!-- inActive classes 'text-gray-400 dark:text-gray-400' -->
 
           <a
-                  sec:authorize="hasRole('ADMIN')"
                   th:href="@{/employee}"
                   role="menuitem"
                   class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-light dark:hover:text-light hover:text-gray-700 dark:hover:text-light {{ setActiveClass('trainer') }}"
@@ -80,7 +78,6 @@
             Employee
           </a>
           <a
-                  sec:authorize="hasAnyRole('ADMIN', 'TRAINER')"
                   th:href="@{/employee/trainer}"
                   role="menuitem"
                   class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-light dark:hover:text-light hover:text-gray-700 dark:hover:text-light {{ setActiveClass('trainer') }}"
@@ -88,7 +85,6 @@
             Trainer
           </a>
           <a
-                  sec:authorize="hasAnyRole('ADMIN', 'TRAINER', 'TRAINEE')"
                   th:href="@{/employee/trainee}"
                   role="menuitem"
                   class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-light dark:hover:text-light hover:text-gray-700 dark:hover:text-light {{ setActiveClass('trainee') }}"
@@ -160,6 +156,13 @@
                   class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-gray-400 dark:hover:text-light hover:text-gray-700"
           >
             Training
+          </a>
+          <a
+                  th:href="@{/training/attend}"
+                  role="menuitem"
+                  class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-gray-400 dark:hover:text-light hover:text-gray-700"
+          >
+            Attended Training
           </a>
           <a
                   th:href="@{/training/register}"
