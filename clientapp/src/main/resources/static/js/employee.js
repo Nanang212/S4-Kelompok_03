@@ -39,7 +39,7 @@ $(document).ready(function () {
                   data-modal-target="updateEmployeeModal"
                   data-modal-toggle="updateEmployeeModal"
                   employeeId="${data.id}"
-                  onclick="updateEmployee(this)"
+                  onclick="employee_update(${data.id})"
                 >
                   <ion-icon name="create" size="large"></ion-icon>
               </button>
@@ -62,6 +62,10 @@ $(document).ready(function () {
 
 function employee_detail(id){
   window.location.href='/employee/' + id;
+}
+
+function employee_update(id){
+  window.location.href='/employee/update/' + id;
 }
 
 function showEmployeeDetail(button) {
