@@ -9,13 +9,13 @@ public class HomeController {
 
     // @GetMapping
     // public String home() {
-    //     return "coba";
+    // return "coba";
     // }
 
-    @GetMapping ("/landing")
-    public String landingview(Model model){
-    model.addAttribute("landing", "MCC 81");
-    return "auth/landing";
+    @GetMapping("/landing")
+    public String landingview(Model model) {
+        model.addAttribute("landing", "MCC 81");
+        return "auth/landing";
     }
 
     @GetMapping("/login")
@@ -47,4 +47,10 @@ public class HomeController {
         model.addAttribute("title", "MCC 81");
         return "page-error/500";
     }
+
+    // @GetMapping("/change-password")
+    // public String changePasswordview(Model model) {
+    //     model.addAttribute("title", "MCC 81");
+    //     return "auth/change-password";
+    // }
 }
