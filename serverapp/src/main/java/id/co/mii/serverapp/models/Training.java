@@ -3,6 +3,7 @@ package id.co.mii.serverapp.models;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import id.co.mii.serverapp.models.base.BaseEntity;
+import id.co.mii.serverapp.services.TrainingListener;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 

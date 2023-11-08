@@ -25,7 +25,7 @@ public class AuthController {
         if (session.authentication() instanceof AnonymousAuthenticationToken) {
             return "auth/login";
         }
-         return "redirect:/employee";
+         return "redirect:/training";
     }
 
     @PostMapping("/login")
@@ -33,7 +33,7 @@ public class AuthController {
         if (!authService.login((loginRequest))) {
             return "redirect:/login?error=true";
         }
-       return "redirect:/employee";
+       return "redirect:/training";
     }
 
     @GetMapping("/register")
