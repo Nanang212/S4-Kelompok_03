@@ -27,7 +27,7 @@ $(document).ready(function () {
                 data-modal-toggle="detail"
                 class="btn btn-warning btn-sm"
                 employeeId="${data.id}"
-                onclick="showEmployeeDetail(this)"
+                onclick="employee_detail(${data.id})"
                 title="Detail ${data.name}"
                 >
                   <ion-icon name="information-circle" size="large"></ion-icon>
@@ -59,6 +59,10 @@ $(document).ready(function () {
     ],
   });
 });
+
+function employee_detail(id){
+  window.location.href='/employee/' + id;
+}
 
 function showEmployeeDetail(button) {
   let employeeId = button.getAttribute("employeeId");
