@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/main}">
+<head>
+  <meta charset="UTF-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Employee</title>
+</head>
+<body>
+<section class="container mt-5 pt-3 vh-100" layout:fragment="content">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col col-lg-8 mb-4 mb-lg-0">
+        <div class="card mb-3" style="border-radius: .5rem;">
+          <div class="row g-0">
+            <div class="col-md-4 gradient-custom text-center text-white"
+                 style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;">
+              <img th:src="@{/image/ichigo.png}"
+                   alt="Avatar" class="img-fluid my-5" style="width: 80px;" />
+              <h5>[[${loggedInEmployee.name}]]</h5>
+              <p>ROLE : [[${loggedInEmployee.user.roles[0].name}]]</p>
+              <a id="editProfileLink" class="text-white text-decoration-none" th:href="@{/employees/update/{id} (id=${loggedInEmployee.id})}"><i class="far fa-edit mb-5"></i> Edit Profile</a>
+            </div>
+            <div class="col-md-8">
+              <div class="card-body p-4">
+                <h6>Information</h6>
+                <hr class="mt-0 mb-4">
+                <div class="row pt-1">
+                  <div class="col-6 mb-3">
+                    <h6>Email</h6>
+                    <p class="text-muted">[[${loggedInEmployee.email}]]</p>
+                  </div>
+                  <div class="col-6 mb-3">
+                    <h6>Phone</h6>
+                    <p class="text-muted">[[${loggedInEmployee.phone}]]</p>
+                  </div>
+                </div>
+                <h6>Credentials</h6>
+                <hr class="mt-0 mb-4">
+                <div class="row pt-1">
+                  <div class="col-6 mb-3">
+                    <h6>Username</h6>
+                    <p class="text-muted">[[${loggedInEmployee.user.username}]]</p>
+                  </div>
+                  <div class="col-6 mb-3">
+                    <h6>Password</h6>
+                    <button
+                            class="btn btn-primary"
+                            data-bs-toggle="modal"
+                            data-bs-target="#changePasswordModal"
+                    >
+                      Change password
+                    </button>
+                  </div>
+                </div>
+                <div class="d-flex justify-content-start">
+                  <a href="#!"><i class="fab fa-facebook-f fa-lg me-3"></i></a>
+                  <a href="#!"><i class="fab fa-twitter fa-lg me-3"></i></a>
+                  <a href="#!"><i class="fab fa-instagram fa-lg"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Modal Update -->
+  <div
+          class="modal fade"
+          id="changePasswordModal"
+          data-bs-backdrop="static"
+          data-bs-keyboard="false"
+          tabindex="-1"
+          aria-labelledby="changePasswordModalLabel"
+          aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5 fw-bold" id="changePasswordModalLabel">
+            Edit profile
+          </h1>
+          <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+          ></button>
+        </div>
+        <form>
+          <div class="modal-body">
+            <div class="input-group">
+              <span class="input-group-text fw-bold">Old Password</span>
+              <input
+                      type="password"
+                      class="form-control"
+                      aria-label="Sizing example input"
+                      aria-describedby="name"
+                      id="changePasswordOldPassword"
+              />
+            </div>
+            <div class="input-group mt-3">
+              <span class="input-group-text fw-bold">New Password</span>
+              <input
+                      type="password"
+                      class="form-control"
+                      aria-label="Sizing example input"
+                      aria-describedby="name"
+                      id="changePasswordNewPassword"
+              />
+            </div>
+            <div class="input-group mt-3">
+              <span class="input-group-text fw-bold">New Password Confirmation</span>
+              <input
+                      type="password"
+                      class="form-control"
+                      aria-label="Sizing example input"
+                      aria-describedby="name"
+                      id="changePasswordNewConfirmationPassword"
+              />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button
+                    id="changePasswordBtn"
+                    type="submit"
+                    class="btn btn-success"
+            >
+              Save
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+<div layout:fragment="script">
+  <script th:src="@{/js/employee.js}"></script>
+</div>
+</body>
+</html>
