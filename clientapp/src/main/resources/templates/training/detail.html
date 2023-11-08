@@ -96,7 +96,7 @@
                     Location :
                     <span
                       class="font-light"
-                      th:text="${training.isOnline}"
+                      th:text="${training.isOnline} ? 'Online' : 'Offline'"
                     ></span>
                   </p>
                 </div>

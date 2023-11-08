@@ -33,7 +33,7 @@ public class AuthController {
         if (!authService.login((loginRequest))) {
             return "redirect:/login?error=true";
         }
-       return "redirect:/employee";
+       return "redirect:/training";
     }
 
     @GetMapping("/register")
