@@ -15,32 +15,32 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @RequestMapping("/employee")
 public class EmployeeController {
-    private EmployeeService employeeService;
+  private EmployeeService employeeService;
 
-    @GetMapping
-    public String getAll(Model model) {
+  @GetMapping
+  public String getAll(Model model) {
 //        model.addAttribute("employees", employeeService.getAll());
-        model.addAttribute("isActive", "employee");
-        return "employee/index";
-    }
+    model.addAttribute("isActive", "employee");
+    return "employee/index";
+  }
 
-    @GetMapping("/{id}")
-    public String getById(@PathVariable Integer id, Model model) {
-        Employee employe = employeeService.getById(id);
-       model.addAttribute("employee", employe);
-        model.addAttribute("isActive", "employee");
-        return "employee/detail";
-    }
+  @GetMapping("/{id}")
+  public String getById(@PathVariable Integer id, Model model) {
+    Employee employee = employeeService.getById(id);
+    model.addAttribute("employee", employee);
+    model.addAttribute("isActive", "employee");
+    return "employee/detail";
+  }
 
-    @GetMapping("/trainer")
-    public String getAllTrainer(Model model) {
-        model.addAttribute("isActiveTrainer", true);
-        return "redirect:/employee?role=" + "trainer";
-    }
+  @GetMapping("/trainer")
+  public String getAllTrainer(Model model) {
+    model.addAttribute("isActiveTrainer", true);
+    return "redirect:/employee?role=" + "trainer";
+  }
 
-    @GetMapping("/trainee")
-    public String getAllTrainee(Model model) {
-        model.addAttribute("isActiveTrainee", true);
-        return "redirect:/employee?role=" + "trainee";
-    }
+  @GetMapping("/trainee")
+  public String getAllTrainee(Model model) {
+    model.addAttribute("isActiveTrainee", true);
+    return "redirect:/employee?role=" + "trainee";
+  }
 }

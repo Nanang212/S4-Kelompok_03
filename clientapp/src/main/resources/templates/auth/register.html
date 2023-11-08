@@ -43,6 +43,7 @@
             class="w-full max-w-sm px-4 py-6 space-y-6 bg-white rounded-md dark:bg-darker"
           >
             <h1 class="text-xl font-semibold text-center">Register</h1>
+            <p th:text="${message}"></p>
             <form
               th:method="POST"
               th:action="@{/auth/register}"
@@ -172,7 +173,7 @@
             <!-- Login link -->
             <div class="text-sm text-gray-600 dark:text-gray-400">
               Already have an account?
-              <a th:href="@{/login}" class="text-blue-600 hover:underline"
+              <a th:href="@{/auth/login}" class="text-blue-600 hover:underline"
                 >Login</a
               >
             </div>
