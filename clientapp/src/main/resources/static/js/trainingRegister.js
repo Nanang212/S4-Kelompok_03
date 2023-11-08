@@ -80,6 +80,7 @@ function updateTrainingRegister(button) {
     dataType: "JSON",
     contentType: "application/json",
     success: (res) => {
+      $('#inputNotes').val(res.notes)
       $('#statusSelection').val(res.currentStatus.id)
       $('#btnUpdateTrainingRegistration').one("click", (event) => {
         event.preventDefault()
@@ -89,7 +90,8 @@ function updateTrainingRegister(button) {
           dataType: "JSON",
           contentType: "application/json",
           data: JSON.stringify({
-            status: $('#statusSelection').val()
+            statusId: $('#statusSelection').val(),
+            notes: $('#inputNotes').val()
           }),
           beforeSend : function () {
             setCsrf();
