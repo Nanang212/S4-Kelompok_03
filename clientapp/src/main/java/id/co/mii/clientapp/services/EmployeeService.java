@@ -62,6 +62,13 @@ public class EmployeeService {
         return response.getBody();
     }
 
+    // public Employee update(Integer id, EmployeeRequest employeeRequest) {
+    //     HttpEntity<Employee> request = new HttpEntity<>(employeeRequest);
+    //     return restTemplate
+    //       .exchange(url.concat("/" + id), HttpMethod.PUT, request, Employee.class)
+    //       .getBody();
+    //   }
+
     public EmployeeResponse delete(Integer id) {
         return restTemplate.exchange(url.concat("/" + id), HttpMethod.DELETE, null, EmployeeResponse.class)
                 .getBody();

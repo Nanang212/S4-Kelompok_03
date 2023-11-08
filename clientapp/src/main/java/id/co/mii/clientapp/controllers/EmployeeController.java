@@ -7,10 +7,13 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import id.co.mii.clientapp.models.Employee;
+import id.co.mii.clientapp.models.dto.request.EmployeeRequest;
 import id.co.mii.clientapp.services.EmployeeService;
 import lombok.AllArgsConstructor;
 
@@ -27,7 +30,7 @@ public class EmployeeController {
   @GetMapping
   public String getAll(Model model) {
     List<String> roles = authenticationSessionUtil
-            .getAuthentication()
+            .authentication()
             .getAuthorities()
             .stream()
             .map(GrantedAuthority::getAuthority)
