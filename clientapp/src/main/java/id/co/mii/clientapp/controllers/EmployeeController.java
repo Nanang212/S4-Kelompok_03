@@ -1,6 +1,9 @@
 package id.co.mii.clientapp.controllers;
 
 import id.co.mii.clientapp.services.RoleService;
+import id.co.mii.clientapp.utils.AuthenticationSessionUtil;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,15 +14,26 @@ import id.co.mii.clientapp.models.Employee;
 import id.co.mii.clientapp.services.EmployeeService;
 import lombok.AllArgsConstructor;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Controller
 @AllArgsConstructor
 @RequestMapping("/employee")
 public class EmployeeController {
   private EmployeeService employeeService;
+  private AuthenticationSessionUtil authenticationSessionUtil;
 
   @GetMapping
   public String getAll(Model model) {
-//        model.addAttribute("employees", employeeService.getAll());
+    List<String> roles = authenticationSessionUtil
+            .getAuthentication()
+            .getAuthorities()
+            .stream()
+            .map(GrantedAuthority::getAuthority)
+            .collect(Collectors.toList());
+    model.addAttribute("loggedInEmployee", employeeService.getLoggedInUser());
+    model.addAttribute("");
     model.addAttribute("isActive", "employee");
     return "employee/index";
   }

@@ -16,7 +16,7 @@ public class ProfileController {
 
   @GetMapping
   public String profileView(Model model) {
-    model.addAttribute("loggedInEmployee", employeeService.getLoggedInUser());
-    return "profile/index";
+    model.addAttribute("employee", employeeService.getLoggedInUser());
+    return "employee/detail";
   }
 }
