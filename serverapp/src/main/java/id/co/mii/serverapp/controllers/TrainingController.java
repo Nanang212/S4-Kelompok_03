@@ -88,7 +88,7 @@ public class TrainingController {
   public ResponseEntity<byte[]> getAttachmentByTrainingRegister(@PathVariable Integer id) {
     return ResponseEntity
             .status(HttpStatus.OK)
-            .contentType(MediaType.IMAGE_PNG)
+            .contentType(MediaType.APPLICATION_PDF)
             .body(trainingRegisterService.getAttachmentById(id));
   }
 

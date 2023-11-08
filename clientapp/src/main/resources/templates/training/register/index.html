@@ -8,7 +8,7 @@
 </head>
 <body>
 <!-- Content -->
-<section class="container mt-5" layout:fragment="content">
+<section id="trainingRegisterSection" th:attr="authorities=${authorities}" class="container mt-5" layout:fragment="content">
   <!-- Update training modal -->
   <div
           data-modal-target="updateTrainingRegistrationModal"

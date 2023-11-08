@@ -1,4 +1,9 @@
 $(document).ready(function () {
+  let trainingRegisterSection = document.getElementById("trainingRegisterSection");
+  let authorities;
+  if (trainingRegisterSection !== null) {
+    authorities = trainingRegisterSection.getAttribute("authorities");
+  }
   $("#table-training-registration").DataTable({
     ajax: {
       method: "GET",
@@ -25,6 +30,15 @@ $(document).ready(function () {
         render: (data, type, row, meta) => {
           return `
               <div class="flex justify-center gap-3">
+                <button
+                    type="button"
+                    class="btn btn-warning btn-sm"
+                    registrationId="${data.id}"
+                    onclick="downloadAttachment(this)"
+                    title="Download attachment"
+                  >
+                  <ion-icon name="download" size="large"></ion-icon>
+                </button>
                 <!-- Button update modal -->
                 <button
                   type="button"
@@ -33,6 +47,7 @@ $(document).ready(function () {
                   data-modal-toggle="updateTrainingRegistrationModal"
                   registrationId="${data.id}"
                   onclick="updateTrainingRegister(this)"
+                  ${authorities.includes('ADMIN') ? '' : 'hidden'}
                 >
                   <ion-icon name="create" size="large"></ion-icon>
                 </button>
@@ -42,6 +57,7 @@ $(document).ready(function () {
                   class="btn btn-danger btn-sm"
                   registrationId="${data.id}"
                   onclick="deleteTrainingRegistration(this)"
+                  ${authorities.includes('ADMIN') ? '' : 'hidden'}
                 >
                   <ion-icon name="trash" size="large"></ion-icon>
                 </button>
@@ -52,6 +68,21 @@ $(document).ready(function () {
     ],
   });
 });
+
+function downloadAttachment(button) {
+  let id = button.getAttribute("registrationId");
+  $.ajax({
+    method: "GET",
+    url: `/api/trainings/register/attachment/${id}`,
+    contentType: "application/pdf",
+    success: (response) => {
+      console.log(response)
+    },
+    error: (err) => {
+      console.log(err)
+    },
+  });
+}
 
 function setStatus() {
   $.ajax({
