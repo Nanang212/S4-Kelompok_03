@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layouts/main}"
+>
+<head>
+  <title>History</title>
+</head>
+<body>
+<!-- Content -->
+<section class="container mt-5" layout:fragment="content">
+  <div class="mx-10">
+    <div class="flex justify-between">
+      <p class="font-bold text-4xl">Histories</p>
+    </div>
+    <div class="py-8">
+      <table id="table-history" class="table-fixed display">
+        <thead class="table-light">
+        <tr>
+          <th class="col">No</th>
+          <th class="col">Training</th>
+          <th class="col">Created At</th>
+          <th class="col">Status</th>
+        </tr>
+        </thead>
+      </table>
+    </div>
+  </div>
+</section>
+<div layout:fragment="script">
+  <script th:src="@{/js/history.js}"></script>
+</div>
+</body>
+</html>

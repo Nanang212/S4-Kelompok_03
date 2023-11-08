@@ -70,8 +70,8 @@ public class TrainingRegisterService {
             .getBody();
   }
 
-  public void delete(Integer id) {
-    restTemplate
+  public TrainingRegister delete(Integer id) {
+    return restTemplate
             .exchange(url.concat("/" + id), HttpMethod.DELETE, null, TrainingRegister.class)
             .getBody();
   }

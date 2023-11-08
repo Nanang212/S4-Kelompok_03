@@ -12,6 +12,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -23,12 +25,25 @@ public class TrainingRegisterService extends BaseService<TrainingRegister, Integ
   private StatusService statusService;
   private HistoryService historyService;
 
+  public List<TrainingRegister> getAll() {
+    Employee loggedInEmp = employeeService.getLoggedInEmployee();
+    Role admin = roleService.getById(1);
+    if (!loggedInEmp.getUser().getRoles().contains(admin)) {
+      return trainingRegisterRepository.findAll()
+              .stream()
+              .filter(trainingRegister -> trainingRegister.getTrainee().equals(loggedInEmp))
+              .collect(Collectors.toList());
+    }
+    return super.getAll();
+  }
+
   @SneakyThrows
-  public TrainingRegister createCancellation(TrainingRegisterRequest trainingRegisterRequest) {
+  public TrainingRegister createCancellation(Integer id) {
+    TrainingRegister trainingRegister = getById(id);
     Status success = statusService.getById(1);
     Status requestCancel = statusService.getById(5);
-    Training training = trainingService.getById(trainingRegisterRequest.getTrainingId());
-    Employee trainee = employeeService.getById(trainingRegisterRequest.getTraineeId());
+    Training training = trainingRegister.getTraining();
+    Employee trainee = trainingRegister.getTrainee();
     Employee loggedInEmp = employeeService.getLoggedInEmployee();
     if (!loggedInEmp.equals(trainee)) {
       Role admin = roleService.getById(1);
@@ -43,13 +58,9 @@ public class TrainingRegisterService extends BaseService<TrainingRegister, Integ
     if (count == 0) {
       throw new ResponseStatusException(HttpStatus.CONFLICT, "Trainee not registered for this training");
     }
-    TrainingRegister trainingRegister = new TrainingRegister();
-    trainingRegister.setTraining(training);
-    trainingRegister.setTrainee(trainee);
     trainingRegister.setCurrentStatus(requestCancel);
     trainingRegister.setCreatedBy(loggedInEmp.getUser().getUsername());
     trainingRegister.setUpdatedBy(loggedInEmp.getUser().getUsername());
-    trainingRegister.setAttachment(trainingRegisterRequest.getAttachment().getBytes());
 
     TrainingRegister savedTrainingRegister = create(trainingRegister);
 
@@ -129,6 +140,7 @@ public class TrainingRegisterService extends BaseService<TrainingRegister, Integ
             .stream()
             .filter(tr -> tr.getTraining().equals(training) && tr.getCurrentStatus().equals(success))
             .count();
+    // TODO : Buat sistem yg dapat mengetahui jumlah peserta dalam suatu training
     if (training.getQuota() == (int) registeredTrainee) {
       throw new ResponseStatusException(HttpStatus.CONFLICT, "Registration has exceeded the quota");
     }
