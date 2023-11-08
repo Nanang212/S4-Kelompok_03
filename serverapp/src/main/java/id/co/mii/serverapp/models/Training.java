@@ -24,6 +24,7 @@ public class Training extends BaseEntity {
   private Integer duration;
   private String address;
   private String platformUrl;
+  private String description;
   private Boolean isOnline;
   @ManyToOne
   @JoinColumn(name = "trainer")

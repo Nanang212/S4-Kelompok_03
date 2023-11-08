@@ -20,6 +20,7 @@ public class TrainingRequest {
   private Integer duration;
   private String address;
   private String platformUrl;
+  private String description;
   private Boolean isOnline;
   private Integer trainerId;
 }
