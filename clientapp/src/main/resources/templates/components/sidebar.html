@@ -71,25 +71,18 @@
               <!-- active & hover classes 'text-gray-700 dark:text-light' -->
               <!-- inActive classes 'text-gray-400 dark:text-gray-400' -->
               <a
-                href="index.html"
+                th:href="@{/employee/trainer}"
                 role="menuitem"
-                class="block p-2 text-sm text-gray-700 transition-colors duration-200 rounded-md dark:text-light dark:hover:text-light hover:text-gray-700"
+                class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-light dark:hover:text-light hover:text-gray-700 dark:hover:text-light {{ setActiveClass('trainer') }}"
               >
-                Default
+                Trainer
               </a>
               <a
-                href="#"
+                th:href="@{/employee/trainee}"
                 role="menuitem"
-                class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:hover:text-light hover:text-gray-700"
+                class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-light dark:hover:text-light hover:text-gray-700 dark:hover:text-light {{ setActiveClass('trainee') }}"
               >
-                Project Mangement (soon)
-              </a>
-              <a
-                href="#"
-                role="menuitem"
-                class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:hover:text-light hover:text-gray-700"
-              >
-                E-Commerce (soon)
+                Trainee
               </a>
             </div>
           </div>
@@ -122,7 +115,7 @@
                   />
                 </svg>
               </span>
-              <span class="ml-2 text-sm"> Components </span>
+              <span class="ml-2 text-sm"> Training </span>
               <span aria-hidden="true" class="ml-auto">
                 <!-- active class 'rotate-180' -->
                 <svg
@@ -151,53 +144,18 @@
               <!-- active & hover classes 'text-gray-700 dark:text-light' -->
               <!-- inActive classes 'text-gray-400 dark:text-gray-400' -->
               <a
-                href="#"
+                th:href="@{/training/register}"
                 role="menuitem"
                 class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-gray-400 dark:hover:text-light hover:text-gray-700"
               >
-                Alerts (soon)
+                Training Registration
               </a>
               <a
-                href="#"
+                th:href="@{/history}"
                 role="menuitem"
                 class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-gray-400 dark:hover:text-light hover:text-gray-700"
               >
-                Buttons (soon)
-              </a>
-              <a
-                href="#"
-                role="menuitem"
-                class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:hover:text-light hover:text-gray-700"
-              >
-                Cards (soon)
-              </a>
-              <a
-                href="#"
-                role="menuitem"
-                class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:hover:text-light hover:text-gray-700"
-              >
-                Dropdowns (soon)
-              </a>
-              <a
-                href="#"
-                role="menuitem"
-                class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:hover:text-light hover:text-gray-700"
-              >
-                Forms (soon)
-              </a>
-              <a
-                href="#"
-                role="menuitem"
-                class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:hover:text-light hover:text-gray-700"
-              >
-                Lists (soon)
-              </a>
-              <a
-                href="#"
-                role="menuitem"
-                class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:hover:text-light hover:text-gray-700"
-              >
-                Modals (soon)
+                History
               </a>
             </div>
           </div>
@@ -258,13 +216,6 @@
             >
               <!-- active & hover classes 'text-gray-700 dark:text-light' -->
               <!-- inActive classes 'text-gray-400 dark:text-gray-400' -->
-              <a
-                href="pages/blank.html"
-                role="menuitem"
-                class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-gray-400 dark:hover:text-light hover:text-gray-700"
-              >
-                Blank
-              </a>
               <a
                 href="pages/404.html"
                 role="menuitem"

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @AllArgsConstructor
 @RequestMapping("/history")
-public class HistroryController {
+public class HistoryController {
 
   @GetMapping
   public String getAll(Model model) {
