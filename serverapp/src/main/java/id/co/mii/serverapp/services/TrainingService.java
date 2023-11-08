@@ -23,7 +23,9 @@ public class TrainingService extends BaseService<Training, Integer> {
   private TrainingRepository trainingRepository;
   private RoleService roleService;
   private StatusService statusService;
+
 // TODO : validasi input start date & end date
+  // TODO : Tambah deskripsi training
   public List<Training> getAllByTrainer(String username) {
     Employee employee = employeeService.findByUsername(username);
     Role trainerRole = roleService.getById(2);
