@@ -53,16 +53,23 @@ public class TrainingController {
     return "training/detail";
   }
 
+  @GetMapping("/register")
+  public String getAllRegisterTraining(Model model) {
+    List<String> authorities = authenticationSessionUtil
+            .authentication()
+            .getAuthorities()
+            .stream()
+            .map(GrantedAuthority::getAuthority)
+            .collect(Collectors.toList());
+    model.addAttribute("authorities", authorities);
+    return "training/register/index";
+  }
+
   @PostMapping("/register")
   public String registTraining(@ModelAttribute TrainingRegisterRequest trainingRegisterRequest,
                                @RequestParam(name = "attachment") MultipartFile attachment) {
     trainingRegisterService.create(trainingRegisterRequest, attachment);
     return "redirect:/training/" + trainingRegisterRequest.getTrainingId();
-  }
-
-  @GetMapping("/register")
-  public String getAllRegisterTraining(Model model) {
-    return "training/register/index";
   }
 
   @GetMapping("/attend")

@@ -8,6 +8,7 @@ import id.co.mii.clientapp.services.TrainingRegisterService;
 import id.co.mii.clientapp.services.TrainingService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,6 +39,11 @@ public class RestTrainingController {
   @GetMapping("/register/{id}")
   public TrainingRegister getTrainingRegisterById(@PathVariable Integer id) {
     return trainingRegisterService.getById(id);
+  }
+
+  @GetMapping(value = "/register/attachment/{id}", produces = MediaType.APPLICATION_PDF_VALUE)
+  public byte[] getAttachment(@PathVariable Integer id) {
+    return trainingRegisterService.getAttachment(id);
   }
 
   @PostMapping

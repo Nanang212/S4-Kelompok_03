@@ -42,6 +42,12 @@ public class TrainingRegisterService {
             .getBody();
   }
 
+  public byte[] getAttachment(Integer id) {
+    return restTemplate
+            .exchange(url.concat("/attachment/" + id), HttpMethod.GET, null, new ParameterizedTypeReference<byte[]>() {})
+            .getBody();
+  }
+
   @SneakyThrows
   public TrainingRegister create(TrainingRegisterRequest trainingRegisterRequest, MultipartFile file) {
     HttpHeaders headers = new HttpHeaders();
