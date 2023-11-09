@@ -100,21 +100,21 @@ public class TrainingService extends BaseService<Training, Integer> {
     training.setTrainer(trainer);
     training.setCreatedBy(currentEmp.getUser().getUsername());
     training.setUpdatedBy(currentEmp.getUser().getUsername());
-    employeeService.getAllByRoleId(3).forEach(employee -> {
-      EmailRequest emailRequest = new EmailRequest();
-      Map<String, Object> properties = new HashMap<>();
-      properties.put("id", training.getId());
-      properties.put("title", training.getTitle());
-      properties.put("startDate", training.getStartDate());
-      properties.put("endDate", training.getEndDate());
-      properties.put("quota", training.getQuota());
-      properties.put("trainingLink", "http://localhost:9090/training/" + training.getId());
-      emailRequest.setTo(employee.getEmail());
-      emailRequest.setSubject("New Training Appear");
-      emailRequest.setBody("training.html");
-      emailRequest.setProperties(properties);
-      emailService.sendHtmlMessage(emailRequest);
-    });
+//    employeeService.getAllByRoleId(3).forEach(employee -> {
+//      EmailRequest emailRequest = new EmailRequest();
+//      Map<String, Object> properties = new HashMap<>();
+//      properties.put("id", training.getId());
+//      properties.put("title", training.getTitle());
+//      properties.put("startDate", training.getStartDate());
+//      properties.put("endDate", training.getEndDate());
+//      properties.put("quota", training.getQuota());
+//      properties.put("trainingLink", "http://localhost:9090/training/" + training.getId());
+//      emailRequest.setTo(employee.getEmail());
+//      emailRequest.setSubject("New Training Appear");
+//      emailRequest.setBody("training.html");
+//      emailRequest.setProperties(properties);
+//      emailService.sendHtmlMessage(emailRequest);
+//    });
     return create(training);
   }
 
