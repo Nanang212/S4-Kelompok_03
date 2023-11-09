@@ -100,6 +100,7 @@ $('#btnSaveTraining').one('click', (event) => {
   let quota = $('#inputQuotaTraining').val()
   let duration = $('#inputDurationTraining').val()
   let address = $('#inputAddressTraining').val()
+  let description = $('#inputDescriptionTraining').val()
   let url = $('#inputUrlTraining').val()
   let isOnline = $('#inputLocationTraining').val() === 'online';
   if (title === "" || title === null) {
@@ -139,6 +140,7 @@ $('#btnSaveTraining').one('click', (event) => {
         quota: quota,
         duration: duration,
         address: address,
+        description: description,
         platformUrl: url,
         isOnline: isOnline,
       }),
@@ -146,7 +148,6 @@ $('#btnSaveTraining').one('click', (event) => {
         setCsrf()
       },
       success: (res) => {
-        // $("#addTrainingModal").modal("hide");
         $("#table-training").DataTable().ajax.reload();
         Swal.fire({
           position: "center",
@@ -161,6 +162,7 @@ $('#btnSaveTraining').one('click', (event) => {
         $('#inputQuotaTraining').val('')
         $('#inputDurationTraining').val('')
         $('#inputAddressTraining').val('')
+        $('#inputDescriptionTraining').val('')
         $('#inputUrlTraining').val('')
         $('#inputLocationTraining').val('')
       },
