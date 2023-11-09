@@ -8,7 +8,7 @@
   </head>
   <body>
     <!-- Content -->
-    <section id="trainingSection" th:attr="authorities=${authorities}" class="container mt-5" layout:fragment="content">
+    <section id="trainingSection" th:attr="authorities=${authorities}" class="container py-10" layout:fragment="content">
       <!-- Add training modal -->
       <div
               id="addTrainingModal"
@@ -126,6 +126,18 @@
                   <textarea
                           name="inputAddressTraining"
                           id="inputAddressTraining"
+                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                  ></textarea>
+                </div>
+                <div>
+                  <label
+                          for="inputDescriptionTraining"
+                          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Description</label
+                  >
+                  <textarea
+                          name="inputDescriptionTraining"
+                          id="inputDescriptionTraining"
                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                   ></textarea>
                 </div>
