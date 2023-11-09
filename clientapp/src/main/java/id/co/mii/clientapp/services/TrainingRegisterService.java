@@ -48,6 +48,12 @@ public class TrainingRegisterService {
             .getBody();
   }
 
+  public TrainingRegister createCancellation(Integer id) {
+    return restTemplate
+            .exchange(url.concat("/cancel/" + id), HttpMethod.POST, null, new ParameterizedTypeReference<TrainingRegister>() {})
+            .getBody();
+  }
+
   @SneakyThrows
   public TrainingRegister create(TrainingRegisterRequest trainingRegisterRequest, MultipartFile file) {
     HttpHeaders headers = new HttpHeaders();
