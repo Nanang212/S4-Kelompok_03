@@ -166,7 +166,7 @@ public class TrainingRegisterService extends BaseService<TrainingRegister, Integ
     properties.put("status", trainingRegister.getCurrentStatus().getName());
     properties.put("notes", trainingRegisterRequest.getNotes());
     properties.put("trainingLink", "http://localhost:9090/training/" + training.getId());
-    emailRequest.setTo("fazriridwan19@gmail.com");
+    emailRequest.setTo(trainingRegister.getTrainee().getEmail());
     emailRequest.setSubject("Training Registration");
     emailRequest.setBody("trainingRegister.html");
     emailRequest.setProperties(properties);

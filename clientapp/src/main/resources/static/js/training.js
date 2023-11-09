@@ -3,6 +3,7 @@ $(document).ready(function () {
   let authorities;
   if (trainingSection !== null) {
     authorities = trainingSection.getAttribute("authorities");
+    authorities.includes('ADMIN') ? setTrainer() : null;
   }
   $("#table-training").DataTable({
     ajax: {
@@ -79,6 +80,23 @@ $(document).ready(function () {
   });
 });
 
+function setTrainer(type) {
+  $.ajax({
+    method: "GET",
+    url: `/api/employee?role=trainer`,
+    dataType: "JSON",
+    contentType: "application/json",
+    success: (response) => {
+      $.each(response, (index, value) => {
+        $(`#inputTrainerTraining`).append(`<option value="${value.id}">${value.name}</option>`)
+      })
+    },
+    error: (err) => {
+      console.log(err);
+    },
+  });
+}
+
 function formatDate(inputDate) {
   const options = {
     year: 'numeric',
@@ -86,8 +104,7 @@ function formatDate(inputDate) {
     day: 'numeric',
     hour: 'numeric',
     minute: 'numeric',
-    hour12: false,
-    timeZone: 'GMT'
+    hour12: false
   }
   return new Date(inputDate).toLocaleString('id-ID', options);
 }
@@ -102,6 +119,7 @@ $('#btnSaveTraining').one('click', (event) => {
   let address = $('#inputAddressTraining').val()
   let description = $('#inputDescriptionTraining').val()
   let url = $('#inputUrlTraining').val()
+  let trainerId = $('#inputTrainerTraining').val()
   let isOnline = $('#inputLocationTraining').val() === 'online';
   if (title === "" || title === null) {
     Swal.fire({
@@ -143,6 +161,7 @@ $('#btnSaveTraining').one('click', (event) => {
         description: description,
         platformUrl: url,
         isOnline: isOnline,
+        trainerId: trainerId
       }),
       beforeSend: function () {
         setCsrf()
