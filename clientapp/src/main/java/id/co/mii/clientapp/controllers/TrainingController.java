@@ -37,6 +37,7 @@ public class TrainingController {
     model.addAttribute("authorities", authorities);
     return "training/index";
   }
+
   @GetMapping("/{id}")
   public String getById(@PathVariable Integer id, Model model) {
     Training training = trainingService.getById(id);
@@ -65,6 +66,7 @@ public class TrainingController {
     return "training/register/index";
   }
 
+  // TODO : Beri validasi apabila user sudah berpartisipasi
   @PostMapping("/register")
   public String registTraining(@ModelAttribute TrainingRegisterRequest trainingRegisterRequest,
                                @RequestParam(name = "attachment") MultipartFile attachment) {
