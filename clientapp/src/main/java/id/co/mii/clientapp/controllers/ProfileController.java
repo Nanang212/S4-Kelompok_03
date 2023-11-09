@@ -20,4 +20,9 @@ public class ProfileController {
     return "employee/detail";
   }
 
+  @GetMapping("/update")
+  public String updateProfile(Model model){
+    model.addAttribute("employee", employeeService.getLoggedInUser());
+    return "profile/update";
+  }
 }

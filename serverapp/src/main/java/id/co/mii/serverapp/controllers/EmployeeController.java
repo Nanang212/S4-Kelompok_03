@@ -78,6 +78,14 @@ public class EmployeeController {
   }
 
   @PreAuthorize("hasAnyAuthority('UPDATE_ADMIN', 'UPDATE_TRAINER', 'UPDATE_TRAINEE')")
+  @PutMapping("/profile/{id}")
+  public ResponseEntity<Employee> updateProfile(@PathVariable Integer id, @RequestBody EmployeeRequest employeeRequest) {
+    return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(employeeService.update(id, employeeRequest));
+  }
+
+  @PreAuthorize("hasAnyAuthority('UPDATE_ADMIN', 'UPDATE_TRAINER', 'UPDATE_TRAINEE')")
   @PutMapping("/change-password")
   public ResponseEntity<Employee> changePassword(@RequestBody PasswordRequest passwordRequest) {
     return ResponseEntity

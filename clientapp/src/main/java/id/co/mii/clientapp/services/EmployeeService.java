@@ -63,6 +63,12 @@ public class EmployeeService {
         return response.getBody();
     }
 
+    public Employee editProfile(Integer id, EmployeeRequest employeeRequest) {
+        ResponseEntity<Employee> response = restTemplate.exchange(url.concat("/profile/" + id), HttpMethod.PUT,
+                new HttpEntity<>(employeeRequest), Employee.class);
+        return response.getBody();
+    }
+
     public Employee changePassword(PasswordRequest passwordRequest) {
         ResponseEntity<Employee> response = restTemplate
                 .exchange(

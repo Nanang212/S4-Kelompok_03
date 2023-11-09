@@ -36,8 +36,6 @@ $(document).ready(function () {
                 <a
                   href="http://localhost:9090/employee/update/${data.id}"
                   class="btn btn-warning btn-sm"
-                  employeeId="${data.id}"
-                  onclick="updateEmployee(this)"
                 >
                   <ion-icon name="create" size="large"></ion-icon>
               </a>
@@ -280,4 +278,34 @@ $('#changePasswordBtn').click((event) => {
       },
     });
   }
+})
+
+$('#updateProfileBtn').one("click", (event) => {
+  event.preventDefault()
+  let id = $('#updateProfileId').val()
+  $.ajax({
+    method: "PUT",
+    url: `/api/employee/profile/update/${id}`,
+    dataType: "JSON",
+    contentType: "application/json",
+    data: JSON.stringify({
+      name: $('#updateProfileName').val(),
+      phone: $('#updateProfilePhone').val(),
+      email: $('#updateProfileEmail').val(),
+      address: $('#updateProfileAddress').val(),
+      username: $('#updateProfileUsername').val()
+    }),
+    beforeSend : function () {
+      setCsrf();
+    },
+    success: (res) => {
+      $("#updateEmployeeModal").hide();
+      showToast("success", "Profile updated successfully").then(() => location.href = '/profile');
+
+    },
+    error: (error) => {
+      let errorJsn = error.responseJSON
+      showToast("error", errorJsn.message).then(() => location.reload());
+    },
+  });
 })

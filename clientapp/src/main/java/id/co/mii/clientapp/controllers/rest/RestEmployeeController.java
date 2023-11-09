@@ -93,6 +93,23 @@ public class RestEmployeeController {
     return ResponseEntity.status(HttpStatus.CREATED).body(employeeResponse);
   }
 
+  @PutMapping("/profile/update/{id}")
+  public ResponseEntity<?> changePassword(@PathVariable Integer id, @RequestBody EmployeeRequest employeeRequest) {
+    Employee employee = null;
+    try {
+      employee = employeeService.editProfile(id, employeeRequest);
+      String username = employee.getUser().getUsername();
+      String password = session.authentication().getCredentials().toString();
+      authService.login(new LoginRequest(username, password));
+    } catch (HttpClientErrorException exception) {
+      return ResponseEntity
+              .status(exception.getRawStatusCode())
+              .headers(exception.getResponseHeaders())
+              .body(exception.getResponseBodyAsString());
+    }
+    return ResponseEntity.status(HttpStatus.CREATED).body(employee);
+  }
+
   @DeleteMapping("/{id}")
   public EmployeeResponse delete(@PathVariable Integer id) {
     return employeeService.delete(id);
