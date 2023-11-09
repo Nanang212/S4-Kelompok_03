@@ -12,9 +12,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
@@ -39,7 +41,7 @@ public class TrainingController {
   }
 
   @GetMapping("/{id}")
-  public String getById(@PathVariable Integer id, Model model) {
+  public String getById(@PathVariable Integer id, Model model, @RequestParam(required = false) Map<String, Object> params) {
     Training training = trainingService.getById(id);
     Employee loggedInEmployee = employeeService.getLoggedInUser();
     TrainingRegisterRequest trainingRegisterRequest = new TrainingRegisterRequest();
@@ -47,6 +49,7 @@ public class TrainingController {
     trainingRegisterRequest.setTraineeId(loggedInEmployee.getId());
     trainingRegisterRequest.setStatusId(2);
 
+    model.addAllAttributes(params);
     model.addAttribute("training", training);
     model.addAttribute("loggedInEmp", loggedInEmployee);
     model.addAttribute("trainingRegisterRequest", trainingRegisterRequest);
@@ -70,8 +73,12 @@ public class TrainingController {
   @PostMapping("/register")
   public String registTraining(@ModelAttribute TrainingRegisterRequest trainingRegisterRequest,
                                @RequestParam(name = "attachment") MultipartFile attachment) {
-    trainingRegisterService.create(trainingRegisterRequest, attachment);
-    return "redirect:/training/" + trainingRegisterRequest.getTrainingId();
+    try {
+      trainingRegisterService.create(trainingRegisterRequest, attachment);
+      return "redirect:/training/" + trainingRegisterRequest.getTrainingId();
+    } catch (HttpClientErrorException exception) {
+      return "redirect:/training/" + trainingRegisterRequest.getTrainingId() + "?error=true&message=" + exception.getMessage();
+    }
   }
 
   @GetMapping("/attend")

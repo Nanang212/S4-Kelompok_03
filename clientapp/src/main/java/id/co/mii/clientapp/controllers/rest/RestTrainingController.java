@@ -4,6 +4,7 @@ import id.co.mii.clientapp.models.Training;
 import id.co.mii.clientapp.models.TrainingRegister;
 import id.co.mii.clientapp.models.dto.request.TrainingRegisterRequest;
 import id.co.mii.clientapp.models.dto.request.TrainingRequest;
+import id.co.mii.clientapp.services.DashboardService;
 import id.co.mii.clientapp.services.TrainingRegisterService;
 import id.co.mii.clientapp.services.TrainingService;
 import lombok.AllArgsConstructor;
@@ -20,10 +21,16 @@ import java.util.List;
 public class RestTrainingController {
   private TrainingService trainingService;
   private TrainingRegisterService trainingRegisterService;
+  private DashboardService dashboardService;
 
   @GetMapping
   public List<Training> getAll() {
     return trainingService.getAll();
+  }
+
+  @GetMapping("/dashboard")
+  public List<Integer> getTrainingByAllMonthInYear() {
+    return dashboardService.getTrainingByAllMonthInYear();
   }
 
   @GetMapping("/register")

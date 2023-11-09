@@ -1,24 +1,72 @@
 // All javascript code in this project for now is just for demo DON'T RELY ON IT
-
+$(document).ready(function () {
+  setBarChart()
+})
 const random = (max = 100) => {
   return Math.round(Math.random() * max) + 20;
 };
 
-const randomData = () => {
-  return [
-    random(),
-    random(),
-    random(),
-    random(),
-    random(),
-    random(),
-    random(),
-    random(),
-    random(),
-    random(),
-    random(),
-    random(),
-  ];
+const setBarChart = () => {
+  let data;
+  $.ajax({
+    method: "GET",
+    url: `/api/trainings/dashboard`,
+    dataType: "JSON",
+    contentType: "application/json",
+    success: (res) => {
+      new Chart(document.getElementById("barChart"), {
+        type: "bar",
+        data: {
+          labels: months,
+          datasets: [
+            {
+              data: res,
+              backgroundColor: colors.primary,
+              hoverBackgroundColor: colors.primaryDark,
+            },
+          ],
+        },
+        options: {
+          scales: {
+            yAxes: [
+              {
+                gridLines: false,
+                ticks: {
+                  beginAtZero: true,
+                  stepSize: 50,
+                  fontSize: 12,
+                  fontColor: "#97a4af",
+                  fontFamily: "Open Sans, sans-serif",
+                  padding: 10,
+                },
+              },
+            ],
+            xAxes: [
+              {
+                gridLines: false,
+                ticks: {
+                  fontSize: 12,
+                  fontColor: "#97a4af",
+                  fontFamily: "Open Sans, sans-serif",
+                  padding: 5,
+                },
+                categoryPercentage: 0.5,
+                maxBarThickness: "10",
+              },
+            ],
+          },
+          cornerRadius: 2,
+          maintainAspectRatio: false,
+          legend: {
+            display: false,
+          },
+        },
+      });
+    },
+    error: (err) => {
+      console.log(err);
+    },
+  });
 };
 
 const months = [
@@ -51,55 +99,6 @@ const colors = {
   primaryDark: cssColors(`--color-${getColor()}-dark`),
   primaryDarker: cssColors(`--color-${getColor()}-darker`),
 };
-
-const barChart = new Chart(document.getElementById("barChart"), {
-  type: "bar",
-  data: {
-    labels: months,
-    datasets: [
-      {
-        data: randomData(),
-        backgroundColor: colors.primary,
-        hoverBackgroundColor: colors.primaryDark,
-      },
-    ],
-  },
-  options: {
-    scales: {
-      yAxes: [
-        {
-          gridLines: false,
-          ticks: {
-            beginAtZero: true,
-            stepSize: 50,
-            fontSize: 12,
-            fontColor: "#97a4af",
-            fontFamily: "Open Sans, sans-serif",
-            padding: 10,
-          },
-        },
-      ],
-      xAxes: [
-        {
-          gridLines: false,
-          ticks: {
-            fontSize: 12,
-            fontColor: "#97a4af",
-            fontFamily: "Open Sans, sans-serif",
-            padding: 5,
-          },
-          categoryPercentage: 0.5,
-          maxBarThickness: "10",
-        },
-      ],
-    },
-    cornerRadius: 2,
-    maintainAspectRatio: false,
-    legend: {
-      display: false,
-    },
-  },
-});
 
 const doughnutChart = new Chart(document.getElementById("doughnutChart"), {
   type: "doughnut",
@@ -137,57 +136,57 @@ const doughnutChart = new Chart(document.getElementById("doughnutChart"), {
 });
 
 const activeUsersChart = new Chart(
-  document.getElementById("activeUsersChart"),
-  {
-    type: "bar",
-    data: {
-      labels: [...randomData(), ...randomData()],
-      datasets: [
-        {
-          data: [...randomData(), ...randomData()],
-          backgroundColor: colors.primary,
-          borderWidth: 0,
-          categoryPercentage: 1,
-        },
-      ],
-    },
-    options: {
-      scales: {
-        yAxes: [
+    document.getElementById("activeUsersChart"),
+    {
+      type: "bar",
+      data: {
+        labels: [...getData(), ...getData()],
+        datasets: [
           {
-            display: false,
-            gridLines: false,
+            data: [...getData(), ...getData()],
+            backgroundColor: colors.primary,
+            borderWidth: 0,
+            categoryPercentage: 1,
           },
         ],
-        xAxes: [
-          {
-            display: false,
-            gridLines: false,
+      },
+      options: {
+        scales: {
+          yAxes: [
+            {
+              display: false,
+              gridLines: false,
+            },
+          ],
+          xAxes: [
+            {
+              display: false,
+              gridLines: false,
+            },
+          ],
+          ticks: {
+            padding: 10,
           },
-        ],
-        ticks: {
-          padding: 10,
+        },
+        cornerRadius: 2,
+        maintainAspectRatio: false,
+        legend: {
+          display: false,
+        },
+        tooltips: {
+          prefix: "Users",
+          bodySpacing: 4,
+          footerSpacing: 4,
+          hasIndicator: true,
+          mode: "index",
+          intersect: true,
+        },
+        hover: {
+          mode: "nearest",
+          intersect: true,
         },
       },
-      cornerRadius: 2,
-      maintainAspectRatio: false,
-      legend: {
-        display: false,
-      },
-      tooltips: {
-        prefix: "Users",
-        bodySpacing: 4,
-        footerSpacing: 4,
-        hasIndicator: true,
-        mode: "index",
-        intersect: true,
-      },
-      hover: {
-        mode: "nearest",
-        intersect: true,
-      },
-    },
-  }
+    }
 );
 
 const lineChart = new Chart(document.getElementById("lineChart"), {
@@ -196,7 +195,7 @@ const lineChart = new Chart(document.getElementById("lineChart"), {
     labels: months,
     datasets: [
       {
-        data: randomData(),
+        data: getData(),
         fill: false,
         borderColor: colors.primary,
         borderWidth: 2,
