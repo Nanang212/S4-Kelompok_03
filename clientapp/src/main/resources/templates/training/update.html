@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layouts/main}"
+>
+  <head>
+    <title>Update Employee</title>
+  </head>
+  <body>
+    <section class="container py-5" layout:fragment="content">
+      <div
+        class="w-full p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700"
+      >
+        <h5 class="mb-2 text-3xl font-bold text-gray-900 dark:text-white">
+          Update Training
+        </h5>
+        <form th:object="${training}">
+          <input type="hidden" id="updateEmployeeId" th:field="*{id}" />
+          <div>
+            <label
+              for="updateTrainingTitle"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >Your Title</label
+            >
+            <input
+              type="text"
+              name="title"
+              id="updateTrainingTitle"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+              placeholder="Title"
+              required
+              th:field="*{title}"
+            />
+          </div>
+          <div>
+            <label
+              for="updateStartDateTraining"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >Start date</label
+            >
+            <input
+              type="datetime-local"
+              name="updateStartDateTraining"
+              id="updateStartDateTraining"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+              required
+              th:field="*{startDate}"
+            />
+          </div>
+          <div>
+            <label
+              for="updateEndDateTraining"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >End date</label
+            >
+            <input
+              type="datetime-local"
+              name="updateEndDateTraining"
+              id="updateEndDateTraining"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+              required
+              th:field="*{endDate}"
+            />
+          </div>
+          <div>
+            <label
+              for="updateQuotaTraining"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >Quota</label
+            >
+            <input
+              type="number"
+              name="updateQuotaTraining"
+              id="updateQuotaTraining"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+              required
+              th:field="*{quota}"
+            />
+          </div>
+          <div>
+            <label
+              for="updateDurationTraining"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >Duration</label
+            >
+            <input
+              type="number"
+              name="updateDurationTraining"
+              id="updateDurationTraining"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+              required
+              th:field="*{duration}"
+            />
+          </div>
+          <div>
+            <label
+              for="updateAddressTraining"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >Address</label
+            >
+            <textarea
+              name="updateAddressTraining"
+              id="updateAddressTraining"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+              required
+              th:field="*{address}"
+            ></textarea>
+          </div>
+          <div>
+            <label
+              for="updateUrlTraining"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >Platform url</label
+            >
+            <input
+              type="text"
+              name="updateUrlTraining"
+              id="updateUrlTraining"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+              th:field="*{PlatformUrl}"
+            />
+          </div>
+          <div>
+            <div class="relative mt-2">
+              <label
+                for="updateLocationTraining"
+                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >Location</label
+              >
+              <select
+                id="updateLocationTraining"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                th:field="${training.isOnline}"
+              >
+                <option
+                  th:value="true"
+                  th:text="${training.isOnline ? 'Online' : 'Onsite'}"
+                >
+                  Online
+                </option>
+                <option
+                  th:value="false"
+                  th:text="${training.isOnline ? 'Onsite' : 'Online'}"
+                >
+                  Onsite
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="py-5">
+            <button
+              id="btnUpdateTraining"
+              type="submit"
+              class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            >
+              Save
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+    <div layout:fragment="script">
+      <script th:src="@{/js/training.js}"></script>
+    </div>
+  </body>
+</html>

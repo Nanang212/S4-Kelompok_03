@@ -31,17 +31,18 @@ public class TrainingController {
   @GetMapping
   public String getAll(Model model) {
     List<String> authorities = authenticationSessionUtil
-            .authentication()
-            .getAuthorities()
-            .stream()
-            .map(GrantedAuthority::getAuthority)
-            .collect(Collectors.toList());
+        .authentication()
+        .getAuthorities()
+        .stream()
+        .map(GrantedAuthority::getAuthority)
+        .collect(Collectors.toList());
     model.addAttribute("authorities", authorities);
     return "training/index";
   }
 
   @GetMapping("/{id}")
-  public String getById(@PathVariable Integer id, Model model, @RequestParam(required = false) Map<String, Object> params) {
+  public String getById(@PathVariable Integer id, Model model,
+      @RequestParam(required = false) Map<String, Object> params) {
     Training training = trainingService.getById(id);
     Employee loggedInEmployee = employeeService.getLoggedInUser();
     TrainingRegisterRequest trainingRegisterRequest = new TrainingRegisterRequest();
@@ -53,18 +54,18 @@ public class TrainingController {
     model.addAttribute("training", training);
     model.addAttribute("loggedInEmp", loggedInEmployee);
     model.addAttribute("trainingRegisterRequest", trainingRegisterRequest);
-      // model.addAttribute("isActive", "role");
+    // model.addAttribute("isActive", "role");
     return "training/detail";
   }
 
   @GetMapping("/register")
   public String getAllRegisterTraining(Model model) {
     List<String> authorities = authenticationSessionUtil
-            .authentication()
-            .getAuthorities()
-            .stream()
-            .map(GrantedAuthority::getAuthority)
-            .collect(Collectors.toList());
+        .authentication()
+        .getAuthorities()
+        .stream()
+        .map(GrantedAuthority::getAuthority)
+        .collect(Collectors.toList());
     model.addAttribute("authorities", authorities);
     return "training/register/index";
   }
@@ -72,12 +73,13 @@ public class TrainingController {
   // TODO : Beri validasi apabila user sudah berpartisipasi
   @PostMapping("/register")
   public String registTraining(@ModelAttribute TrainingRegisterRequest trainingRegisterRequest,
-                               @RequestParam(name = "attachment") MultipartFile attachment) {
+      @RequestParam(name = "attachment") MultipartFile attachment) {
     try {
       trainingRegisterService.create(trainingRegisterRequest, attachment);
       return "redirect:/training/" + trainingRegisterRequest.getTrainingId();
     } catch (HttpClientErrorException exception) {
-      return "redirect:/training/" + trainingRegisterRequest.getTrainingId() + "?error=true&message=" + exception.getMessage();
+      return "redirect:/training/" + trainingRegisterRequest.getTrainingId() + "?error=true&message="
+          + exception.getMessage();
     }
   }
 
@@ -86,5 +88,14 @@ public class TrainingController {
     Employee loggedInEmp = employeeService.getLoggedInUser();
     model.addAttribute("trainings", trainingService.getAllByTrainee(loggedInEmp.getUser().getUsername()));
     return "training/attend";
+  }
+
+  @GetMapping("/update/{id}")
+  public String updateView(@PathVariable Integer id, Model model) {
+    // model.addAttribute("loggedInEmployee", employeeService.getLoggedInUser());
+    // model.addAttribute("id", id);
+    Training training = trainingService.getById(id);
+    model.addAttribute("training", training);
+    return "training/update";
   }
 }

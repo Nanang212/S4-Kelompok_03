@@ -58,6 +58,11 @@ public class RestTrainingController {
     return trainingService.create(regionRequest);
   }
 
+  @PostMapping("/register/cancel/{id}")
+  public TrainingRegister createCancellation(@PathVariable Integer id) {
+    return trainingRegisterService.createCancellation(id);
+  }
+
   @PutMapping("/{id}")
   public Training update(@PathVariable Integer id, @RequestBody TrainingRequest trainingRequest) {
     return trainingService.update(id, trainingRequest);

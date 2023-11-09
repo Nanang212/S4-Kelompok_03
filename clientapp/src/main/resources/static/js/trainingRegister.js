@@ -51,6 +51,16 @@ $(document).ready(function () {
                 >
                   <ion-icon name="create" size="large"></ion-icon>
                 </button>
+                <!-- Button cancel -->
+                <button
+                  type="button"
+                  class="btn btn-danger btn-sm"
+                  registrationId="${data.id}"
+                  onclick="cancelTrainingRegistration(this)"
+                  ${authorities.includes('TRAINEE') ? '' : 'hidden'}
+                >
+                  <ion-icon name="arrow-undo-circle" size="large"></ion-icon>
+                </button>
                 <!-- Button delete modal -->
                 <button
                   type="button"
@@ -68,6 +78,48 @@ $(document).ready(function () {
     ],
   });
 });
+
+function cancelTrainingRegistration(button) {
+  let id = button.getAttribute('registrationId')
+  Swal.fire({
+    title: `Are you sure want to cancel training ?`,
+    text: "You won't be able to revert this!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, cancel !'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      $.ajax({
+        method: "POST",
+        url: `/api/trainings/register/cancel/${id}`,
+        dataType: "JSON",
+        contentType: "application/json",
+        beforeSend: function () {
+          setCsrf()
+        },
+        success: (res) => {
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Registration request to cancel...",
+            showConfirmButton: false,
+            timer: 2000,
+          });
+          $("#table-training-registration").DataTable().ajax.reload();
+        },
+        error: (err) => {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Something is wrong !!!",
+          });
+        },
+      });
+    }
+  })
+}
 
 function downloadAttachment(button) {
   let id = button.getAttribute("registrationId");

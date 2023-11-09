@@ -15,8 +15,17 @@ $(document).ready(function () {
       {
         data: null,
         render: (data) => {
-          console.log(data)
-          return data.trainingRegister.training.title;
+          return `
+            <a href="http://localhost:9090/training/${data.trainingRegister.training.id}">${data.trainingRegister.training.title}</a>
+          `;
+        }
+      },
+      {
+        data: null,
+        render: (data) => {
+          return `
+            <a href="http://localhost:9090/profile">${data.trainingRegister.trainee.user.username}</a>
+          `;
         }
       },
       {
