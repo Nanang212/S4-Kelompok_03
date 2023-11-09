@@ -1,6 +1,7 @@
 package id.co.mii.serverapp.services;
 
 import id.co.mii.serverapp.models.*;
+import id.co.mii.serverapp.models.dto.requests.EmailRequest;
 import id.co.mii.serverapp.models.dto.requests.TrainingRegisterRequest;
 import id.co.mii.serverapp.repositories.TrainingRegisterRepository;
 import id.co.mii.serverapp.services.base.BaseService;
@@ -12,7 +13,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,6 +27,7 @@ public class TrainingRegisterService extends BaseService<TrainingRegister, Integ
   private RoleService roleService;
   private StatusService statusService;
   private HistoryService historyService;
+  private EmailService emailService;
 
   public List<TrainingRegister> getAll() {
     Employee loggedInEmp = employeeService.getLoggedInEmployee();
@@ -136,6 +140,7 @@ public class TrainingRegisterService extends BaseService<TrainingRegister, Integ
     Status success = statusService.getById(1);
     TrainingRegister trainingRegister = getById(id);
     Training training = trainingRegister.getTraining();
+    Employee trainee = trainingRegister.getTrainee();
     long registeredTrainee = getAll()
             .stream()
             .filter(tr -> tr.getTraining().equals(training) && tr.getCurrentStatus().equals(success))
@@ -151,6 +156,22 @@ public class TrainingRegisterService extends BaseService<TrainingRegister, Integ
     }
     trainingRegister.setUpdatedAt(LocalDateTime.now());
     trainingRegister.setUpdatedBy(employeeService.getLoggedInEmployee().getUser().getUsername());
+
+    EmailRequest emailRequest = new EmailRequest();
+    Map<String, Object> properties = new HashMap<>();
+    properties.put("id", training.getId());
+    properties.put("title", training.getTitle());
+    properties.put("startDate", training.getStartDate());
+    properties.put("endDate", training.getEndDate());
+    properties.put("status", trainingRegister.getCurrentStatus().getName());
+    properties.put("notes", trainingRegisterRequest.getNotes());
+    properties.put("trainingLink", "http://localhost:9090/training/" + training.getId());
+    emailRequest.setTo("fazriridwan19@gmail.com");
+    emailRequest.setSubject("Training Registration");
+    emailRequest.setBody("trainingRegister.html");
+    emailRequest.setProperties(properties);
+    emailService.sendHtmlMessage(emailRequest);
+
     return trainingRegisterRepository.save(trainingRegister);
   }
 }
