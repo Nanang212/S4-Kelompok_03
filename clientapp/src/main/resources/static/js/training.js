@@ -22,20 +22,20 @@ $(document).ready(function () {
       {
         data: null,
         render: (data) => {
-          return formatDate(data.startDate)
-        }
+          return formatDate(data.startDate);
+        },
       },
       {
         data: null,
         render: (data) => {
-          return formatDate(data.endDate)
-        }
+          return formatDate(data.endDate);
+        },
       },
       {
         data: null,
         render: (data) => {
-          return data.trainer === null ? '-' : data.trainer.name;
-        }
+          return data.trainer === null ? "-" : data.trainer.name;
+        },
       },
       {
         data: null,
@@ -54,11 +54,9 @@ $(document).ready(function () {
                 <button
                   type="button"
                   class="btn btn-warning btn-sm"
-                  data-modal-target="updateTrainingModal"
-                  data-modal-toggle="updateTrainingModal"
                   trainingId="${data.id}"
-                  onclick="updateTraining(this)"
-                  ${authorities.includes('ADMIN') ? '' : 'hidden'}
+                  onclick="window.location.href='/training/update/${data.id}'"
+                  ${authorities.includes("ADMIN") ? "" : "hidden"}
                 >
                   <ion-icon name="create" size="large"></ion-icon>
                 </button>
@@ -68,7 +66,7 @@ $(document).ready(function () {
                   class="btn btn-danger btn-sm"
                   trainingId="${data.id}"
                   onclick="deleteTraining(this)"
-                  ${authorities.includes('ADMIN') ? '' : 'hidden'}
+                  ${authorities.includes("ADMIN") ? "" : "hidden"}
                 >
                   <ion-icon name="trash" size="large"></ion-icon>
                 </button>
@@ -99,115 +97,83 @@ function setTrainer(type) {
 
 function formatDate(inputDate) {
   const options = {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: 'numeric',
-    hour12: false
-  }
-  return new Date(inputDate).toLocaleString('id-ID', options);
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    hour12: false,
+    timeZone: "GMT",
+  };
+  return new Date(inputDate).toLocaleString("id-ID", options);
 }
 
-$('#btnSaveTraining').one('click', (event) => {
-  event.preventDefault()
-  let title = $('#inputTitleTraining').val()
-  let startDate = $('#inputStartDateTraining').val()
-  let endDate = $('#inputEndDateTraining').val()
-  let quota = $('#inputQuotaTraining').val()
-  let duration = $('#inputDurationTraining').val()
-  let address = $('#inputAddressTraining').val()
-  let description = $('#inputDescriptionTraining').val()
-  let url = $('#inputUrlTraining').val()
-  let trainerId = $('#inputTrainerTraining').val()
-  let isOnline = $('#inputLocationTraining').val() === 'online';
-  if (title === "" || title === null) {
-    Swal.fire({
-      icon: "error",
-      title: "Oops...",
-      text: "Please fill out Training title!!!",
-    });
-  } else if (startDate === "" || startDate === null) {
-    Swal.fire({
-      icon: "error",
-      title: "Oops...",
-      text: "Please fill out start date!!!",
-    });
-  } else if (endDate === "" || endDate === null) {
-    Swal.fire({
-      icon: "error",
-      title: "Oops...",
-      text: "Please fill out start date!!!",
-    });
-  } else if (quota === "" || quota === null) {
-    Swal.fire({
-      icon: "error",
-      title: "Oops...",
-      text: "Please fill out quota !!!",
-    })
-  } else {
-    $.ajax({
-      method: "POST",
-      url: "api/trainings",
-      dataType: "JSON",
-      contentType: "application/json",
-      data: JSON.stringify({
-        title: title,
-        startDate: startDate,
-        endDate: endDate,
-        quota: quota,
-        duration: duration,
-        address: address,
-        description: description,
-        platformUrl: url,
-        isOnline: isOnline,
-        trainerId: trainerId
-      }),
-      beforeSend: function () {
-        setCsrf()
-      },
-      success: (res) => {
-        $("#table-training").DataTable().ajax.reload();
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "Training successfully created ...",
-          showConfirmButton: false,
-          timer: 2000,
-        });
-        $('#inputTitleTraining').val('')
-        $('#inputStartDateTraining').val('')
-        $('#inputEndDateTraining').val('')
-        $('#inputQuotaTraining').val('')
-        $('#inputDurationTraining').val('')
-        $('#inputAddressTraining').val('')
-        $('#inputDescriptionTraining').val('')
-        $('#inputUrlTraining').val('')
-        $('#inputLocationTraining').val('')
-      },
-      error: (err) => {
-        console.log(err.responseJSON)
-      },
-    });
-  }
-})
+function showToast(type, text) {
+  return Swal.fire({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 2000,
+    icon: type,
+    title: text,
+  });
+}
+
+$("#btnUpdateTraining").on("click", (event) => {
+  event.preventDefault();
+
+  let trainingId = $("#updateEmployeeId").val();
+
+  $.ajax({
+    method: "PUT",
+    url: `/api/trainings/${trainingId}`,
+    dataType: "JSON",
+    contentType: "application/json",
+    data: JSON.stringify({
+      title: $("#updateTrainingTitle").val(),
+      startDate: $("#updateStartDateTraining").val(),
+      endDate: $("#updateEndDateTraining").val(),
+      quota: $("#updateQuotaTraining").val(),
+      duration: $("#updateDurationTraining").val(),
+      address: $("#updateAddressTraining").val(),
+      PlatformUrl: $("#updateUrlTraining").val(),
+      isOnline: $("#updateLocationTraining").val() === "online",
+    }),
+    beforeSend: function () {
+      // Pastikan CSRF token disertakan
+      setCsrf();
+    },
+    success: (res) => {
+      // Tampilkan pemberitahuan sukses
+      showToast("success", "Training updated successfully").then(() => history.back());
+    },
+    error: (error) => {
+      let errorJsn = error.responseJSON;
+
+      // Tampilkan pemberitahuan error dan muat ulang halaman jika diperlukan
+      showToast("error", errorJsn.message).then(() => {
+        location.reload();
+      });
+    },
+  });
+});
 
 function showTrainingDetail(button) {
-  let trainingId = button.getAttribute("trainingId")
+  let trainingId = button.getAttribute("trainingId");
   $.ajax({
     method: "GET",
     url: `api/trainings/${trainingId}`,
     dataType: "JSON",
     contentType: "application/json",
     success: (res) => {
-      $('#detailTitleTraining').val(res.title)
-      $('#detailStartDateTraining').val(res.startDate)
-      $('#detailEndDateTraining').val(res.endDate)
-      $('#detailQuotaTraining').val(res.quota)
-      $('#detailDurationTraining').val(res.duration)
-      $('#detailAddressTraining').val(res.address)
-      $('#detailUrlTraining').val(res.platformUrl)
-      $('#detailLocationTraining').val(res.isOnline ? 'online' : 'onsite')
+      $("#detailTitleTraining").val(res.title);
+      $("#detailStartDateTraining").val(res.startDate);
+      $("#detailEndDateTraining").val(res.endDate);
+      $("#detailQuotaTraining").val(res.quota);
+      $("#detailDurationTraining").val(res.duration);
+      $("#detailAddressTraining").val(res.address);
+      $("#detailUrlTraining").val(res.platformUrl);
+      $("#detailLocationTraining").val(res.isOnline ? "online" : "onsite");
     },
     error: (err) => {
       console.log(err);
@@ -216,39 +182,39 @@ function showTrainingDetail(button) {
 }
 
 function updateTraining(button) {
-  let trainingId = button.getAttribute("trainingId")
+  let trainingId = button.getAttribute("trainingId");
   $.ajax({
     method: "GET",
     url: `api/trainings/${trainingId}`,
     dataType: "JSON",
     contentType: "application/json",
     success: (res) => {
-      $('#updateTitleTraining').val(res.title)
-      $('#updateStartDateTraining').val(res.startDate)
-      $('#updateEndDateTraining').val(res.endDate)
-      $('#updateQuotaTraining').val(res.quota)
-      $('#updateDurationTraining').val(res.duration)
-      $('#updateAddressTraining').val(res.address)
-      $('#updateUrlTraining').val(res.platformUrl)
-      $('#updateLocationTraining').val(res.isOnline ? 'online' : 'onsite');
-      $('#btnUpdateTraining').one("click", (event) => {
-        event.preventDefault()
+      $("#updateTitleTraining").val(res.title);
+      $("#updateStartDateTraining").val(res.startDate);
+      $("#updateEndDateTraining").val(res.endDate);
+      $("#updateQuotaTraining").val(res.quota);
+      $("#updateDurationTraining").val(res.duration);
+      $("#updateAddressTraining").val(res.address);
+      $("#updateUrlTraining").val(res.platformUrl);
+      $("#updateLocationTraining").val(res.isOnline ? "online" : "onsite");
+      $("#btnUpdateTraining").one("click", (event) => {
+        event.preventDefault();
         $.ajax({
           method: "PUT",
           url: `api/trainings/${res.id}`,
           dataType: "JSON",
           contentType: "application/json",
           data: JSON.stringify({
-            title: $('#updateTitleTraining').val(),
-            startDate: $('#updateStartDateTraining').val(),
-            endDate: $('#updateEndDateTraining').val(),
-            quota: $('#updateQuotaTraining').val(),
-            duration: $('#updateDurationTraining').val(),
-            address: $('#updateAddressTraining').val(),
-            platformUrl: $('#updateUrlTraining').val(),
-            isOnline: $('#updateLocationTraining').val() === 'online'
+            title: $("#updateTitleTraining").val(),
+            startDate: $("#updateStartDateTraining").val(),
+            endDate: $("#updateEndDateTraining").val(),
+            quota: $("#updateQuotaTraining").val(),
+            duration: $("#updateDurationTraining").val(),
+            address: $("#updateAddressTraining").val(),
+            platformUrl: $("#updateUrlTraining").val(),
+            isOnline: $("#updateLocationTraining").val() === "online",
           }),
-          beforeSend : function () {
+          beforeSend: function () {
             setCsrf();
           },
           success: (res) => {
@@ -263,27 +229,27 @@ function updateTraining(button) {
             });
           },
           error: (error) => {
-            console.log(error)
+            console.log(error);
           },
         });
-      })
+      });
     },
     error: (error) => {
-      console.log(error)
+      console.log(error);
     },
   });
 }
 
 function deleteTraining(button) {
-  let id = button.getAttribute('trainingId')
+  let id = button.getAttribute("trainingId");
   Swal.fire({
     title: `Are you sure want to delete training ?`,
     text: "You won't be able to revert this!",
-    icon: 'warning',
+    icon: "warning",
     showCancelButton: true,
-    confirmButtonColor: '#3085d6',
-    cancelButtonColor: '#d33',
-    confirmButtonText: 'Yes, delete it!'
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, delete it!",
   }).then((result) => {
     if (result.isConfirmed) {
       $.ajax({
@@ -292,7 +258,7 @@ function deleteTraining(button) {
         dataType: "JSON",
         contentType: "application/json",
         beforeSend: function () {
-          setCsrf()
+          setCsrf();
         },
         success: (res) => {
           Swal.fire({
@@ -313,5 +279,5 @@ function deleteTraining(button) {
         },
       });
     }
-  })
+  });
 }
