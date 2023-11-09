@@ -22,6 +22,7 @@ public class Training extends BaseEntity {
   private Integer duration;
   private String address;
   private String platformUrl;
+  @Column(columnDefinition="TEXT")
   private String description;
   private Boolean isOnline;
   @ManyToOne

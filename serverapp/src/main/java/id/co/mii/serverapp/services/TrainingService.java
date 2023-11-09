@@ -7,19 +7,20 @@ import id.co.mii.serverapp.repositories.TrainingRepository;
 import id.co.mii.serverapp.services.base.BaseService;
 import id.co.mii.serverapp.utils.StringUtils;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class TrainingService extends BaseService<Training, Integer> {
   private ModelMapper modelMapper;
   private EmployeeService employeeService;
@@ -27,6 +28,32 @@ public class TrainingService extends BaseService<Training, Integer> {
   private RoleService roleService;
   private StatusService statusService;
   private EmailService emailService;
+
+  public List<Integer> getTrainingByAllMonthInYear() {
+    List<Integer> countTraining = new ArrayList<>();
+    for (int i = 0; i < 12; i++) {
+      countTraining.add(getTrainingByMonth(i + 1));
+    }
+    return countTraining;
+  }
+
+  public int getTrainingByMonth(int monthVal) {
+    return (int) getAll()
+            .stream()
+            .filter(training -> training.getStartDate().toInstant().atZone(ZoneId.systemDefault()).getMonthValue() == monthVal)
+            .count();
+  }
+
+  public Integer countTrainingInYear() {
+    long count = getAll()
+            .stream()
+            .filter(training -> {
+              int currentYear = LocalDate.now().getYear();
+              return training.getStartDate().toInstant().atZone(ZoneId.systemDefault()).getYear() == currentYear;
+            })
+            .count();
+    return (int) count;
+  }
 
 // TODO : validasi input start date & end date
   public List<Training> getAllByTrainer(String username) {

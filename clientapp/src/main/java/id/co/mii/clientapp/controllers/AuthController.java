@@ -1,6 +1,7 @@
 package id.co.mii.clientapp.controllers;
 
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,28 +16,40 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.HttpClientErrorException;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Controller
 @AllArgsConstructor
 @RequestMapping("/auth")
 public class AuthController {
-    private AuthService authService;
-    private AuthenticationSessionUtil session;
+  private AuthService authService;
+  private AuthenticationSessionUtil session;
 
-     @GetMapping("/login")
-    public String loginView(LoginRequest loginRequest) {
-        if (session.authentication() instanceof AnonymousAuthenticationToken) {
-            return "auth/login";
-        }
-         return "redirect:/training";
+  @GetMapping("/login")
+  public String loginView(LoginRequest loginRequest) {
+    if (session.authentication() instanceof AnonymousAuthenticationToken) {
+      return "auth/login";
     }
+    List<String> roles = session
+            .authentication()
+            .getAuthorities()
+            .stream()
+            .map(GrantedAuthority::getAuthority)
+            .collect(Collectors.toList());
+    if (roles.contains("ADMIN")) {
+      return "redirect:/dashboard";
+    }
+    return "redirect:/training";
+  }
 
-    @PostMapping("/login")
-    public String login(LoginRequest loginRequest) {
-        if (!authService.login((loginRequest))) {
-            return "redirect:/login?error=true";
-        }
-       return "redirect:/training";
+  @PostMapping("/login")
+  public String login(LoginRequest loginRequest) {
+    if (!authService.login((loginRequest))) {
+      return "redirect:/login?error=true";
     }
+    return "redirect:/training";
+  }
 
   @GetMapping("/register")
   public String registerView(EmployeeRequest employeeRequest, @RequestParam(required = false) String error, Model model) {
@@ -58,7 +71,7 @@ public class AuthController {
 
   @GetMapping("/change-password")
   public String changePasswordview(Model model) {
-      model.addAttribute("title", "MCC 81");
-      return "auth/change-password";
+    model.addAttribute("title", "MCC 81");
+    return "auth/change-password";
   }
 }
