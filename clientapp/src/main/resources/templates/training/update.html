@@ -108,6 +108,20 @@
           </div>
           <div>
             <label
+                    for="updateDescriptionTraining"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >Description</label
+            >
+            <textarea
+                    name="updateDescriptionTraining"
+                    id="updateDescriptionTraining"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                    required
+                    th:field="*{description}"
+            ></textarea>
+          </div>
+          <div>
+            <label
               for="updateUrlTraining"
               class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >Platform url</label
@@ -117,7 +131,7 @@
               name="updateUrlTraining"
               id="updateUrlTraining"
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-              th:field="*{PlatformUrl}"
+              th:field="*{platformUrl}"
             />
           </div>
           <div>
@@ -161,6 +175,18 @@
     </section>
     <div layout:fragment="script">
       <script th:src="@{/js/training.js}"></script>
+      <script th:inline="javascript">
+        /*<![CDATA[*/
+        let startDateStr = /*[[${training.startDate}]]*/ '';
+        let endDateStr = /*[[${training.endDate}]]*/ '';
+        let startDate = new Date(startDateStr)
+        let endDate = new Date(endDateStr)
+        let formattedStartDate = startDate.toISOString().slice(0, 16);
+        let formattedEndDate = endDate.toISOString().slice(0, 16);
+        document.getElementById('updateStartDateTraining').value = formattedStartDate;
+        document.getElementById('updateEndDateTraining').value = formattedEndDate;
+        /*]]>*/
+      </script>
     </div>
   </body>
 </html>

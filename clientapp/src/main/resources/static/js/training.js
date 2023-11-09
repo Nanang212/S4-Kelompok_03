@@ -121,7 +121,6 @@ function showToast(type, text) {
 
 $("#btnUpdateTraining").on("click", (event) => {
   event.preventDefault();
-
   let trainingId = $("#updateEmployeeId").val();
 
   $.ajax({
@@ -136,6 +135,7 @@ $("#btnUpdateTraining").on("click", (event) => {
       quota: $("#updateQuotaTraining").val(),
       duration: $("#updateDurationTraining").val(),
       address: $("#updateAddressTraining").val(),
+      description: $("#updateDescriptionTraining").val(),
       PlatformUrl: $("#updateUrlTraining").val(),
       isOnline: $("#updateLocationTraining").val() === "online",
     }),
@@ -149,8 +149,6 @@ $("#btnUpdateTraining").on("click", (event) => {
     },
     error: (error) => {
       let errorJsn = error.responseJSON;
-
-      // Tampilkan pemberitahuan error dan muat ulang halaman jika diperlukan
       showToast("error", errorJsn.message).then(() => {
         location.reload();
       });
