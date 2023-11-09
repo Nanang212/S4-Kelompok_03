@@ -19,10 +19,9 @@ public class HomeController {
     private DashboardService dashboardService;
     private AuthenticationSessionUtil authenticationSessionUtil;
 
-    @GetMapping("/landing")
+    @GetMapping("")
     public String landingview(Model model) {
-        model.addAttribute("landing", "MCC 81");
-        return "auth/landing";
+        return "landing/index";
     }
 
     @GetMapping("/login")
