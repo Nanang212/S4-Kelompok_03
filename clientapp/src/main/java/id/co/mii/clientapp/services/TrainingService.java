@@ -49,6 +49,12 @@ public class TrainingService {
         .getBody();
   }
 
+  public Training broadcast(Integer id) {
+    return restTemplate
+            .exchange(url.concat("/broadcast/" + id), HttpMethod.POST, null, Training.class)
+            .getBody();
+  }
+
   public Training update(Integer id, TrainingRequest trainingRequest) {
   HttpEntity<TrainingRequest> request = new HttpEntity<>(trainingRequest);
   return restTemplate

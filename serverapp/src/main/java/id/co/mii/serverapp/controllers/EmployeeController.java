@@ -2,6 +2,7 @@ package id.co.mii.serverapp.controllers;
 
 import id.co.mii.serverapp.models.Employee;
 import id.co.mii.serverapp.models.dto.requests.EmployeeRequest;
+import id.co.mii.serverapp.models.dto.requests.PasswordRequest;
 import id.co.mii.serverapp.services.AuthService;
 import id.co.mii.serverapp.services.EmployeeService;
 import lombok.AllArgsConstructor;
@@ -74,6 +75,14 @@ public class EmployeeController {
     return ResponseEntity
             .status(HttpStatus.OK)
             .body(employeeService.update(id, employeeRequest));
+  }
+
+  @PreAuthorize("hasAnyAuthority('UPDATE_ADMIN', 'UPDATE_TRAINER', 'UPDATE_TRAINEE')")
+  @PutMapping("/change-password")
+  public ResponseEntity<Employee> changePassword(@RequestBody PasswordRequest passwordRequest) {
+    return ResponseEntity
+            .status(HttpStatus.CREATED)
+            .body(employeeService.changePassword(passwordRequest));
   }
 
   @PreAuthorize("hasAuthority('DELETE_ADMIN')")

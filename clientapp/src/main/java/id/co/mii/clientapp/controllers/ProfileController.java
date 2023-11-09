@@ -19,4 +19,5 @@ public class ProfileController {
     model.addAttribute("employee", employeeService.getLoggedInUser());
     return "employee/detail";
   }
+
 }

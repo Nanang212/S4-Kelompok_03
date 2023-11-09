@@ -86,6 +86,12 @@ public class TrainingController {
     }
   }
 
+  @PostMapping("/broadcast/{id}")
+  public String broadcast(@PathVariable Integer id) {
+    trainingService.broadcast(id);
+    return "redirect:/training/" + id + "?message=Broadcast success";
+  }
+
   @GetMapping("/attend")
   public String getAttendedTraining(Model model) {
     Employee loggedInEmp = employeeService.getLoggedInUser();

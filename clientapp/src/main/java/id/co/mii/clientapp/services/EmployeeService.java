@@ -2,6 +2,7 @@ package id.co.mii.clientapp.services;
 
 import java.util.List;
 
+import id.co.mii.clientapp.models.dto.request.PasswordRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
@@ -59,6 +60,16 @@ public class EmployeeService {
     public Employee update(Integer id, EmployeeRequest employeeRequest) {
         ResponseEntity<Employee> response = restTemplate.exchange(url.concat("/" + id), HttpMethod.PUT,
                 new HttpEntity<>(employeeRequest), Employee.class);
+        return response.getBody();
+    }
+
+    public Employee changePassword(PasswordRequest passwordRequest) {
+        ResponseEntity<Employee> response = restTemplate
+                .exchange(
+                        url.concat("/change-password"),
+                        HttpMethod.PUT,
+                        new HttpEntity<>(passwordRequest),
+                        Employee.class);
         return response.getBody();
     }
 

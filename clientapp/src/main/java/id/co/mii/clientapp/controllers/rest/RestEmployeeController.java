@@ -2,6 +2,9 @@ package id.co.mii.clientapp.controllers.rest;
 
 import java.util.List;
 
+import id.co.mii.clientapp.models.dto.request.LoginRequest;
+import id.co.mii.clientapp.models.dto.request.PasswordRequest;
+import id.co.mii.clientapp.services.AuthService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +23,7 @@ import org.springframework.web.client.HttpClientErrorException;
 public class RestEmployeeController {
   private EmployeeService employeeService;
   private AuthenticationSessionUtil session;
+  private AuthService authService;
 
   @GetMapping
   public ResponseEntity<?> getAll(@RequestParam(required = false) String role) {
@@ -71,6 +75,22 @@ public class RestEmployeeController {
               .headers(exception.getResponseHeaders())
               .body(exception.getResponseBodyAsString());
     }
+  }
+
+  @PutMapping("/change-password")
+  public ResponseEntity<?> changePassword(@RequestBody PasswordRequest passwordRequest) {
+    Employee employeeResponse = null;
+    try {
+      employeeResponse = employeeService.changePassword(passwordRequest);
+      String username = session.authentication().getPrincipal().toString();
+      authService.login(new LoginRequest(username, passwordRequest.getNewPassword()));
+    } catch (HttpClientErrorException exception) {
+      return ResponseEntity
+              .status(exception.getRawStatusCode())
+              .headers(exception.getResponseHeaders())
+              .body(exception.getResponseBodyAsString());
+    }
+    return ResponseEntity.status(HttpStatus.CREATED).body(employeeResponse);
   }
 
   @DeleteMapping("/{id}")

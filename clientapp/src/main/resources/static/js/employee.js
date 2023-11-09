@@ -243,3 +243,41 @@ function deleteEmployee(button) {
     }
   })
 }
+
+$('#changePasswordBtn').click((event) => {
+  event.preventDefault()
+  let oldPassword = $('#changePasswordOldPassword').val()
+  let newPassword = $('#changePasswordNewPassword').val()
+  let newConfirmationPassword = $('#changePasswordNewConfirmationPassword').val()
+  if (newPassword !== newConfirmationPassword) {
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "New password not matching !!!",
+    });
+  } else {
+    $.ajax({
+      method: "PUT",
+      url: "/api/employee/change-password",
+      dataType: "JSON",
+      contentType: "application/json",
+      data: JSON.stringify({
+        oldPassword: oldPassword,
+        newPassword: newPassword,
+      }),
+      beforeSend: function () {
+        setHeaders()
+      },
+      success: (res) => {
+        $('#changePasswordOldPassword').val('')
+        $('#changePasswordNewPassword').val('')
+        $('#changePasswordNewConfirmationPassword').val('')
+        showToast("success", "Employee updated successfully").then(() => location.href = '/profile');
+      },
+      error: (err) => {
+        let errorJson = err.responseJSON;
+        showToast("error", errorJson.message);
+      },
+    });
+  }
+})

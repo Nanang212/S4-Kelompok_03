@@ -102,8 +102,7 @@ function formatDate(inputDate) {
     day: "numeric",
     hour: "numeric",
     minute: "numeric",
-    hour12: false,
-    timeZone: "GMT",
+    hour12: false
   };
   return new Date(inputDate).toLocaleString("id-ID", options);
 }
