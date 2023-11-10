@@ -116,11 +116,12 @@ public class TrainingController {
   public String updateRegisterView(@PathVariable Integer id, Model model) {
     TrainingRegister trainingRegister = trainingRegisterService.getById(id);
     model.addAttribute("trainingRegister", trainingRegister);
+    model.addAttribute("allStatus", statusService.getAll());
     return "training/register/update";
   }
 
-  @ModelAttribute("allStatus")
-  public List<Status> getAll() {
-    return statusService.getAll();
-  }
+//  @ModelAttribute("allStatus")
+//  public List<Status> getAll() {
+//    return statusService.getAll();
+//  }
 }
