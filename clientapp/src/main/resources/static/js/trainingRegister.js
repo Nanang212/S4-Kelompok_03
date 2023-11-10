@@ -298,17 +298,16 @@ $("#btnUpdateTrainingRegistration").one("click", (event) => {
       setCsrf();
     },
     success: (res) => {
-      showToast("success", "Pendaftaran pelatihan berhasil diperbarui").then(
+      showToast("success", "Registration updated").then(
         () => history.back()
       );
     },
     error: (error) => {
       let errorJsn = error.responseJSON;
-      console.log(error);
-
-      // showToast("error", errorJsn.message).then(() => {
-      //   location.reload();
-      // });
+      // console.log(error);
+      showToast("error", errorJsn.message).then(() => {
+        location.reload();
+      });
     },
   });
 });
