@@ -19,7 +19,7 @@ public class HomeController {
     private DashboardService dashboardService;
     private AuthenticationSessionUtil authenticationSessionUtil;
 
-    @GetMapping("")
+    @GetMapping
     public String landingview(Model model) {
         return "landing/index";
     }

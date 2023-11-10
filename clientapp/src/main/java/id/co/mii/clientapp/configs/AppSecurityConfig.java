@@ -16,6 +16,8 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
       .authorizeRequests()
       .antMatchers("/css/**", "/images/**", "/js/**")
       .permitAll()
+      .antMatchers("/")
+      .permitAll()
       .antMatchers( HttpMethod.GET,"/auth/**")
       .permitAll()
        .antMatchers( HttpMethod.POST,"/auth/**")
