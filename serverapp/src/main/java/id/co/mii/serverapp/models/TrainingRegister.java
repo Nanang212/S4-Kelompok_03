@@ -27,10 +27,13 @@ public class TrainingRegister extends BaseEntity {
   @JoinColumn(name = "current_status")
   private Status currentStatus;
   @Lob
-  @Column(columnDefinition="LONGBLOB")
+  @Column(columnDefinition = "LONGBLOB")
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   private byte[] attachment;
   @OneToMany(mappedBy = "trainingRegister", cascade = CascadeType.ALL)
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   private List<History> histories;
+  @OneToOne
+  @JoinColumn(name = "survey_id")
+  private Survey survey;
 }
