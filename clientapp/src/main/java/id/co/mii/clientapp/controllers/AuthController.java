@@ -27,8 +27,9 @@ public class AuthController {
   private AuthenticationSessionUtil session;
 
   @GetMapping("/login")
-  public String loginView(LoginRequest loginRequest) {
+  public String loginView(LoginRequest loginRequest, @RequestParam(required = false) Boolean error, Model model) {
     if (session.authentication() instanceof AnonymousAuthenticationToken) {
+      model.addAttribute("error", error);
       return "auth/login";
     }
     List<String> roles = session
