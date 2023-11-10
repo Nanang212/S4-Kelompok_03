@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -87,6 +90,12 @@ public class TrainingController {
     }
   }
 
+  @PostMapping("/broadcast/{id}")
+  public String broadcast(@PathVariable Integer id) {
+    trainingService.broadcast(id);
+    return "redirect:/training/" + id + "?message=Broadcast success";
+  }
+
   @GetMapping("/attend")
   public String getAttendedTraining(Model model) {
     Employee loggedInEmp = employeeService.getLoggedInUser();
@@ -107,12 +116,12 @@ public class TrainingController {
   public String updateRegisterView(@PathVariable Integer id, Model model) {
     TrainingRegister trainingRegister = trainingRegisterService.getById(id);
     model.addAttribute("trainingRegister", trainingRegister);
+    model.addAttribute("allStatus", statusService.getAll());
     return "training/register/update";
   }
 
-  @ModelAttribute("allStatus")
-  public List<Status> getAll() {
-    return statusService.getAll();
-  }
-  
+//  @ModelAttribute("allStatus")
+//  public List<Status> getAll() {
+//    return statusService.getAll();
+//  }
 }

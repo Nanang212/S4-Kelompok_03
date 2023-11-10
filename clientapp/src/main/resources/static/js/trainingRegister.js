@@ -193,8 +193,6 @@ function setStatus() {
   });
 }
 
-setStatus();
-
 // function updateTrainingRegister(button) {
 //   let registrationId = button.getAttribute("registrationId");
 //   $.ajax({
