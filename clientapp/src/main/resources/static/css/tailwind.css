@@ -1059,6 +1059,9 @@ video {
   .flex-1 {
     flex: 1 1 0%;
 }
+  .flex-auto {
+    flex: 1 1 auto;
+}
   .flex-shrink-0 {
     flex-shrink: 0;
 }
@@ -1166,9 +1169,6 @@ video {
   .grid-cols-3 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
 }
-  .grid-cols-4 {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-}
   .flex-row {
     flex-direction: row;
 }
@@ -1204,6 +1204,9 @@ video {
 }
   .justify-between {
     justify-content: space-between;
+}
+  .gap-2 {
+    gap: 0.5rem;
 }
   .gap-3 {
     gap: 0.75rem;
@@ -1327,6 +1330,9 @@ video {
   .border {
     border-width: 1px;
 }
+  .border-0 {
+    border-width: 0px;
+}
   .border-b {
     border-bottom-width: 1px;
 }
@@ -1423,6 +1429,10 @@ video {
     --tw-bg-opacity: 1;
     background-color: rgb(67 56 202 / var(--tw-bg-opacity));
 }
+  .bg-pink-500 {
+    --tw-bg-opacity: 1;
+    background-color: rgb(236 72 153 / var(--tw-bg-opacity));
+}
   .bg-pink-600 {
     --tw-bg-opacity: 1;
     background-color: rgb(219 39 119 / var(--tw-bg-opacity));
@@ -1441,6 +1451,10 @@ video {
 }
   .bg-primary-light {
     background-color: var(--color-primary-light);
+}
+  .bg-red-50 {
+    --tw-bg-opacity: 1;
+    background-color: rgb(254 242 242 / var(--tw-bg-opacity));
 }
   .bg-transparent {
     background-color: transparent;
@@ -1529,10 +1543,6 @@ video {
     padding-top: 2.5rem;
     padding-bottom: 2.5rem;
 }
-  .py-16 {
-    padding-top: 4rem;
-    padding-bottom: 4rem;
-}
   .py-2 {
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
@@ -1600,6 +1610,9 @@ video {
 }
   .pr-8 {
     padding-right: 2rem;
+}
+  .pt-0 {
+    padding-top: 0px;
 }
   .pt-1 {
     padding-top: 0.25rem;
@@ -1818,6 +1831,14 @@ video {
   .text-primary-lighter {
     color: var(--color-primary-lighter);
 }
+  .text-red-500 {
+    --tw-text-opacity: 1;
+    color: rgb(239 68 68 / var(--tw-text-opacity));
+}
+  .text-red-800 {
+    --tw-text-opacity: 1;
+    color: rgb(153 27 27 / var(--tw-text-opacity));
+}
   .text-teal-600 {
     --tw-text-opacity: 1;
     color: rgb(13 148 136 / var(--tw-text-opacity));
@@ -1825,6 +1846,10 @@ video {
   .text-white {
     --tw-text-opacity: 1;
     color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+  .text-yellow-500 {
+    --tw-text-opacity: 1;
+    color: rgb(234 179 8 / var(--tw-text-opacity));
 }
   .underline {
     text-decoration-line: underline;
@@ -1939,6 +1964,9 @@ video {
   .ease-in-out {
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
+  .ease-linear {
+    transition-timing-function: linear;
+}
   .ease-out {
     transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
 }
@@ -2043,6 +2071,12 @@ video {
   .hover\:shadow:hover {
     --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
     --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+  .hover\:shadow-md:hover {
+    --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
@@ -2153,6 +2187,11 @@ video {
 
   .focus\:ring-offset-white:focus {
     --tw-ring-offset-color: #fff;
+}
+
+  .active\:bg-pink-600:active {
+    --tw-bg-opacity: 1;
+    background-color: rgb(219 39 119 / var(--tw-bg-opacity));
 }
 
   .disabled\:bg-gray-200:disabled {
@@ -2290,6 +2329,11 @@ video {
 
   :is(.dark .dark\:text-primary-lighter) {
     color: var(--color-primary-lighter);
+}
+
+  :is(.dark .dark\:text-red-400) {
+    --tw-text-opacity: 1;
+    color: rgb(248 113 113 / var(--tw-text-opacity));
 }
 
   :is(.dark .dark\:text-white) {
@@ -2761,6 +2805,14 @@ video {
         width: 75%;
     }
 
+    .lg\:w-6\/12 {
+        width: 50%;
+    }
+
+    .lg\:w-8\/12 {
+        width: 66.666667%;
+    }
+
     .lg\:w-screen {
         width: 100vw;
     }
@@ -2798,6 +2850,11 @@ video {
     .lg\:bg-white {
         --tw-bg-opacity: 1;
         background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+    }
+
+    .lg\:px-10 {
+        padding-left: 2.5rem;
+        padding-right: 2.5rem;
     }
 
     .lg\:px-6 {
