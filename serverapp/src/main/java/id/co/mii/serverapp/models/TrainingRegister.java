@@ -33,7 +33,6 @@ public class TrainingRegister extends BaseEntity {
   @OneToMany(mappedBy = "trainingRegister", cascade = CascadeType.ALL)
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   private List<History> histories;
-  @OneToOne
-  @JoinColumn(name = "survey_id")
+  @OneToOne(mappedBy = "trainingRegister", cascade = CascadeType.ALL)
   private Survey survey;
 }
