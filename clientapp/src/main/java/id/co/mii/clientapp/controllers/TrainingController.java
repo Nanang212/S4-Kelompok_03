@@ -1,9 +1,12 @@
 package id.co.mii.clientapp.controllers;
 
 import id.co.mii.clientapp.models.Employee;
+import id.co.mii.clientapp.models.Status;
 import id.co.mii.clientapp.models.Training;
+import id.co.mii.clientapp.models.TrainingRegister;
 import id.co.mii.clientapp.models.dto.request.TrainingRegisterRequest;
 import id.co.mii.clientapp.services.EmployeeService;
+import id.co.mii.clientapp.services.StatusService;
 import id.co.mii.clientapp.services.TrainingRegisterService;
 import id.co.mii.clientapp.services.TrainingService;
 import id.co.mii.clientapp.utils.AuthenticationSessionUtil;
@@ -27,6 +30,7 @@ public class TrainingController {
   private EmployeeService employeeService;
   private TrainingRegisterService trainingRegisterService;
   private AuthenticationSessionUtil authenticationSessionUtil;
+  private StatusService statusService;
 
   @GetMapping
   public String getAll(Model model) {
@@ -97,5 +101,17 @@ public class TrainingController {
     Training training = trainingService.getById(id);
     model.addAttribute("training", training);
     return "training/update";
+  }
+
+  @GetMapping("/register/update/{id}")
+  public String updateRegisterView(@PathVariable Integer id, Model model) {
+    TrainingRegister trainingRegister = trainingRegisterService.getById(id);
+    model.addAttribute("trainingRegister", trainingRegister);
+    return "training/register/update";
+  }
+
+  @ModelAttribute("allStatus")
+  public List<Status> getAll() {
+    return statusService.getAll();
   }
 }

@@ -41,14 +41,14 @@ $(document).ready(function () {
         data: null,
         render: (data, type, row, meta) => {
           return `
-              <div class="flex justify-center gap-3">
+              <div class="flex justify-center gap-2">
                 <!-- Button detail modal -->
                 <button
                   type="button"
                   class="btn btn-primary btn-sm"
                   onclick="window.location.href='/training/${data.id}'"
                 >
-                  <ion-icon name="information-circle" size="large"></ion-icon>
+                  <ion-icon name="information-circle" size="large" class="text-blue-500"></ion-icon>
                 </button>
                 <!-- Button update modal -->
                 <button
@@ -58,7 +58,7 @@ $(document).ready(function () {
                   onclick="window.location.href='/training/update/${data.id}'"
                   ${authorities.includes("ADMIN") ? "" : "hidden"}
                 >
-                  <ion-icon name="create" size="large"></ion-icon>
+                  <ion-icon name="create" size="large" class="text-yellow-500"></ion-icon>
                 </button>
                 <!-- Button delete modal -->
                 <button
@@ -68,7 +68,7 @@ $(document).ready(function () {
                   onclick="deleteTraining(this)"
                   ${authorities.includes("ADMIN") ? "" : "hidden"}
                 >
-                  <ion-icon name="trash" size="large"></ion-icon>
+                  <ion-icon name="trash" size="large" class="text-red-500"></ion-icon>
                 </button>
               </div>
             `;

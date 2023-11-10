@@ -18,7 +18,7 @@ $(document).ready(function () {
           data: null,
           render: (data) => {
             return `
-              <div class="d-flex justify-content-center gap-3">
+              <div class="flex justify-center gap-2">
                 <!-- Button detail modal -->
                 <button
                   type="button"
@@ -30,7 +30,7 @@ $(document).ready(function () {
                   onclick="showRegionDetails(this)"
                   title="Detail ${data.name}"
                 >
-                  <ion-icon name="information-circle" size="large"></ion-icon>
+                  <ion-icon name="information-circle" size="large" class="text-blue-500"></ion-icon>
                 </button>
                 <!-- Button update modal -->
                 <button
@@ -43,7 +43,7 @@ $(document).ready(function () {
                   title="Update ${data.name}"
                   onclick="openUpdateModal(this)"
                 >
-                  <ion-icon name="create" size="large"></ion-icon>
+                  <ion-icon name="create" size="large" class="text-yellow-500"></ion-icon>
                 </button>
                 <!-- Button delete modal -->
                 <button
@@ -54,7 +54,7 @@ $(document).ready(function () {
                   regionName="${data.name}"
                   onclick="confirmDelete(this)"
                 >
-                  <ion-icon name="trash" size="large"></ion-icon>
+                  <ion-icon name="trash" size="large" class="text-red-500"></ion-icon>
                 </button>
               </div>
             `;
