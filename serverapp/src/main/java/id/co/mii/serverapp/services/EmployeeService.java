@@ -5,6 +5,8 @@ import id.co.mii.serverapp.models.Employee;
 import id.co.mii.serverapp.models.Role;
 import id.co.mii.serverapp.models.User;
 import id.co.mii.serverapp.models.dto.requests.EmployeeRequest;
+import id.co.mii.serverapp.models.dto.requests.PasswordRequest;
+import id.co.mii.serverapp.models.dto.responses.LoginResponse;
 import id.co.mii.serverapp.repositories.EmployeeRepository;
 import id.co.mii.serverapp.repositories.UserRepository;
 import id.co.mii.serverapp.services.base.BaseService;
@@ -14,6 +16,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -29,6 +32,22 @@ public class EmployeeService extends BaseService<Employee, Integer> {
   private EmployeeRepository employeeRepository;
   private UserRepository userRepository;
   private RoleService roleService;
+  private PasswordEncoder passwordEncoder;
+  ModelMapper modelMapper;
+
+  public Employee changePassword(PasswordRequest passwordRequest) {
+    Employee currentEmployee = getLoggedInEmployee();
+    String newPassword = passwordRequest.getNewPassword();
+    String oldPassword = passwordRequest.getOldPassword();
+    if (!passwordEncoder.matches(oldPassword, currentEmployee.getUser().getPassword())) {
+      throw new ResponseStatusException(HttpStatus.CONFLICT, "Bad Credential");
+    }
+    if (!passwordRequest.getNewPassword().equalsIgnoreCase(passwordRequest.getOldPassword())) {
+      currentEmployee.getUser().setPassword(passwordEncoder.encode(newPassword));
+      employeeRepository.save(currentEmployee);
+    }
+    return currentEmployee;
+  }
 
   public Employee getLoggedInEmployee() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

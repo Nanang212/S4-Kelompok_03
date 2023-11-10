@@ -42,6 +42,13 @@ public class TrainingController {
             .body(trainingService.create(trainingRequest));
   }
 
+  @PostMapping("/broadcast/{id}")
+  public ResponseEntity<Training> broadcast(@PathVariable Integer id) {
+    return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(trainingService.broadcastEmail(id));
+  }
+
   @GetMapping("/register")
   public ResponseEntity<List<TrainingRegister>> getAllTrainingRegister() {
     return ResponseEntity

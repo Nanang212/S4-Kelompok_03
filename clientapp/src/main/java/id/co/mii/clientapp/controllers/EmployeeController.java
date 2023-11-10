@@ -36,7 +36,6 @@ public class EmployeeController {
             .map(GrantedAuthority::getAuthority)
             .collect(Collectors.toList());
     model.addAttribute("loggedInEmployee", employeeService.getLoggedInUser());
-    model.addAttribute("");
     model.addAttribute("isActive", "employee");
     return "employee/index";
   }
