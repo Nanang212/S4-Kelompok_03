@@ -114,4 +114,5 @@ public class TrainingController {
   public List<Status> getAll() {
     return statusService.getAll();
   }
+  
 }
