@@ -92,6 +92,18 @@
                 </div>
                 <div>
                   <label
+                          for="inputDescriptionTraining"
+                          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Description</label
+                  >
+                  <textarea
+                          name="inputDescriptionTraining"
+                          id="inputDescriptionTraining"
+                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                  ></textarea>
+                </div>
+                <div>
+                  <label
                           for="inputQuotaTraining"
                           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >Quota</label
@@ -118,6 +130,24 @@
                   />
                 </div>
                 <div>
+                  <div class="relative mt-2">
+                    <label
+                            for="inputLocationTraining"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >Location</label
+                    >
+                    <select
+                            id="inputLocationTraining"
+                            onchange="showAddressOrUrlPlatform('Save')"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    >
+                      <option selected>Choose type</option>
+                      <option value="online">Online</option>
+                      <option value="onsite">Onsite</option>
+                    </select>
+                  </div>
+                </div>
+                <div id="addressSaveWrapper" hidden="true">
                   <label
                           for="inputAddressTraining"
                           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -129,19 +159,7 @@
                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                   ></textarea>
                 </div>
-                <div>
-                  <label
-                          for="inputDescriptionTraining"
-                          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >Description</label
-                  >
-                  <textarea
-                          name="inputDescriptionTraining"
-                          id="inputDescriptionTraining"
-                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                  ></textarea>
-                </div>
-                <div>
+                <div id="urlSaveWrapper" hidden="false">
                   <label
                           for="inputUrlTraining"
                           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -153,23 +171,6 @@
                           id="inputUrlTraining"
                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                   />
-                </div>
-                <div>
-                  <div class="relative mt-2">
-                    <label
-                            for="inputLocationTraining"
-                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >Location</label
-                    >
-                    <select
-                            id="inputLocationTraining"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    >
-                      <option selected>Choose type</option>
-                      <option value="online">Online</option>
-                      <option value="onsite">Onsite</option>
-                    </select>
-                  </div>
                 </div>
                 <div>
                   <div class="relative mt-2">
@@ -373,7 +374,7 @@
             data-modal-toggle="addTrainingModal"
             class="block text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 rounded-full"
             type="submit"
-            sec:authorize="hasAnyRole('ADMIN')"
+            sec:authorize="hasRole('ADMIN')"
           >
             Add training
           </button>

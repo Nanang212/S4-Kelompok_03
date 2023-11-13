@@ -16,7 +16,8 @@ $(document).ready(function () {
         data: null,
         render: function (data, type, row, meta) {
           // Calculate the reverse order for the "No" column
-          return meta.settings._iRecordsTotal - meta.row;
+          // return meta.settings._iRecordsTotal - meta.row;
+          return meta.row + 1;
         },
       },
       { data: "title" },
@@ -327,3 +328,13 @@ function deleteTraining(button) {
   });
 }
 
+function showAddressOrUrlPlatform(type) {
+  let isOnline = $('#inputLocationTraining').val() === 'online'
+  if (isOnline) {
+    $(`#url${type}Wrapper`).attr("hidden", false)
+    $(`#address${type}Wrapper`).attr("hidden", true)
+  } else {
+    $(`#url${type}Wrapper`).attr("hidden", true)
+    $(`#address${type}Wrapper`).attr("hidden", false)
+  }
+}

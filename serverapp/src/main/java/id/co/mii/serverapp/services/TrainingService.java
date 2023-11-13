@@ -29,6 +29,14 @@ public class TrainingService extends BaseService<Training, Integer> {
   private StatusService statusService;
   private EmailService emailService;
 
+  @Override
+  public List<Training> getAll() {
+    return super.getAll()
+            .stream()
+            .sorted(Comparator.comparing(Training::getStartDate))
+            .collect(Collectors.toList());
+  }
+
   public List<Integer> getTrainingByAllMonthInYear() {
     List<Integer> countTraining = new ArrayList<>();
     for (int i = 0; i < 12; i++) {
