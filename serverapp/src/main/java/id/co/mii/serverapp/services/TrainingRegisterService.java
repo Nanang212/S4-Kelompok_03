@@ -129,6 +129,9 @@ public class TrainingRegisterService extends BaseService<TrainingRegister, Integ
     Training training = trainingService.getById(trainingRegisterRequest.getTrainingId());
     Employee trainee = employeeService.getById(trainingRegisterRequest.getTraineeId());
     Employee loggedInEmp = employeeService.getLoggedInEmployee();
+    if (training.getAvailSeat() == 0) {
+      throw new ResponseStatusException(HttpStatus.CONFLICT, "Quota has reached the maximum value");
+    }
     if (!loggedInEmp.equals(trainee)) {
       Role admin = roleService.getById(1);
       if (!loggedInEmp.getUser().getRoles().contains(admin)) {
@@ -181,17 +184,11 @@ public class TrainingRegisterService extends BaseService<TrainingRegister, Integ
     Status success = statusService.getById(1);
     TrainingRegister trainingRegister = getById(id);
     Training training = trainingRegister.getTraining();
-    Employee trainee = trainingRegister.getTrainee();
-    long registeredTrainee = getAll()
-            .stream()
-            .filter(tr -> tr.getTraining().equals(training) && tr.getCurrentStatus().equals(success))
-            .count();
-    // TODO : Buat sistem yg dapat mengetahui jumlah peserta dalam suatu training
-    if (training.getQuota() == (int) registeredTrainee) {
-      throw new ResponseStatusException(HttpStatus.CONFLICT, "Registration has exceeded the quota");
-    }
     if (trainingRegisterRequest.getStatusId() != null) {
       Status currentStatus = statusService.getById(trainingRegisterRequest.getStatusId());
+      if (currentStatus.equals(success)) {
+        training.setAvailSeat(training.getAvailSeat() - 1);
+      }
       trainingRegister.setCurrentStatus(currentStatus);
       historyService.create(new History(trainingRegister, currentStatus, trainingRegisterRequest.getNotes()));
     }

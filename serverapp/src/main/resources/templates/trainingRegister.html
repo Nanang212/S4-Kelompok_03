@@ -330,10 +330,10 @@
                         <div style="font-size: 14px; line-height: 160%; text-align: center; word-wrap: break-word;">
                           <p style="font-size: 14px; line-height: 160%;"><span style="font-size: 22px; line-height: 35.2px;">Hi, [[${name}]]</span></p>
                           <p style="font-size: 14px; line-height: 160%;">[[${notes}]]</p>
-                          <span th:if="${isOnline}">
+                          <span th:if="${isOnline && status == 'SUCCESS'}">
                             <p style="font-size: 14px; line-height: 160%;">Platform Url : [[${platformUrl}]]</p>
                           </span>
-                          <span th:if="${!isOnline}">
+                          <span th:if="${!isOnline && status == 'SUCCESS'}">
                             <p style="font-size: 14px; line-height: 160%;">Address : [[${address}]]</p>
                           </span>
                         </div>

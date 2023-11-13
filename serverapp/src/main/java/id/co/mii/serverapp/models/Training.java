@@ -19,6 +19,7 @@ public class Training extends BaseEntity {
   private Date startDate;
   private Date endDate;
   private Integer quota;
+  private Integer availSeat;
   private Integer duration;
   private String address;
   private String platformUrl;

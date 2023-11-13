@@ -87,10 +87,11 @@ public class TrainingController {
       @RequestParam(name = "attachment") MultipartFile attachment, HttpServletResponse response) {
     try {
       trainingRegisterService.create(trainingRegisterRequest, attachment);
+      return "redirect:/training/" + trainingRegisterRequest.getTrainingId();
     } catch (HttpClientErrorException exception) {
-      response.sendError(exception.getRawStatusCode(), exception.getResponseBodyAsString());
+      response.sendError(exception.getRawStatusCode(), exception.getMessage());
+      return "redirect:/training/";
     }
-    return "redirect:/training/" + trainingRegisterRequest.getTrainingId();
   }
 
   @PostMapping("/broadcast/{id}")
