@@ -42,7 +42,7 @@ $(document).ready(function () {
         data: null,
         render: (data, type, row, meta) => {
           return `
-              <div class="flex justify-center gap-2">
+              <div class="flex justify-start gap-2">
                 <!-- Button detail modal -->
                 <button
                   type="button"
