@@ -42,7 +42,7 @@ $(document).ready(function () {
           return `
             <div class="flex items-center justify-center space-x-4">
               <div>
-                <label for="${checkboxSuccessId}">Sukses</label>
+                <label for="${checkboxSuccessId}">Success</label>
                 <input
                   type="checkbox"
                   name="statusCheckbox_${data.id}"
