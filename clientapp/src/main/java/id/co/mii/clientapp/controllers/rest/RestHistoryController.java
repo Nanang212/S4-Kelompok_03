@@ -1,6 +1,7 @@
 package id.co.mii.clientapp.controllers.rest;
 
 import id.co.mii.clientapp.models.History;
+import id.co.mii.clientapp.models.dto.response.HistoryResponse;
 import id.co.mii.clientapp.services.HistoryService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,5 +19,10 @@ public class RestHistoryController {
   @GetMapping
   public List<History> getAll() {
     return historyService.getAll();
+  }
+
+  @GetMapping("/training")
+  public List<HistoryResponse> getAllByTraining() {
+    return historyService.getAllByTraining();
   }
 }

@@ -23,7 +23,7 @@ public class Survey extends BaseEntity {
     private Integer trainerCompotence;
     @Column(name = "learning_quality")
     private Integer learningQuality;
-    @OneToOne(mappedBy = "survey", cascade = CascadeType.ALL)
-    @JoinColumn(name = "training_register_id")
+    @OneToOne
+    @JoinColumn(name = "training_register_id", referencedColumnName = "id")
     private TrainingRegister trainingRegister;
 }
