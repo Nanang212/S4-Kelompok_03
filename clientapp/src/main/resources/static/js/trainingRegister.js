@@ -6,7 +6,7 @@ $(document).ready(function () {
   if (trainingRegisterSection !== null) {
     authorities = trainingRegisterSection.getAttribute("authorities");
   }
-  $("#table-training-registration").DataTable({
+  let dataTable = $("#table-training-registration").DataTable({
     ajax: {
       method: "GET",
       url: "/api/trainings/register",
@@ -27,13 +27,53 @@ $(document).ready(function () {
         },
       },
       {
-        data: "currentStatus",
+        data: null,
         render: function (data, type, row, meta) {
-          let statusColors = getStatusColors(data.id);
-          let textColor = data.id === 2 ? "black" : "white";
-          return `<span style="color: ${textColor}; background-color: ${statusColors.bgColor}; border-radius: 8px; padding: 4px;">${data.name}</span>`;
+          let checkboxSuccessId = `checkbox-success-${meta.row}`;
+          let checkboxPendingId = `checkbox-pending-${meta.row}`;
+          let checkboxRejectId = `checkbox-reject-${meta.row}`;
+
+          return `
+            <div class="flex items-center justify-center space-x-4">
+              <div>
+                <label for="${checkboxSuccessId}">Sukses</label>
+                <input
+                  type="checkbox"
+                  name="statusCheckbox_${data.id}"
+                  id="${checkboxSuccessId}"
+                  ${data.currentStatus.id === 1 ? "checked" : ""}
+                  onchange="updateStatus(${data.id}, 1)"
+                  ${authorities.includes("ADMIN") ? "" : "hidden"}
+                >
+              </div>
+              <div>
+                <label for="${checkboxPendingId}">Pending</label>
+                <input
+                  type="checkbox"
+                  name="statusCheckbox_${data.id}"
+                  id="${checkboxPendingId}"
+                  ${data.currentStatus.id === 2 ? "checked" : ""}
+                  onchange="updateStatus(${data.id}, 2)"
+                  ${authorities.includes("ADMIN") ? "" : "hidden"}
+                >
+              </div>
+              <div>
+                <label for="${checkboxRejectId}">Reject</label>
+                <input
+                  type="checkbox"
+                  name="statusCheckbox_${data.id}"
+                  id="${checkboxRejectId}"
+                  ${data.currentStatus.id === 3 ? "checked" : ""}
+                  onchange="updateStatus(${data.id}, 3)"
+                  ${authorities.includes("ADMIN") ? "" : "hidden"}
+                >
+              </div>
+            </div>
+          `;
         },
       },
+
+
       {
         data: null,
         render: (data, type, row, meta) => {
@@ -46,21 +86,7 @@ $(document).ready(function () {
                     onclick="downloadAttachment(this)"
                     title="Download attachment"
                   >
-                  <ion-icon name="download" size="large" class="text-blue-500"></ion-icon>
-                </button>
-                <!-- Button update modal -->
-                <button
-                  type="button"
-                  class="btn btn-warning btn-sm"
-                  data-modal-target="updateTrainingRegistrationModal"
-                  data-modal-toggle="updateTrainingRegistrationModal"
-                  registrationId="${data.id}"
-                  onclick="window.location.href='/training/register/update/${
-                    data.id
-                  }'"
-                  ${authorities.includes("ADMIN") ? "" : "hidden"}
-                >
-                  <ion-icon name="create" size="large" class="text-yellow-500"></ion-icon>
+                  <ion-icon name="download" size="large" class="text-green-500"></ion-icon>
                 </button>
                 <!-- Button cancel -->
                 <button
@@ -89,6 +115,15 @@ $(document).ready(function () {
     ],
   });
 });
+
+
+function updateStatus(registrationId, newStatus) {
+  // Dapatkan nilai isChecked
+  let isChecked = $(`#checkbox-${newStatus}-${registrationId}`).prop("checked");
+
+  // Panggil fungsi untuk mengirim permintaan Ajax untuk memperbarui status di database
+  updateStatusInDatabase(registrationId, newStatus, isChecked);
+}
 
 function getStatusColors(statusId) {
   switch (statusId) {
@@ -193,53 +228,6 @@ function setStatus() {
   });
 }
 
-// function updateTrainingRegister(button) {
-//   let registrationId = button.getAttribute("registrationId");
-//   $.ajax({
-//     method: "GET",
-//     url: `/api/trainings/register/${registrationId}`,
-//     dataType: "JSON",
-//     contentType: "application/json",
-//     success: (res) => {
-//       $("#inputNotes").val(res.notes);
-//       $("#statusSelection").val(res.currentStatus.id);
-//       $("#btnUpdateTrainingRegistration").one("click", (event) => {
-//         event.preventDefault();
-//         $.ajax({
-//           method: "PUT",
-//           url: `/api/trainings/register/${res.id}`,
-//           dataType: "JSON",
-//           contentType: "application/json",
-//           data: JSON.stringify({
-//             statusId: $("#statusSelection").val(),
-//             notes: $("#inputNotes").val(),
-//           }),
-//           beforeSend: function () {
-//             setCsrf();
-//           },
-//           success: (res) => {
-//             $("#updateTrainingRegistrationModal").hide();
-//             $("#table-training-registration").DataTable().ajax.reload();
-//             Swal.fire({
-//               position: "center",
-//               icon: "success",
-//               title: "Registration status updated...",
-//               showConfirmButton: false,
-//               timer: 2000,
-//             });
-//           },
-//           error: (error) => {
-//             console.log(error);
-//           },
-//         });
-//       });
-//     },
-//     error: (error) => {
-//       console.log(error);
-//     },
-//   });
-// }
-
 function deleteTrainingRegistration(button) {
   let id = button.getAttribute("registrationId");
   Swal.fire({
@@ -298,7 +286,7 @@ $("#btnUpdateTrainingRegistration").one("click", (event) => {
       setCsrf();
     },
     success: (res) => {
-      showToast("success", "Pendaftaran pelatihan berhasil diperbarui").then(
+      showToast("success", "Training registration has been successfully updated").then(
         () => history.back()
       );
     },
@@ -306,9 +294,33 @@ $("#btnUpdateTrainingRegistration").one("click", (event) => {
       let errorJsn = error.responseJSON;
       console.log(error);
 
-      // showToast("error", errorJsn.message).then(() => {
-      //   location.reload();
-      // });
     },
   });
 });
+
+function updateStatusInDatabase(registrationId, newStatus, isChecked) {
+  $.ajax({
+    method: "PUT",
+    url: `/api/trainings/register/${registrationId}`,
+    dataType: "JSON",
+    contentType: "application/json",
+    data: JSON.stringify({
+      statusId: newStatus,
+      isChecked: isChecked,
+    }),
+    beforeSend: function () {
+      setCsrf();
+    },
+    success: function (res) {
+      showToast("success", "Training registration has been successfully updated").then(
+        () => {
+          $("#table-training-registration").DataTable().ajax.reload();
+        }
+      );
+    },
+    error: function (error) {
+      let errorJsn = error.responseJSON;
+      console.log(error);
+    },
+  });
+}
