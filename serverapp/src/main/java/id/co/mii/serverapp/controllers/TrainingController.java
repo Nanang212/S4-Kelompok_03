@@ -4,6 +4,7 @@ import id.co.mii.serverapp.models.Training;
 import id.co.mii.serverapp.models.TrainingRegister;
 import id.co.mii.serverapp.models.dto.requests.TrainingRegisterRequest;
 import id.co.mii.serverapp.models.dto.requests.TrainingRequest;
+import id.co.mii.serverapp.models.dto.responses.TrainingRegisterResponse;
 import id.co.mii.serverapp.services.TrainingRegisterService;
 import id.co.mii.serverapp.services.TrainingService;
 import lombok.AllArgsConstructor;
@@ -54,6 +55,13 @@ public class TrainingController {
     return ResponseEntity
             .status(HttpStatus.OK)
             .body(trainingRegisterService.getAll());
+  }
+
+  @GetMapping("/register/training")
+  public ResponseEntity<List<TrainingRegisterResponse>> getAllTrainingRegisterByTraining() {
+    return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(trainingRegisterService.getAllByTraining());
   }
 
   @GetMapping("/register/{id}")
