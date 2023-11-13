@@ -52,26 +52,46 @@ $(document).ready(function () {
     }
   });
 
-  function formatDetailContent(data) {
-    let historyEl = ''
-    $.each(data.histories, function (index, history) {
+
+  function formatDetailContent(data, currentPositionIndex) {
+    let historyEl = '';
+
+    // Iterasi dari indeks terakhir ke indeks pertama
+    for (let index = data.histories.length - 1; index >= 0; index--) {
+      const history = data.histories[index];
+
+      // Tentukan kelas warna radio button
+      const radioButtonClass = index === currentPositionIndex ? 'text-green-500' : 'text-green-500';
+
+      // Tentukan apakah radio button harus dicentang atau tidak
+      const isChecked = index === data.histories.length - 1 ? 'checked' : '';
+
+      // Setiap radio button diatur untuk terceklis (checked), dinonaktifkan (disabled), dan memiliki warna abu-abu atau hijau
+      const radioButton = `
+        <input type="radio" id="radio${index}" name="historyRadio" ${isChecked} disabled class="${radioButtonClass}">
+        <label for="radio${index}"></label>
+      `;
+
       historyEl += `
-        <div>
-          <p>Status: ${history.status.name}</p>
-          <p>Notes: ${history.notes}</p>
-          <p>Date: ${formatDate(history.date)}</p>
+        <div class="flex items-center gap-3">
+          <div class="flex-shrink-0 mr-2">
+            ${radioButton}
+          </div>
+          <div>
+            <p>Status: ${history.status.name}</p>
+            <p>Notes: ${history.notes}</p>
+            <p>Date: ${formatDate(history.date)}</p>
+          </div>
         </div>
-        `;
-    })
+        <br>
+      `;
+    }
+
     return historyEl;
-    // const formattedDate = formatDate(data.createdAt);
-    // return `
-    //   <div>
-    //     <p>Status: ${data.status.name}</p>
-    //     <p>Waktu: ${formattedDate}</p>
-    //   </div>
-    // `;
   }
+
+
+
 
   function formatDate(inputDate) {
     const options = {

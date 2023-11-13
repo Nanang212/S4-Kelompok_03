@@ -15,7 +15,8 @@ $(document).ready(function () {
       {
         data: null,
         render: function (data, type, row, meta) {
-          return meta.row + 1;
+          // Calculate the reverse order for the "No" column
+          return meta.settings._iRecordsTotal - meta.row;
         },
       },
       { data: "title" },
@@ -77,6 +78,7 @@ $(document).ready(function () {
     ],
   });
 });
+
 
 $('#btnSaveTraining').one("click", (event) => {
   event.preventDefault()
