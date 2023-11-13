@@ -625,6 +625,9 @@ video {
   .pointer-events-none {
     pointer-events: none;
 }
+  .visible {
+    visibility: visible;
+}
   .static {
     position: static;
 }
@@ -992,9 +995,6 @@ video {
   .flex-shrink-0 {
     flex-shrink: 0;
 }
-  .flex-shrink {
-    flex-shrink: 1;
-}
   .flex-grow {
     flex-grow: 1;
 }
@@ -1114,6 +1114,9 @@ video {
 }
   .items-center {
     align-items: center;
+}
+  .justify-start {
+    justify-content: flex-start;
 }
   .justify-end {
     justify-content: flex-end;
@@ -1737,10 +1740,6 @@ video {
   .text-yellow-500 {
     --tw-text-opacity: 1;
     color: rgb(234 179 8 / var(--tw-text-opacity));
-}
-  .text-black {
-    --tw-text-opacity: 1;
-    color: rgb(0 0 0 / var(--tw-text-opacity));
 }
   .antialiased {
     -webkit-font-smoothing: antialiased;

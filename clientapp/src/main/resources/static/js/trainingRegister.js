@@ -6,6 +6,8 @@ $(document).ready(function () {
   if (trainingRegisterSection !== null) {
     authorities = trainingRegisterSection.getAttribute("authorities");
   }
+  let showStatusColumn = !authorities.includes("TRAINEE");
+
   let dataTable = $("#table-training-registration").DataTable({
     ajax: {
       method: "GET",
@@ -29,6 +31,10 @@ $(document).ready(function () {
       {
         data: null,
         render: function (data, type, row, meta) {
+          if (!showStatusColumn) {
+            return "";
+          }
+
           let checkboxSuccessId = `checkbox-success-${meta.row}`;
           let checkboxPendingId = `checkbox-pending-${meta.row}`;
           let checkboxRejectId = `checkbox-reject-${meta.row}`;
@@ -76,16 +82,13 @@ $(document).ready(function () {
         data: null,
         render: (data, type, row, meta) => {
           return `
-              <div class="flex justify-center gap-3">
+              <div class="flex justify-start gap-3">
                 <button
-                    type="button"
-                    class="btn btn-warning btn-sm"
-                    registrationId="${data.id}"
-                    onclick="downloadAttachment(this)"
-                    title="Download attachment"
-                  >
-                  <ion-icon name="download" size="large" class="text-green-500"></ion-icon>
-                </button>
+                type="button"
+                class="btn btn-primary btn-sm"
+              >
+                <ion-icon name="information-circle" size="large" class="text-blue-500"></ion-icon>
+              </button>
                 <!-- Button cancel -->
                 <button
                   type="button"
@@ -95,6 +98,15 @@ $(document).ready(function () {
                   ${authorities.includes("TRAINEE") ? "" : "hidden"}
                 >
                   <ion-icon name="arrow-undo-circle" size="large" class="text-red-500"></ion-icon>
+                </button>
+                <button
+                    type="button"
+                    class="btn btn-warning btn-sm"
+                    registrationId="${data.id}"
+                    onclick="downloadAttachment(this)"
+                    title="Download attachment"
+                  >
+                  <ion-icon name="download" size="large" class="text-green-500"></ion-icon>
                 </button>
                 <!-- Button delete modal -->
                 <button
@@ -111,8 +123,16 @@ $(document).ready(function () {
         },
       },
     ],
+    columnDefs: [
+      {
+        targets: [3], // Index kolom "Status"
+        visible: showStatusColumn,
+      },
+    ],
+    // ...
   });
 });
+
 
 
 function updateStatus(registrationId, newStatus) {
@@ -284,14 +304,14 @@ $("#btnUpdateTrainingRegistration").one("click", (event) => {
       setCsrf();
     },
     success: (res) => {
-      showToast("success", "Training registration has been successfully updated").then(
-        () => history.back()
-      );
+      showToast(
+        "success",
+        "Training registration has been successfully updated"
+      ).then(() => history.back());
     },
     error: (error) => {
       let errorJsn = error.responseJSON;
       console.log(error);
-
     },
   });
 });
@@ -310,11 +330,12 @@ function updateStatusInDatabase(registrationId, newStatus, isChecked) {
       setCsrf();
     },
     success: function (res) {
-      showToast("success", "Training registration has been successfully updated").then(
-        () => {
-          $("#table-training-registration").DataTable().ajax.reload();
-        }
-      );
+      showToast(
+        "success",
+        "Training registration has been successfully updated"
+      ).then(() => {
+        $("#table-training-registration").DataTable().ajax.reload();
+      });
     },
     error: function (error) {
       let errorJsn = error.responseJSON;
