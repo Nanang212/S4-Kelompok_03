@@ -126,6 +126,7 @@ public class TrainingService extends BaseService<Training, Integer> {
               });
     }
     training.setTrainer(trainer);
+    training.setAvailSeat(training.getQuota());
     training.setCreatedBy(currentEmp.getUser().getUsername());
     training.setUpdatedBy(currentEmp.getUser().getUsername());
     return create(training);
