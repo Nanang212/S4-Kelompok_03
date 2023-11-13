@@ -72,8 +72,6 @@ $(document).ready(function () {
           `;
         },
       },
-
-
       {
         data: null,
         render: (data, type, row, meta) => {
