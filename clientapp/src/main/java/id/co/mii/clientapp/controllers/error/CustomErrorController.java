@@ -25,12 +25,12 @@ public class CustomErrorController implements ErrorController {
         message= HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase();
         model.addAttribute("code", statuscode);
         model.addAttribute("message", message);
-        return "error/index";
+        return "page-error/500";
       } else if (statuscode == HttpStatus.NOT_FOUND.value()){
         message= HttpStatus.NOT_FOUND.getReasonPhrase();
         model.addAttribute("code", statuscode);
         model.addAttribute("message", message);
-        return "error/index";
+        return "page-error/404";
       } else if (statuscode == HttpStatus.FORBIDDEN.value()){
         message= HttpStatus.FORBIDDEN.getReasonPhrase();
         model.addAttribute("code", statuscode);
