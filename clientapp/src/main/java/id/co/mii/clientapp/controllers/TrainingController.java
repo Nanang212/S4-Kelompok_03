@@ -120,8 +120,4 @@ public class TrainingController {
     return "training/register/update";
   }
 
-//  @ModelAttribute("allStatus")
-//  public List<Status> getAll() {
-//    return statusService.getAll();
-//  }
 }
