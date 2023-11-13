@@ -81,7 +81,6 @@ public class TrainingController {
     return "training/register/index";
   }
 
-  // TODO : Beri validasi apabila user sudah berpartisipasi
   @PostMapping("/register")
   @SneakyThrows
   public String registTraining(@ModelAttribute TrainingRegisterRequest trainingRegisterRequest,
