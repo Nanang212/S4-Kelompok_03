@@ -3,6 +3,7 @@ package id.co.mii.serverapp.services;
 import id.co.mii.serverapp.models.*;
 import id.co.mii.serverapp.models.dto.requests.EmailRequest;
 import id.co.mii.serverapp.models.dto.requests.TrainingRegisterRequest;
+import id.co.mii.serverapp.models.dto.responses.TrainingRegisterResponse;
 import id.co.mii.serverapp.repositories.TrainingRegisterRepository;
 import id.co.mii.serverapp.services.base.BaseService;
 import lombok.AllArgsConstructor;
@@ -28,6 +29,28 @@ public class TrainingRegisterService extends BaseService<TrainingRegister, Integ
   private StatusService statusService;
   private HistoryService historyService;
   private EmailService emailService;
+
+  public List<TrainingRegisterResponse> getAllByTraining() {
+    List<Training> trainings = trainingService.getAll();
+    return trainings.stream()
+            .map(training -> {
+              TrainingRegisterResponse trainingRegisterResponse = new TrainingRegisterResponse();
+              List<Map<String, Object>> traineeStatus = training.getTrainingRegisters()
+                      .stream()
+                      .map(trainingRegister -> {
+                        Map<String, Object> map = new HashMap<>();
+                        map.put("trainee", trainingRegister.getTrainee());
+                        map.put("status", trainingRegister.getCurrentStatus());
+                        return map;
+                      })
+                      .collect(Collectors.toList());
+              trainingRegisterResponse.setTraining(training);
+              trainingRegisterResponse.setTrainer(training.getTrainer());
+              trainingRegisterResponse.setTraineeStatus(traineeStatus);
+              return trainingRegisterResponse;
+            })
+            .collect(Collectors.toList());
+  }
 
   public List<TrainingRegister> getAll() {
     Employee loggedInEmp = employeeService.getLoggedInEmployee();
