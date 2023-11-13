@@ -61,7 +61,14 @@ public class TrainingController {
   public ResponseEntity<List<TrainingRegisterResponse>> getAllTrainingRegisterByTraining() {
     return ResponseEntity
             .status(HttpStatus.OK)
-            .body(trainingRegisterService.getAllByTraining());
+            .body(trainingRegisterService.getAllGroupByTraining());
+  }
+
+  @GetMapping("/register/training/{id}")
+  public ResponseEntity<TrainingRegisterResponse> getByIdGroupByTraining(@PathVariable Integer id) {
+    return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(trainingRegisterService.getByIdGroupByTraining(id));
   }
 
   @GetMapping("/register/{id}")

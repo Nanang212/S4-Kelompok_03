@@ -30,7 +30,7 @@ public class TrainingRegisterService extends BaseService<TrainingRegister, Integ
   private HistoryService historyService;
   private EmailService emailService;
 
-  public List<TrainingRegisterResponse> getAllByTraining() {
+  public List<TrainingRegisterResponse> getAllGroupByTraining() {
     List<Training> trainings = trainingService.getAll();
     return trainings.stream()
             .map(training -> {
@@ -50,6 +50,24 @@ public class TrainingRegisterService extends BaseService<TrainingRegister, Integ
               return trainingRegisterResponse;
             })
             .collect(Collectors.toList());
+  }
+
+  public TrainingRegisterResponse getByIdGroupByTraining(Integer id) {
+    Training training = trainingService.getById(id);
+    TrainingRegisterResponse trainingRegisterResponse = new TrainingRegisterResponse();
+    trainingRegisterResponse.setTraining(training);
+    trainingRegisterResponse.setTrainer(training.getTrainer());
+    List<Map<String, Object>> traineeStatus = training.getTrainingRegisters()
+            .stream()
+            .map(tr -> {
+              Map<String, Object> map = new HashMap<>();
+              map.put("trainee", tr.getTrainee());
+              map.put("status", tr.getCurrentStatus());
+              return map;
+            })
+            .collect(Collectors.toList());
+    trainingRegisterResponse.setTraineeStatus(traineeStatus);
+    return trainingRegisterResponse;
   }
 
   public List<TrainingRegister> getAll() {
