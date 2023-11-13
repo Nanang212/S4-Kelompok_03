@@ -1,6 +1,7 @@
 package id.co.mii.clientapp.services;
 
 import id.co.mii.clientapp.models.History;
+import id.co.mii.clientapp.models.dto.response.HistoryResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
@@ -25,6 +26,15 @@ public class HistoryService {
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<List<History>>() {}
+        ).getBody();
+    }
+
+    public List<HistoryResponse> getAllByTraining() {
+        return restTemplate.exchange(
+                url.concat("training"),
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<HistoryResponse>>() {}
         ).getBody();
     }
 

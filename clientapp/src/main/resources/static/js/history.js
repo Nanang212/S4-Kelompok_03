@@ -2,7 +2,7 @@ $(document).ready(function () {
   const table = $("#table-history").DataTable({
     ajax: {
       method: "GET",
-      url: "/api/histories",
+      url: "/api/histories/training",
       dataSrc: "",
     },
     columns: [
@@ -21,23 +21,23 @@ $(document).ready(function () {
         data: null,
         render: (data) => {
           const rootUrl = window.location.origin;
-          return `<a href="${rootUrl}/training/${data.trainingRegister.training.id}">${data.trainingRegister.training.title}</a>`;
+          return `<a href="${rootUrl}/training/${data.training.id}">${data.training.title}</a>`;
         },
       },
       {
         data: null,
         render: (data) => {
-          return `${data.trainingRegister.trainee.user.username}`;
+          return `${data.trainee.user.username}`;
         },
       },
-      {
-        data: "status",
-        render: function (data) {
-          const statusColors = getStatusColors(data.id);
-          const textColor = data.id === 2 ? "black" : "white";
-          return `<span style="color: ${textColor}; background-color: ${statusColors.bgColor}; border-radius: 8px; padding: 4px;">${data.name}</span>`;
-        },
-      },
+      // {
+      //   data: "status",
+      //   render: function (data) {
+      //     const statusColors = getStatusColors(data.id);
+      //     const textColor = data.id === 2 ? "black" : "white";
+      //     return `<span style="color: ${textColor}; background-color: ${statusColors.bgColor}; border-radius: 8px; padding: 4px;">${data.name}</span>`;
+      //   },
+      // },
     ],
   });
 
@@ -53,13 +53,24 @@ $(document).ready(function () {
   });
 
   function formatDetailContent(data) {
-    const formattedDate = formatDate(data.createdAt);
-    return `
-      <div>
-        <p>Status: ${data.status.name}</p>
-        <p>Waktu: ${formattedDate}</p>
-      </div>
-    `;
+    let historyEl = ''
+    $.each(data.histories, function (index, history) {
+      historyEl += `
+        <div>
+          <p>Status: ${history.status.name}</p>
+          <p>Notes: ${history.notes}</p>
+          <p>Date: ${formatDate(history.date)}</p>
+        </div>
+        `;
+    })
+    return historyEl;
+    // const formattedDate = formatDate(data.createdAt);
+    // return `
+    //   <div>
+    //     <p>Status: ${data.status.name}</p>
+    //     <p>Waktu: ${formattedDate}</p>
+    //   </div>
+    // `;
   }
 
   function formatDate(inputDate) {

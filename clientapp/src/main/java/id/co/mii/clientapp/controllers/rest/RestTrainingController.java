@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.List;
 
@@ -54,8 +55,17 @@ public class RestTrainingController {
   }
 
   @PostMapping
-  public Training create(@RequestBody TrainingRequest regionRequest) {
-    return trainingService.create(regionRequest);
+  public ResponseEntity<?> create(@RequestBody TrainingRequest trainingRequest) {
+    try {
+      return ResponseEntity
+              .status(HttpStatus.OK)
+              .body(trainingService.create(trainingRequest));
+    } catch (HttpClientErrorException exception) {
+      return ResponseEntity
+              .status(exception.getRawStatusCode())
+              .headers(exception.getResponseHeaders())
+              .body(exception.getResponseBodyAsString());
+    }
   }
 
   @PostMapping("/register/cancel/{id}")

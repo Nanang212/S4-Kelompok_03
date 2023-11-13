@@ -1,6 +1,11 @@
 // All javascript code in this project for now is just for demo DON'T RELY ON IT
 $(document).ready(function () {
-  setBarChart()
+  let dashboardSection = document.getElementById("dashboardSection");
+  let authorities;
+  if (dashboardSection !== null) {
+    authorities = dashboardSection.getAttribute("authorities");
+    authorities.includes('ADMIN') ? setBarChart() : null;
+  }
 })
 const random = (max = 100) => {
   return Math.round(Math.random() * max) + 20;
