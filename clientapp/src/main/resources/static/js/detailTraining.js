@@ -1,6 +1,6 @@
 $(document).ready(function () {
   let detailRegisterTraining = document.getElementById("detailRegisterTraining");
-  let id = detailRegisterTraining.getAttribute("id")
+  let id = detailRegisterTraining.getAttribute("trId")
   console.log(id);
     $("#detail-training-register").DataTable({
       ajax: {

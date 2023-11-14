@@ -5,6 +5,7 @@ import id.co.mii.clientapp.models.Status;
 import id.co.mii.clientapp.models.Training;
 import id.co.mii.clientapp.models.TrainingRegister;
 import id.co.mii.clientapp.models.dto.request.TrainingRegisterRequest;
+import id.co.mii.clientapp.models.dto.response.TrainingRegisterResponse;
 import id.co.mii.clientapp.services.EmployeeService;
 import id.co.mii.clientapp.services.StatusService;
 import id.co.mii.clientapp.services.TrainingRegisterService;
@@ -107,7 +108,7 @@ public class TrainingController {
   }
 
   @GetMapping("/attend")
-  public String getAttendedTraining(Model model) {
+  public String getAttendedTraining(Model model ) {
     Employee loggedInEmp = employeeService.getLoggedInUser();
     model.addAttribute("trainings", trainingService.getAllByTrainee(loggedInEmp.getUser().getUsername()));
     return "training/attend";
@@ -133,7 +134,7 @@ public class TrainingController {
 
   @GetMapping("/register/detail/{id}")
   public String getTrainingRegisterById(@PathVariable Integer id, Model model) {
-    TrainingRegister trainingRegister = trainingRegisterService.getById(id);
+    TrainingRegisterResponse trainingRegister = trainingRegisterService.getByIdGroupByTraining(id);
     model.addAttribute("trainingRegister", trainingRegister);
     model.addAttribute("id", id);
     return "training/register/detail";

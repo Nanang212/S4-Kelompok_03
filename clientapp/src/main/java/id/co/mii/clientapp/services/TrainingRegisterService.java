@@ -92,7 +92,7 @@ public class TrainingRegisterService {
 
     public TrainingRegisterResponse getByIdGroupByTraining(Integer id) {
     return restTemplate
-            .exchange(url.concat("/register/training/{id}"), HttpMethod.GET, null, TrainingRegisterResponse.class)
+            .exchange(url.concat("/training/{id}"), HttpMethod.GET, null, TrainingRegisterResponse.class)
             .getBody();
   }
 }
