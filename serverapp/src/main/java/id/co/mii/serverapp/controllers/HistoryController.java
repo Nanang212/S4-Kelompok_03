@@ -1,6 +1,7 @@
 package id.co.mii.serverapp.controllers;
 
 import id.co.mii.serverapp.models.History;
+import id.co.mii.serverapp.models.dto.responses.HistoryResponse;
 import id.co.mii.serverapp.services.HistoryService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,4 +24,12 @@ public class HistoryController {
             .status(HttpStatus.OK)
             .body(historyService.getAll());
   }
+
+  @GetMapping("/training")
+  public ResponseEntity<List<HistoryResponse>> getHistoriesByTraining() {
+    return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(historyService.getHistoriesByTraining());
+  }
+
 }

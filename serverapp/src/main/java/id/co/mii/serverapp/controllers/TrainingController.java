@@ -4,6 +4,7 @@ import id.co.mii.serverapp.models.Training;
 import id.co.mii.serverapp.models.TrainingRegister;
 import id.co.mii.serverapp.models.dto.requests.TrainingRegisterRequest;
 import id.co.mii.serverapp.models.dto.requests.TrainingRequest;
+import id.co.mii.serverapp.models.dto.responses.TrainingRegisterResponse;
 import id.co.mii.serverapp.services.TrainingRegisterService;
 import id.co.mii.serverapp.services.TrainingService;
 import lombok.AllArgsConstructor;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @AllArgsConstructor
@@ -49,11 +51,46 @@ public class TrainingController {
             .body(trainingService.broadcastEmail(id));
   }
 
+  @GetMapping("/register/logged-in-emp/training/{id}")
+  public ResponseEntity<TrainingRegister> getByTrainingAndLoggedInEmployee(@PathVariable Integer id) {
+    return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(trainingRegisterService.getByTrainingAndLoggedInEmployee(id));
+  }
+
+  @GetMapping(value = "/register/cancel")
+  public ResponseEntity<List<TrainingRegisterResponse>> getAllTrainingCancellation() {
+    return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(trainingRegisterService.getAllCancellationGroupByTraining());
+  }
+
+  @GetMapping(value = "/register/cancel/{id}")
+  public ResponseEntity<List<Map<String, Object>>> getCancellationByIdGroupByTraining(@PathVariable Integer id) {
+    return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(trainingRegisterService.getCancellationByIdGroupByTraining(id));
+  }
+
   @GetMapping("/register")
   public ResponseEntity<List<TrainingRegister>> getAllTrainingRegister() {
     return ResponseEntity
             .status(HttpStatus.OK)
             .body(trainingRegisterService.getAll());
+  }
+
+  @GetMapping("/register/training")
+  public ResponseEntity<List<TrainingRegisterResponse>> getAllTrainingRegisterByTraining() {
+    return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(trainingRegisterService.getAllGroupByTraining());
+  }
+
+  @GetMapping("/register/training/{id}")
+  public ResponseEntity<List<Map<String, Object>>> getByIdGroupByTraining(@PathVariable Integer id) {
+    return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(trainingRegisterService.getByIdGroupByTraining(id));
   }
 
   @GetMapping("/register/{id}")

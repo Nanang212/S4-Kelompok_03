@@ -48,16 +48,16 @@
                     >
                       <h5
                         class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
-                        th:text="${training.title}"
+                        th:text="${training.title.length() >= 20 ? training.title.substring(0, 20) : training.title}"
                       ></h5>
                     </a>
                     <p
                       class="mb-3 font-normal text-gray-700 dark:text-gray-400"
-                      th:text="${training.description.length() >= 30 ? training.description.substring(1, 25) : training.description}"
+                      th:text="${training.description.length() >= 30 ? training.description.substring(0, 25) : training.description}"
                     ></p>
                     <div class="flex gap-3">
                       <a
-                        th:href="@{'http://localhost:9090/training/{id}'(id=${training.id})}"
+                        th:href="@{'http://localhost:9090/survey/create/{id}'(id=${training.id})}"
                         class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-green-700 rounded-lg hover-bg-blue-800 focus:ring-4 focus:outline-none focus-ring-blue-300 dark:bg-blue-600 dark:hover-bg-blue-700 dark:focus-ring-blue-800"
                       >
                         satisfaction survey

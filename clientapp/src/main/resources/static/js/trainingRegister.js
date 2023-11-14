@@ -6,11 +6,15 @@ $(document).ready(function () {
   if (trainingRegisterSection !== null) {
     authorities = trainingRegisterSection.getAttribute("authorities");
   }
+  let showStatusColumn = !authorities.includes("TRAINEE");
+
   let dataTable = $("#table-training-registration").DataTable({
     ajax: {
       method: "GET",
-      url: "/api/trainings/register",
+      url: "/api/trainings/register/training",
       dataSrc: "",
+      data: null,//mencoba menambahkan urutan tapi masih belum berhasil
+      // data: { order: [["currentStatus.id", "desc"]] },//mencoba menambahkan urutan tapi masih belum berhasil
     },
     columns: [
       {
@@ -23,134 +27,93 @@ $(document).ready(function () {
       {
         data: null,
         render: (data) => {
-          return data.trainee.user.username;
+          return `${data.trainer !== null ? data.trainer.user.username :'-' }`;
         },
       },
-      {
-        data: null,
-        render: function (data, type, row, meta) {
-          let checkboxSuccessId = `checkbox-success-${meta.row}`;
-          let checkboxPendingId = `checkbox-pending-${meta.row}`;
-          let checkboxRejectId = `checkbox-reject-${meta.row}`;
+      // {
+      //   data: null,
+      //   render: function (data, type, row, meta) {
+      //     if (!showStatusColumn) {
+      //       return "";
+      //     }
 
-          return `
-            <div class="flex items-center justify-center space-x-4">
-              <div>
-                <label for="${checkboxSuccessId}">Sukses</label>
-                <input
-                  type="checkbox"
-                  name="statusCheckbox_${data.id}"
-                  id="${checkboxSuccessId}"
-                  ${data.currentStatus.id === 1 ? "checked" : ""}
-                  onchange="updateStatus(${data.id}, 1)"
-                  ${authorities.includes("ADMIN") ? "" : "hidden"}
-                >
-              </div>
-              <div>
-                <label for="${checkboxPendingId}">Pending</label>
-                <input
-                  type="checkbox"
-                  name="statusCheckbox_${data.id}"
-                  id="${checkboxPendingId}"
-                  ${data.currentStatus.id === 2 ? "checked" : ""}
-                  onchange="updateStatus(${data.id}, 2)"
-                  ${authorities.includes("ADMIN") ? "" : "hidden"}
-                >
-              </div>
-              <div>
-                <label for="${checkboxRejectId}">Reject</label>
-                <input
-                  type="checkbox"
-                  name="statusCheckbox_${data.id}"
-                  id="${checkboxRejectId}"
-                  ${data.currentStatus.id === 3 ? "checked" : ""}
-                  onchange="updateStatus(${data.id}, 3)"
-                  ${authorities.includes("ADMIN") ? "" : "hidden"}
-                >
-              </div>
-            </div>
-          `;
-        },
-      },
+      //     let checkboxSuccessId = `checkbox-success-${meta.row}`;
+      //     let checkboxPendingId = `checkbox-pending-${meta.row}`;
+      //     let checkboxRejectId = `checkbox-reject-${meta.row}`;
 
+      //     let isStatusSuccess = data.currentStatus.id === 1;
 
+      //     return `
+      //     <div class="flex items-center justify-center space-x-4">
+      //       <div>
+      //         <label for="${checkboxSuccessId}">Success</label>
+      //         <input
+      //           type="checkbox"
+      //           name="statusCheckbox_${data.id}"
+      //           id="${checkboxSuccessId}"
+      //           ${data.currentStatus.id === 1 ? "checked" : ""}
+      //           onchange="updateStatus(${data.id}, 1)"
+      //           ${authorities.includes("ADMIN") ? "" : "hidden"}
+      //           ${isStatusSuccess ? "disabled" : ""}
+      //         >
+      //       </div>
+      //       <div>
+      //         <label for="${checkboxPendingId}">Pending</label>
+      //         <input
+      //           type="checkbox"
+      //           name="statusCheckbox_${data.id}"
+      //           id="${checkboxPendingId}"
+      //           ${data.currentStatus.id === 2 ? "checked" : ""}
+      //           onchange="updateStatus(${data.id}, 2)"
+      //           ${authorities.includes("ADMIN") ? "" : "hidden"}
+      //           ${isStatusSuccess ? "disabled" : ""}
+      //         >
+      //       </div>
+      //       <div>
+      //         <label for="${checkboxRejectId}">Reject</label>
+      //         <input
+      //           type="checkbox"
+      //           name="statusCheckbox_${data.id}"
+      //           id="${checkboxRejectId}"
+      //           ${data.currentStatus.id === 3 ? "checked" : ""}
+      //           onchange="updateStatus(${data.id}, 3)"
+      //           ${authorities.includes("ADMIN") ? "" : "hidden"}
+      //           ${isStatusSuccess ? "disabled" : ""}
+      //         >
+      //       </div>
+      //     </div>
+      //   `;
+      //   },
+      // },
       {
         data: null,
         render: (data, type, row, meta) => {
           return `
-              <div class="flex justify-center gap-3">
-                <button
-                    type="button"
-                    class="btn btn-warning btn-sm"
-                    registrationId="${data.id}"
-                    onclick="downloadAttachment(this)"
-                    title="Download attachment"
-                  >
-                  <ion-icon name="download" size="large" class="text-green-500"></ion-icon>
-                </button>
-                <!-- Button cancel -->
+              <div class="flex justify-start gap-3">
+              <!-- Button cancel -->
                 <button
                   type="button"
                   class="btn btn-danger btn-sm"
-                  registrationId="${data.id}"
+                  registrationId="${data.training.id}"
                   onclick="cancelTrainingRegistration(this)"
                   ${authorities.includes("TRAINEE") ? "" : "hidden"}
                 >
                   <ion-icon name="arrow-undo-circle" size="large" class="text-red-500"></ion-icon>
                 </button>
-                <!-- Button delete modal -->
                 <button
-                  type="button"
-                  class="btn btn-danger btn-sm"
-                  registrationId="${data.id}"
-                  onclick="deleteTrainingRegistration(this)"
-                  ${authorities.includes("ADMIN") ? "" : "hidden"}
+                type="button"
+                class="btn btn-primary btn-sm"
+                onclick="window.location.href='/training/register/detail/${data.training.id}'"
                 >
-                  <ion-icon name="trash" size="large" class="text-red-500"></ion-icon>
+                  <ion-icon name="information-circle" size="large" class="text-blue-500"></ion-icon>
                 </button>
               </div>
             `;
         },
       },
-    ],
+    ]
   });
 });
-
-
-function updateStatus(registrationId, newStatus) {
-  // Dapatkan nilai isChecked
-  let isChecked = $(`#checkbox-${newStatus}-${registrationId}`).prop("checked");
-
-  // Panggil fungsi untuk mengirim permintaan Ajax untuk memperbarui status di database
-  updateStatusInDatabase(registrationId, newStatus, isChecked);
-}
-
-function getStatusColors(statusId) {
-  switch (statusId) {
-    case 1:
-      return { bgColor: "green" };
-    case 2:
-      return { bgColor: "yellow" };
-    case 3:
-    case 4:
-      return { bgColor: "red" };
-    case 5:
-      return { bgColor: "blue" };
-    default:
-      return { bgColor: "black" };
-  }
-}
-
-function showToast(type, text) {
-  return Swal.fire({
-    toast: true,
-    position: "top-end",
-    showConfirmButton: false,
-    timer: 2000,
-    icon: type,
-    title: text,
-  });
-}
 
 function cancelTrainingRegistration(button) {
   let id = button.getAttribute("registrationId");
@@ -194,18 +157,30 @@ function cancelTrainingRegistration(button) {
   });
 }
 
-function downloadAttachment(button) {
-  let id = button.getAttribute("registrationId");
-  $.ajax({
-    method: "GET",
-    url: `/api/trainings/register/attachment/${id}`,
-    contentType: "application/pdf",
-    success: (response) => {
-      console.log(response);
-    },
-    error: (err) => {
-      console.log(err);
-    },
+function getStatusColors(statusId) {
+  switch (statusId) {
+    case 1:
+      return { bgColor: "green" };
+    case 2:
+      return { bgColor: "yellow" };
+    case 3:
+    case 4:
+      return { bgColor: "red" };
+    case 5:
+      return { bgColor: "blue" };
+    default:
+      return { bgColor: "black" };
+  }
+}
+
+function showToast(type, text) {
+  return Swal.fire({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 2000,
+    icon: type,
+    title: text,
   });
 }
 
@@ -228,48 +203,6 @@ function setStatus() {
   });
 }
 
-function deleteTrainingRegistration(button) {
-  let id = button.getAttribute("registrationId");
-  Swal.fire({
-    title: `Are you sure want to delete training ?`,
-    text: "You won't be able to revert this!",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Yes, delete it!",
-  }).then((result) => {
-    if (result.isConfirmed) {
-      $.ajax({
-        method: "DELETE",
-        url: `/api/trainings/register/${id}`,
-        dataType: "JSON",
-        contentType: "application/json",
-        beforeSend: function () {
-          setCsrf();
-        },
-        success: (res) => {
-          Swal.fire({
-            position: "center",
-            icon: "success",
-            title: "Registration deleted...",
-            showConfirmButton: false,
-            timer: 2000,
-          });
-          $("#table-training-registration").DataTable().ajax.reload();
-        },
-        error: (err) => {
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "Something is wrong !!!",
-          });
-        },
-      });
-    }
-  });
-}
-
 $("#btnUpdateTrainingRegistration").one("click", (event) => {
   let registrationId = $("#registrationId").val();
   event.preventDefault();
@@ -286,41 +219,17 @@ $("#btnUpdateTrainingRegistration").one("click", (event) => {
       setCsrf();
     },
     success: (res) => {
-      showToast("success", "Training registration has been successfully updated").then(
-        () => history.back()
-      );
+      showToast(
+        "success",
+        "Training registration has been successfully updated"
+      ).then(() => history.back());
     },
     error: (error) => {
       let errorJsn = error.responseJSON;
       console.log(error);
-
     },
   });
 });
 
-function updateStatusInDatabase(registrationId, newStatus, isChecked) {
-  $.ajax({
-    method: "PUT",
-    url: `/api/trainings/register/${registrationId}`,
-    dataType: "JSON",
-    contentType: "application/json",
-    data: JSON.stringify({
-      statusId: newStatus,
-      isChecked: isChecked,
-    }),
-    beforeSend: function () {
-      setCsrf();
-    },
-    success: function (res) {
-      showToast("success", "Training registration has been successfully updated").then(
-        () => {
-          $("#table-training-registration").DataTable().ajax.reload();
-        }
-      );
-    },
-    error: function (error) {
-      let errorJsn = error.responseJSON;
-      console.log(error);
-    },
-  });
-}
+
+

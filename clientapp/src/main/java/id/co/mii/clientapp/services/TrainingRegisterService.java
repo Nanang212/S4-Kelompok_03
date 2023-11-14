@@ -2,6 +2,8 @@ package id.co.mii.clientapp.services;
 
 import id.co.mii.clientapp.models.TrainingRegister;
 import id.co.mii.clientapp.models.dto.request.TrainingRegisterRequest;
+import id.co.mii.clientapp.models.dto.response.HistoryResponse;
+import id.co.mii.clientapp.models.dto.response.TrainingRegisterResponse;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,6 +23,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class TrainingRegisterService {
@@ -31,27 +34,46 @@ public class TrainingRegisterService {
 
   public List<TrainingRegister> getAll() {
     return restTemplate
-            .exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<List<TrainingRegister>>() {
-            })
-            .getBody();
+        .exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<List<TrainingRegister>>() {
+        })
+        .getBody();
   }
 
   public TrainingRegister getById(Integer id) {
     return restTemplate
-            .exchange(url.concat("/" + id), HttpMethod.GET, null, TrainingRegister.class)
-            .getBody();
+        .exchange(url.concat("/" + id), HttpMethod.GET, null, TrainingRegister.class)
+        .getBody();
   }
 
   public byte[] getAttachment(Integer id) {
     return restTemplate
-            .exchange(url.concat("/attachment/" + id), HttpMethod.GET, null, new ParameterizedTypeReference<byte[]>() {})
-            .getBody();
+        .exchange(url.concat("/attachment/" + id), HttpMethod.GET, null, new ParameterizedTypeReference<byte[]>() {
+        })
+        .getBody();
   }
 
   public TrainingRegister createCancellation(Integer id) {
     return restTemplate
-            .exchange(url.concat("/cancel/" + id), HttpMethod.POST, null, new ParameterizedTypeReference<TrainingRegister>() {})
-            .getBody();
+        .exchange(url.concat("/cancel/" + id), HttpMethod.POST, null,
+            new ParameterizedTypeReference<TrainingRegister>() {
+            })
+        .getBody();
+  }
+
+  public List<TrainingRegisterResponse> getAllCancellation() {
+    return restTemplate
+        .exchange(url.concat("/cancel"), HttpMethod.GET, null,
+            new ParameterizedTypeReference<List<TrainingRegisterResponse>>() {
+            })
+        .getBody();
+  }
+
+  public List<Map<String, Object>> getCancellationByIdGroupByTraining(Integer id) {
+    return restTemplate
+        .exchange(url.concat("/cancel/" + id), HttpMethod.GET, null,
+            new ParameterizedTypeReference<List<Map<String, Object>>>() {
+            })
+        .getBody();
   }
 
   @SneakyThrows
@@ -65,8 +87,8 @@ public class TrainingRegisterService {
     body.add("statusId", trainingRegisterRequest.getStatusId());
     body.add("attachment", new FileSystemResource(convertMultiPartToFile(file)));
     return restTemplate
-            .exchange(url, HttpMethod.POST, new HttpEntity<>(body, headers), TrainingRegister.class)
-            .getBody();
+        .exchange(url, HttpMethod.POST, new HttpEntity<>(body, headers), TrainingRegister.class)
+        .getBody();
   }
 
   private Path convertMultiPartToFile(MultipartFile file) throws IOException {
@@ -78,13 +100,35 @@ public class TrainingRegisterService {
   public TrainingRegister update(Integer id, TrainingRegisterRequest trainingRegisterRequest) {
     HttpEntity<TrainingRegisterRequest> request = new HttpEntity<>(trainingRegisterRequest);
     return restTemplate
-            .exchange(url.concat("/" + id), HttpMethod.PUT, request, TrainingRegister.class)
-            .getBody();
+        .exchange(url.concat("/" + id), HttpMethod.PUT, request, TrainingRegister.class)
+        .getBody();
   }
 
   public TrainingRegister delete(Integer id) {
     return restTemplate
-            .exchange(url.concat("/" + id), HttpMethod.DELETE, null, TrainingRegister.class)
-            .getBody();
+        .exchange(url.concat("/" + id), HttpMethod.DELETE, null, TrainingRegister.class)
+        .getBody();
+  }
+
+  public List<TrainingRegisterResponse> getAllGroupByTraining() {
+    return restTemplate
+        .exchange(url.concat("/training"), HttpMethod.GET, null,
+            new ParameterizedTypeReference<List<TrainingRegisterResponse>>() {
+            })
+        .getBody();
+  }
+
+  public List<Map<String, Object>> getByIdGroupByTraining(Integer id) {
+    return restTemplate
+        .exchange(url.concat("/training/" + id), HttpMethod.GET, null,
+            new ParameterizedTypeReference<List<Map<String, Object>>>() {
+            })
+        .getBody();
+  }
+
+  public TrainingRegister getByTrainingId(Integer id) {
+    return restTemplate
+        .exchange(url.concat("/logged-in-emp/training/" + id), HttpMethod.GET, null, TrainingRegister.class)
+        .getBody();
   }
 }

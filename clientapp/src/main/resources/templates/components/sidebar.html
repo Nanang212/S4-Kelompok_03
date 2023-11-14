@@ -14,7 +14,7 @@
           aria-label="Main"
           class="flex-1 px-2 py-4 space-y-2 overflow-y-hidden hover:overflow-y-auto"
         >
-          <div x-data="{ isActive: true, open: true}">
+          <div sec:authorize="hasRole('ADMIN')" x-data="{ isActive: true, open: true}">
             <!-- active & hover classes 'bg-primary-100 dark:bg-primary' -->
             <a
               th:href="@{/dashboard}"
@@ -62,7 +62,6 @@
               </span>
             </a>
             <div
-              sec:authorize="hasRole('ADMIN')"
               role="menu"
               x-show="open"
               class="mt-2 space-y-2 px-7"
@@ -78,7 +77,7 @@
             </div>
           </div>
           <!-- Dashboards links -->
-          <div x-data="{ isActive: true, open: true}">
+          <div sec:authorize="hasRole('ADMIN')" x-data="{ isActive: true, open: true}">
             <!-- active & hover classes 'bg-primary-100 dark:bg-primary' -->
             <a
               href="#"
@@ -126,7 +125,6 @@
               </span>
             </a>
             <div
-              sec:authorize="hasRole('ADMIN')"
               role="menu"
               x-show="open"
               class="mt-2 space-y-2 px-7"

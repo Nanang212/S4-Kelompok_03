@@ -3,7 +3,9 @@ package id.co.mii.serverapp.services;
 import id.co.mii.serverapp.models.*;
 import id.co.mii.serverapp.models.dto.requests.EmailRequest;
 import id.co.mii.serverapp.models.dto.requests.TrainingRegisterRequest;
+import id.co.mii.serverapp.models.dto.responses.TrainingRegisterResponse;
 import id.co.mii.serverapp.repositories.TrainingRegisterRepository;
+import id.co.mii.serverapp.repositories.TrainingRepository;
 import id.co.mii.serverapp.services.base.BaseService;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
@@ -28,6 +30,101 @@ public class TrainingRegisterService extends BaseService<TrainingRegister, Integ
   private StatusService statusService;
   private HistoryService historyService;
   private EmailService emailService;
+  private TrainingRepository trainingRepository;
+
+  public TrainingRegister getByTrainingAndLoggedInEmployee(Integer trainingId) {
+    Training training = trainingService.getById(trainingId);
+    Employee trainee = employeeService.getLoggedInEmployee();
+    return trainingRegisterRepository
+            .findByTrainingAndTrainee(training, trainee)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Registration is not found"));
+  }
+
+  public List<TrainingRegisterResponse> getAllGroupByTraining(){
+    List<Training> trainings = trainingService.getAll();
+    return trainings.stream()
+            .filter(training -> !training.getTrainingRegisters().isEmpty())
+            .map(training -> {
+              TrainingRegisterResponse trainingRegisterResponse = new TrainingRegisterResponse();
+              List<Map<String, Object>> traineeStatus = training.getTrainingRegisters()
+                      .stream()
+                      .map(trainingRegister -> {
+                        Map<String, Object> map = new HashMap<>();
+                        map.put("trainingRegisterId", trainingRegister.getId());
+                        map.put("trainee", trainingRegister.getTrainee());
+                        map.put("status", trainingRegister.getCurrentStatus());
+                        return map;
+                      })
+                      .collect(Collectors.toList());
+              trainingRegisterResponse.setTraining(training);
+              trainingRegisterResponse.setTrainer(training.getTrainer());
+              trainingRegisterResponse.setTraineeStatus(traineeStatus);
+              return trainingRegisterResponse;
+            })
+            .collect(Collectors.toList());
+  }
+
+  public List<TrainingRegisterResponse> getAllCancellationGroupByTraining(){
+    List<Training> trainings = trainingService.getAll();
+    Status requestCancel = statusService.getById(5);
+    return trainings.stream()
+            .filter(training -> !training.getTrainingRegisters().isEmpty())
+            .map(training -> {
+              TrainingRegisterResponse trainingRegisterResponse = new TrainingRegisterResponse();
+              List<Map<String, Object>> traineeStatus = training.getTrainingRegisters()
+                      .stream()
+                      .filter(trainingRegister -> trainingRegister.getCurrentStatus().equals(requestCancel))
+                      .map(trainingRegister -> {
+                        Map<String, Object> map = new HashMap<>();
+                        map.put("trainingRegisterId", trainingRegister.getId());
+                        map.put("trainee", trainingRegister.getTrainee());
+                        map.put("status", trainingRegister.getCurrentStatus());
+                        return map;
+                      })
+                      .collect(Collectors.toList());
+              trainingRegisterResponse.setTraining(training);
+              trainingRegisterResponse.setTrainer(training.getTrainer());
+              trainingRegisterResponse.setTraineeStatus(traineeStatus);
+              return trainingRegisterResponse;
+            })
+            .filter(trainingRegisterResponse -> !trainingRegisterResponse.getTraineeStatus().isEmpty())
+            .collect(Collectors.toList());
+  }
+
+  public List<Map<String, Object>> getByIdGroupByTraining(Integer id) {
+    Training training = trainingService.getById(id);
+    Status requestCancel = statusService.getById(5);
+    Status cancelled = statusService.getById(4);
+    return training.getTrainingRegisters()
+            .stream()
+            .filter(trainingRegister -> !trainingRegister.getCurrentStatus().equals(requestCancel))
+            .filter(trainingRegister -> !trainingRegister.getCurrentStatus().equals(cancelled))
+            .map(tr -> {
+              Map<String, Object> map = new HashMap<>();
+              map.put("id", tr.getId());
+              map.put("trainee", tr.getTrainee());
+              map.put("status", tr.getCurrentStatus());
+              return map;
+            })
+            .collect(Collectors.toList());
+  }
+
+  public List<Map<String, Object>> getCancellationByIdGroupByTraining(Integer id) {
+    Training training = trainingService.getById(id);
+    Status cancelled = statusService.getById(4);
+    Status requestCancel = statusService.getById(5);
+    return training.getTrainingRegisters()
+            .stream()
+            .filter(trainingRegister -> trainingRegister.getCurrentStatus().equals(requestCancel) || trainingRegister.getCurrentStatus().equals(cancelled))
+            .map(tr -> {
+              Map<String, Object> map = new HashMap<>();
+              map.put("id", tr.getId());
+              map.put("trainee", tr.getTrainee());
+              map.put("status", tr.getCurrentStatus());
+              return map;
+            })
+            .collect(Collectors.toList());
+  }
 
   public List<TrainingRegister> getAll() {
     Employee loggedInEmp = employeeService.getLoggedInEmployee();
@@ -43,30 +140,25 @@ public class TrainingRegisterService extends BaseService<TrainingRegister, Integ
 
   @SneakyThrows
   public TrainingRegister createCancellation(Integer id) {
-    TrainingRegister trainingRegister = getById(id);
     Status success = statusService.getById(1);
     Status requestCancel = statusService.getById(5);
-    Training training = trainingRegister.getTraining();
-    Employee trainee = trainingRegister.getTrainee();
+    Training training = trainingService.getById(id);
     Employee loggedInEmp = employeeService.getLoggedInEmployee();
-    if (!loggedInEmp.equals(trainee)) {
-      Role admin = roleService.getById(1);
-      if (!loggedInEmp.getUser().getRoles().contains(admin)) {
-        throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Cannot request cancel other trainee");
-      }
-    }
-    long count = getAll()
+    TrainingRegister trainingRegister = training.getTrainingRegisters()
             .stream()
-            .filter(tr -> tr.getTraining().equals(training) && tr.getTrainee().equals(trainee) && tr.getCurrentStatus().equals(success))
-            .count();
-    if (count == 0) {
-      throw new ResponseStatusException(HttpStatus.CONFLICT, "Trainee not registered for this training");
-    }
+            .filter(tr -> tr.getTrainee().equals(loggedInEmp))
+            .filter(tr -> tr.getCurrentStatus().equals(success))
+            .findAny()
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Registration is not found"));
+
     trainingRegister.setCurrentStatus(requestCancel);
     trainingRegister.setCreatedBy(loggedInEmp.getUser().getUsername());
     trainingRegister.setUpdatedBy(loggedInEmp.getUser().getUsername());
 
     TrainingRegister savedTrainingRegister = create(trainingRegister);
+
+    training.setAvailSeat(training.getAvailSeat() + 1);
+    trainingRepository.save(training);
 
     History history = new History();
     history.setTrainingRegister(savedTrainingRegister);
@@ -75,6 +167,44 @@ public class TrainingRegisterService extends BaseService<TrainingRegister, Integ
 
     return savedTrainingRegister;
   }
+
+//  @SneakyThrows
+//  public TrainingRegister createCancellation(Integer id) {
+//    TrainingRegister trainingRegister = getById(id);
+//    Status success = statusService.getById(1);
+//    Status requestCancel = statusService.getById(5);
+//    Training training = trainingRegister.getTraining();
+//    Employee trainee = trainingRegister.getTrainee();
+//    Employee loggedInEmp = employeeService.getLoggedInEmployee();
+//    if (!loggedInEmp.equals(trainee)) {
+//      Role admin = roleService.getById(1);
+//      if (!loggedInEmp.getUser().getRoles().contains(admin)) {
+//        throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Cannot request cancel other trainee");
+//      }
+//    }
+//    long count = getAll()
+//            .stream()
+//            .filter(tr -> tr.getTraining().equals(training) && tr.getTrainee().equals(trainee) && tr.getCurrentStatus().equals(success))
+//            .count();
+//    if (count == 0) {
+//      throw new ResponseStatusException(HttpStatus.CONFLICT, "Trainee not registered for this training");
+//    }
+//    trainingRegister.setCurrentStatus(requestCancel);
+//    trainingRegister.setCreatedBy(loggedInEmp.getUser().getUsername());
+//    trainingRegister.setUpdatedBy(loggedInEmp.getUser().getUsername());
+//
+//    TrainingRegister savedTrainingRegister = create(trainingRegister);
+//
+//    training.setAvailSeat(training.getAvailSeat() + 1);
+//    trainingRepository.save(training);
+//
+//    History history = new History();
+//    history.setTrainingRegister(savedTrainingRegister);
+//    history.setStatus(requestCancel);
+//    historyService.create(history);
+//
+//    return savedTrainingRegister;
+//  }
 
   public byte[] getAttachmentById(Integer id) {
     TrainingRegister trainingRegister = getById(id);
@@ -88,6 +218,9 @@ public class TrainingRegisterService extends BaseService<TrainingRegister, Integ
     Training training = trainingService.getById(trainingRegisterRequest.getTrainingId());
     Employee trainee = employeeService.getById(trainingRegisterRequest.getTraineeId());
     Employee loggedInEmp = employeeService.getLoggedInEmployee();
+    if (training.getAvailSeat() == 0) {
+      throw new ResponseStatusException(HttpStatus.CONFLICT, "Quota has reached the maximum value");
+    }
     if (!loggedInEmp.equals(trainee)) {
       Role admin = roleService.getById(1);
       if (!loggedInEmp.getUser().getRoles().contains(admin)) {
@@ -140,17 +273,11 @@ public class TrainingRegisterService extends BaseService<TrainingRegister, Integ
     Status success = statusService.getById(1);
     TrainingRegister trainingRegister = getById(id);
     Training training = trainingRegister.getTraining();
-    Employee trainee = trainingRegister.getTrainee();
-    long registeredTrainee = getAll()
-            .stream()
-            .filter(tr -> tr.getTraining().equals(training) && tr.getCurrentStatus().equals(success))
-            .count();
-    // TODO : Buat sistem yg dapat mengetahui jumlah peserta dalam suatu training
-    if (training.getQuota() == (int) registeredTrainee) {
-      throw new ResponseStatusException(HttpStatus.CONFLICT, "Registration has exceeded the quota");
-    }
     if (trainingRegisterRequest.getStatusId() != null) {
       Status currentStatus = statusService.getById(trainingRegisterRequest.getStatusId());
+      if (currentStatus.equals(success)) {
+        training.setAvailSeat(training.getAvailSeat() - 1);
+      }
       trainingRegister.setCurrentStatus(currentStatus);
       historyService.create(new History(trainingRegister, currentStatus, trainingRegisterRequest.getNotes()));
     }
@@ -165,9 +292,13 @@ public class TrainingRegisterService extends BaseService<TrainingRegister, Integ
     properties.put("endDate", training.getEndDate());
     properties.put("status", trainingRegister.getCurrentStatus().getName());
     properties.put("notes", trainingRegisterRequest.getNotes());
+    properties.put("name", trainingRegister.getTrainee().getName());
+    properties.put("isOnline", trainingRegister.getTraining().getIsOnline());
+    properties.put("platformUrl", trainingRegister.getTraining().getPlatformUrl());
+    properties.put("address", trainingRegister.getTraining().getAddress());
     properties.put("trainingLink", "http://localhost:9090/training/" + training.getId());
     emailRequest.setTo(trainingRegister.getTrainee().getEmail());
-    emailRequest.setSubject("Training Registration");
+    emailRequest.setSubject("Training Registration - " + training.getId());
     emailRequest.setBody("trainingRegister.html");
     emailRequest.setProperties(properties);
     emailService.sendHtmlMessage(emailRequest);

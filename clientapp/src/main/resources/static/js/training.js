@@ -15,6 +15,8 @@ $(document).ready(function () {
       {
         data: null,
         render: function (data, type, row, meta) {
+          // Calculate the reverse order for the "No" column
+          // return meta.settings._iRecordsTotal - meta.row;
           return meta.row + 1;
         },
       },
@@ -41,7 +43,7 @@ $(document).ready(function () {
         data: null,
         render: (data, type, row, meta) => {
           return `
-              <div class="flex justify-center gap-2">
+              <div class="flex justify-start gap-2">
                 <!-- Button detail modal -->
                 <button
                   type="button"
@@ -78,7 +80,53 @@ $(document).ready(function () {
   });
 });
 
-function setTrainer(type) {
+
+$('#btnSaveTraining').one("click", (event) => {
+  event.preventDefault()
+  $.ajax({
+    method: "POST",
+    url: `/api/trainings`,
+    dataType: "JSON",
+    contentType: "application/json",
+    data: JSON.stringify({
+      title: $("#inputTitleTraining").val(),
+      startDate: $("#inputStartDateTraining").val(),
+      endDate: $("#inputEndDateTraining").val(),
+      quota: $("#inputQuotaTraining").val(),
+      duration: $("#inputDurationTraining").val(),
+      address: $("#inputAddressTraining").val(),
+      description: $("#inputDescriptionTraining").val(),
+      platformUrl: $("#inputUrlTraining").val(),
+      trainerId: $("#inputTrainerTraining").val(),
+      isOnline: $("#inputLocationTraining").val() === "online",
+    }),
+    beforeSend : function () {
+      setCsrf();
+    },
+    success: (res) => {
+      $("#table-training").DataTable().ajax.reload();
+      $("#inputTitleTraining").val('')
+      $("#inputStartDateTraining").val('')
+      $("#inputEndDateTraining").val('')
+      $("#inputQuotaTraining").val('')
+      $("#inputDurationTraining").val('')
+      $("#inputAddressTraining").val('')
+      $("#inputDescriptionTraining").val('')
+      $("#inputUrlTraining").val('')
+      $("#inputTrainerTraining").val('')
+      $("#inputLocationTraining").val('')
+      showToast("success", "Training created");
+
+    },
+    error: (error) => {
+      let errorJsn = error.responseJSON
+      showToast("error", errorJsn.message).then(() => location.reload());
+    },
+  });
+})
+
+
+function setTrainer() {
   $.ajax({
     method: "GET",
     url: `/api/employee?role=trainer`,
@@ -135,7 +183,8 @@ $("#btnUpdateTraining").on("click", (event) => {
       duration: $("#updateDurationTraining").val(),
       address: $("#updateAddressTraining").val(),
       description: $("#updateDescriptionTraining").val(),
-      PlatformUrl: $("#updateUrlTraining").val(),
+      platformUrl: $("#updateUrlTraining").val(),
+      trainerId: $("#updateTrainerTraining").val(),
       isOnline: $("#updateLocationTraining").val() === "online",
     }),
     beforeSend: function () {
@@ -277,4 +326,15 @@ function deleteTraining(button) {
       });
     }
   });
+}
+
+function showAddressOrUrlPlatform(type) {
+  let isOnline = $('input[name="locationType"]:checked').val() === 'online';
+  if (isOnline) {
+    $(`#url${type}Wrapper`).attr("hidden", false);
+    $(`#address${type}Wrapper`).attr("hidden", true);
+  } else {
+    $(`#url${type}Wrapper`).attr("hidden", true);
+    $(`#address${type}Wrapper`).attr("hidden", false);
+  }
 }
