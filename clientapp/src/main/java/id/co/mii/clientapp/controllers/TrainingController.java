@@ -54,19 +54,19 @@ public class TrainingController {
   @GetMapping("/{id}")
   public String getById(@PathVariable Integer id, Model model,
       @RequestParam(required = false) Map<String, Object> params) {
-    Training training = trainingService.getById(id);
-    Employee loggedInEmployee = employeeService.getLoggedInUser();
-    TrainingRegisterRequest trainingRegisterRequest = new TrainingRegisterRequest();
-    trainingRegisterRequest.setTrainingId(training.getId());
-    trainingRegisterRequest.setTraineeId(loggedInEmployee.getId());
-    trainingRegisterRequest.setStatusId(2);
+      Training training = trainingService.getById(id);
+      Employee loggedInEmployee = employeeService.getLoggedInUser();
+      TrainingRegisterRequest trainingRegisterRequest = new TrainingRegisterRequest();
+      trainingRegisterRequest.setTrainingId(training.getId());
+      trainingRegisterRequest.setTraineeId(loggedInEmployee.getId());
+      trainingRegisterRequest.setStatusId(2);
 
-    model.addAllAttributes(params);
-    model.addAttribute("training", training);
-    model.addAttribute("loggedInEmp", loggedInEmployee);
-    model.addAttribute("trainingRegisterRequest", trainingRegisterRequest);
-    // model.addAttribute("isActive", "role");
-    return "training/detail";
+      model.addAllAttributes(params);
+      model.addAttribute("training", training);
+      model.addAttribute("loggedInEmp", loggedInEmployee);
+      model.addAttribute("trainingRegisterRequest", trainingRegisterRequest);
+
+      return "training/detail";
   }
 
   @GetMapping("/register")
@@ -128,6 +128,14 @@ public class TrainingController {
     model.addAttribute("trainingRegister", trainingRegister);
     model.addAttribute("allStatus", statusService.getAll());
     return "training/register/update";
+  }
+
+  @GetMapping("/register/detail/{id}")
+  public String getTrainingRegisterById(@PathVariable Integer id, Model model) {
+    TrainingRegister trainingRegister = trainingRegisterService.getById(id);
+    model.addAttribute("trainingRegister", trainingRegister);
+    model.addAttribute("id", id);
+    return "training/register/detail";
   }
 
 }

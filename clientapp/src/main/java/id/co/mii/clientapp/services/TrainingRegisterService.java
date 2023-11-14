@@ -2,6 +2,8 @@ package id.co.mii.clientapp.services;
 
 import id.co.mii.clientapp.models.TrainingRegister;
 import id.co.mii.clientapp.models.dto.request.TrainingRegisterRequest;
+import id.co.mii.clientapp.models.dto.response.HistoryResponse;
+import id.co.mii.clientapp.models.dto.response.TrainingRegisterResponse;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -85,6 +87,12 @@ public class TrainingRegisterService {
   public TrainingRegister delete(Integer id) {
     return restTemplate
             .exchange(url.concat("/" + id), HttpMethod.DELETE, null, TrainingRegister.class)
+            .getBody();
+  }
+
+    public TrainingRegisterResponse getByIdGroupByTraining(Integer id) {
+    return restTemplate
+            .exchange(url.concat("/register/training/{id}"), HttpMethod.GET, null, TrainingRegisterResponse.class)
             .getBody();
   }
 }

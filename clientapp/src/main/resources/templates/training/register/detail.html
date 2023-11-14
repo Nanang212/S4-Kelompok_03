@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layouts/main}"
+>
+<head>
+  <title>Details Trainee</title>
+</head>
+<body>
+<!-- Content -->
+<section id="detailRegisterTraining" class="container mt-5 py-10" th:attr="${id}" layout:fragment="content">
+  <div class="mx-10">
+    <div class="flex justify-between">
+      <p class="font-bold text-4xl">
+        training participants</p>
+    </div>
+    <div class="py-8">
+      <table id="detail-training-register" class="table-fixed display">
+        <thead class="table-light">
+        <tr>
+          <th width="25px">No</th>
+          <th >registered trainees</th>
+        </tr>
+        </thead>
+      </table>
+    </div>
+  </div>
+</section>
+<div layout:fragment="script">
+  <script th:src="@{/js/detailTraining.js}"></script>
+</div>
+</body>
+</html>

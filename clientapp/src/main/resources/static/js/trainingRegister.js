@@ -13,6 +13,7 @@ $(document).ready(function () {
       method: "GET",
       url: "/api/trainings/register",
       dataSrc: "",
+      data: { order: [["currentStatus.id", "desc"]] },//mencoba menambahkan urutan tapi masih belum berhasil
     },
     columns: [
       {
@@ -25,59 +26,64 @@ $(document).ready(function () {
       {
         data: null,
         render: (data) => {
-          return data.trainee.user.username;
+          return `${data.training.trainer !== null ? data.training.trainer.user.username :'-' }`;
         },
       },
-      {
-        data: null,
-        render: function (data, type, row, meta) {
-          if (!showStatusColumn) {
-            return "";
-          }
+      // {
+      //   data: null,
+      //   render: function (data, type, row, meta) {
+      //     if (!showStatusColumn) {
+      //       return "";
+      //     }
 
-          let checkboxSuccessId = `checkbox-success-${meta.row}`;
-          let checkboxPendingId = `checkbox-pending-${meta.row}`;
-          let checkboxRejectId = `checkbox-reject-${meta.row}`;
+      //     let checkboxSuccessId = `checkbox-success-${meta.row}`;
+      //     let checkboxPendingId = `checkbox-pending-${meta.row}`;
+      //     let checkboxRejectId = `checkbox-reject-${meta.row}`;
 
-          return `
-            <div class="flex items-center justify-center space-x-4">
-              <div>
-                <label for="${checkboxSuccessId}">Success</label>
-                <input
-                  type="checkbox"
-                  name="statusCheckbox_${data.id}"
-                  id="${checkboxSuccessId}"
-                  ${data.currentStatus.id === 1 ? "checked" : ""}
-                  onchange="updateStatus(${data.id}, 1)"
-                  ${authorities.includes("ADMIN") ? "" : "hidden"}
-                >
-              </div>
-              <div>
-                <label for="${checkboxPendingId}">Pending</label>
-                <input
-                  type="checkbox"
-                  name="statusCheckbox_${data.id}"
-                  id="${checkboxPendingId}"
-                  ${data.currentStatus.id === 2 ? "checked" : ""}
-                  onchange="updateStatus(${data.id}, 2)"
-                  ${authorities.includes("ADMIN") ? "" : "hidden"}
-                >
-              </div>
-              <div>
-                <label for="${checkboxRejectId}">Reject</label>
-                <input
-                  type="checkbox"
-                  name="statusCheckbox_${data.id}"
-                  id="${checkboxRejectId}"
-                  ${data.currentStatus.id === 3 ? "checked" : ""}
-                  onchange="updateStatus(${data.id}, 3)"
-                  ${authorities.includes("ADMIN") ? "" : "hidden"}
-                >
-              </div>
-            </div>
-          `;
-        },
-      },
+      //     let isStatusSuccess = data.currentStatus.id === 1;
+
+      //     return `
+      //     <div class="flex items-center justify-center space-x-4">
+      //       <div>
+      //         <label for="${checkboxSuccessId}">Success</label>
+      //         <input
+      //           type="checkbox"
+      //           name="statusCheckbox_${data.id}"
+      //           id="${checkboxSuccessId}"
+      //           ${data.currentStatus.id === 1 ? "checked" : ""}
+      //           onchange="updateStatus(${data.id}, 1)"
+      //           ${authorities.includes("ADMIN") ? "" : "hidden"}
+      //           ${isStatusSuccess ? "disabled" : ""}
+      //         >
+      //       </div>
+      //       <div>
+      //         <label for="${checkboxPendingId}">Pending</label>
+      //         <input
+      //           type="checkbox"
+      //           name="statusCheckbox_${data.id}"
+      //           id="${checkboxPendingId}"
+      //           ${data.currentStatus.id === 2 ? "checked" : ""}
+      //           onchange="updateStatus(${data.id}, 2)"
+      //           ${authorities.includes("ADMIN") ? "" : "hidden"}
+      //           ${isStatusSuccess ? "disabled" : ""}
+      //         >
+      //       </div>
+      //       <div>
+      //         <label for="${checkboxRejectId}">Reject</label>
+      //         <input
+      //           type="checkbox"
+      //           name="statusCheckbox_${data.id}"
+      //           id="${checkboxRejectId}"
+      //           ${data.currentStatus.id === 3 ? "checked" : ""}
+      //           onchange="updateStatus(${data.id}, 3)"
+      //           ${authorities.includes("ADMIN") ? "" : "hidden"}
+      //           ${isStatusSuccess ? "disabled" : ""}
+      //         >
+      //       </div>
+      //     </div>
+      //   `;
+      //   },
+      // },
       {
         data: null,
         render: (data, type, row, meta) => {
@@ -86,6 +92,7 @@ $(document).ready(function () {
                 <button
                 type="button"
                 class="btn btn-primary btn-sm"
+                onclick="window.location.href='/training/register/detail/${data.id}'"
               >
                 <ion-icon name="information-circle" size="large" class="text-blue-500"></ion-icon>
               </button>
@@ -128,8 +135,8 @@ $(document).ready(function () {
         targets: [3], // Index kolom "Status"
         visible: showStatusColumn,
       },
+
     ],
-    // ...
   });
 });
 
@@ -317,6 +324,14 @@ $("#btnUpdateTrainingRegistration").one("click", (event) => {
 });
 
 function updateStatusInDatabase(registrationId, newStatus, isChecked) {
+  let loadingModal = Swal.fire({
+    html: '<div class="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-transparent"><div class="animate-spin rounded-full border-t-4 border-blue-500 border-solid h-12 w-12"></div></div>',
+    showConfirmButton: false,
+    allowOutsideClick: false,
+    allowEscapeKey: false,
+    background: 'transparent',
+  });
+
   $.ajax({
     method: "PUT",
     url: `/api/trainings/register/${registrationId}`,
@@ -330,16 +345,20 @@ function updateStatusInDatabase(registrationId, newStatus, isChecked) {
       setCsrf();
     },
     success: function (res) {
-      showToast(
-        "success",
-        "Training registration has been successfully updated"
-      ).then(() => {
+      loadingModal.close();
+
+      showToast("success", "Training registration has been successfully updated").then(() => {
         $("#table-training-registration").DataTable().ajax.reload();
       });
     },
     error: function (error) {
+      loadingModal.close();
+
       let errorJsn = error.responseJSON;
       console.log(error);
     },
   });
 }
+
+
+

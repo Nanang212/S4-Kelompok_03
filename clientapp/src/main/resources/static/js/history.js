@@ -56,17 +56,11 @@ $(document).ready(function () {
   function formatDetailContent(data, currentPositionIndex) {
     let historyEl = '';
 
-    // Iterasi dari indeks terakhir ke indeks pertama
     for (let index = data.histories.length - 1; index >= 0; index--) {
       const history = data.histories[index];
-
-      // Tentukan kelas warna radio button
       const radioButtonClass = index === currentPositionIndex ? 'text-green-500' : 'text-green-500';
-
-      // Tentukan apakah radio button harus dicentang atau tidak
       const isChecked = index === data.histories.length - 1 ? 'checked' : '';
 
-      // Setiap radio button diatur untuk terceklis (checked), dinonaktifkan (disabled), dan memiliki warna abu-abu atau hijau
       const radioButton = `
         <input type="radio" id="radio${index}" name="historyRadio" ${isChecked} disabled class="${radioButtonClass}">
         <label for="radio${index}"></label>
@@ -89,9 +83,6 @@ $(document).ready(function () {
 
     return historyEl;
   }
-
-
-
 
   function formatDate(inputDate) {
     const options = {

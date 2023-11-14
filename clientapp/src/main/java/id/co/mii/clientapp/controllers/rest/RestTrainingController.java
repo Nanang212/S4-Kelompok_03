@@ -4,6 +4,7 @@ import id.co.mii.clientapp.models.Training;
 import id.co.mii.clientapp.models.TrainingRegister;
 import id.co.mii.clientapp.models.dto.request.TrainingRegisterRequest;
 import id.co.mii.clientapp.models.dto.request.TrainingRequest;
+import id.co.mii.clientapp.models.dto.response.TrainingRegisterResponse;
 import id.co.mii.clientapp.services.DashboardService;
 import id.co.mii.clientapp.services.TrainingRegisterService;
 import id.co.mii.clientapp.services.TrainingService;
@@ -58,13 +59,13 @@ public class RestTrainingController {
   public ResponseEntity<?> create(@RequestBody TrainingRequest trainingRequest) {
     try {
       return ResponseEntity
-              .status(HttpStatus.OK)
-              .body(trainingService.create(trainingRequest));
+          .status(HttpStatus.OK)
+          .body(trainingService.create(trainingRequest));
     } catch (HttpClientErrorException exception) {
       return ResponseEntity
-              .status(exception.getRawStatusCode())
-              .headers(exception.getResponseHeaders())
-              .body(exception.getResponseBodyAsString());
+          .status(exception.getRawStatusCode())
+          .headers(exception.getResponseHeaders())
+          .body(exception.getResponseBodyAsString());
     }
   }
 
@@ -79,7 +80,8 @@ public class RestTrainingController {
   }
 
   @PutMapping("/register/{id}")
-  public TrainingRegister updateTrainingRegister(@PathVariable Integer id, @RequestBody TrainingRegisterRequest trainingRegisterRequest) {
+  public TrainingRegister updateTrainingRegister(@PathVariable Integer id,
+      @RequestBody TrainingRegisterRequest trainingRegisterRequest) {
     return trainingRegisterService.update(id, trainingRegisterRequest);
   }
 
@@ -92,7 +94,14 @@ public class RestTrainingController {
   public ResponseEntity<?> delete(@PathVariable Integer id) {
     trainingService.delete(id);
     return ResponseEntity
-            .status(HttpStatus.OK)
-            .body(new Training());
+        .status(HttpStatus.OK)
+        .body(new Training());
+  }
+
+  @GetMapping("/register/training/{id}")
+  public ResponseEntity<TrainingRegisterResponse> getByIdGroupByTraining(@PathVariable Integer id) {
+    return ResponseEntity
+        .status(HttpStatus.OK)
+        .body(trainingRegisterService.getByIdGroupByTraining(id));
   }
 }
