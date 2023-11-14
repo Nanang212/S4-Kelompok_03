@@ -278,4 +278,3 @@ function deleteTraining(button) {
     }
   });
 }
-
