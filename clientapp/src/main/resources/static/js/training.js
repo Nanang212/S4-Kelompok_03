@@ -329,12 +329,12 @@ function deleteTraining(button) {
 }
 
 function showAddressOrUrlPlatform(type) {
-  let isOnline = $('#inputLocationTraining').val() === 'online'
+  let isOnline = $('input[name="locationType"]:checked').val() === 'online';
   if (isOnline) {
-    $(`#url${type}Wrapper`).attr("hidden", false)
-    $(`#address${type}Wrapper`).attr("hidden", true)
+    $(`#url${type}Wrapper`).attr("hidden", false);
+    $(`#address${type}Wrapper`).attr("hidden", true);
   } else {
-    $(`#url${type}Wrapper`).attr("hidden", true)
-    $(`#address${type}Wrapper`).attr("hidden", false)
+    $(`#url${type}Wrapper`).attr("hidden", true);
+    $(`#address${type}Wrapper`).attr("hidden", false);
   }
 }
