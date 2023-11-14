@@ -139,7 +139,7 @@ span.MsoHyperlinkFollowed {
                       <td align="left" style="padding: 0; Margin: 0;">
                         <a th:text="'http://example.com/event-details?eventId=' + ${uniqueIdentifier}"
                           style="Margin: 0; mso-line-height-rule: exactly; font-family: helvetica, 'helvetica neue', arial, verdana, sans-serif; line-height: 21px; letter-spacing: 0; color: #3498db; font-size: 14px;">
-                          Start date: 14 September 2023 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; End date: 17 September 2023
+                          Start date: [[${startDate}]] &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; End date: [[${endDate}]]
                         </a>
                       </td>                     </tr>
                      <tr>
@@ -151,7 +151,7 @@ span.MsoHyperlinkFollowed {
                        </table></td>
                      </tr>
                      <tr>
-                      <td align="left" style="padding:0;Margin:0"><h1 style="Margin:0;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;mso-line-height-rule:exactly;letter-spacing:0;font-size:30px;font-style:normal;font-weight:normal;line-height:36px;color:#333333">​</h1><h1 style="Margin:0;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;mso-line-height-rule:exactly;letter-spacing:0;font-size:30px;font-style:normal;font-weight:normal;line-height:36px;color:#333333" th:text="${title}"></h1><p style="Margin:0;mso-line-height-rule:exactly;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:21px;letter-spacing:0;color:#666666;font-size:14px">Quota:1O person</p></td>
+                      <td align="left" style="padding:0;Margin:0"><h1 style="Margin:0;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;mso-line-height-rule:exactly;letter-spacing:0;font-size:30px;font-style:normal;font-weight:normal;line-height:36px;color:#333333">​</h1><h1 style="Margin:0;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;mso-line-height-rule:exactly;letter-spacing:0;font-size:30px;font-style:normal;font-weight:normal;line-height:36px;color:#333333" th:text="${title}"></h1><p style="Margin:0;mso-line-height-rule:exactly;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:21px;letter-spacing:0;color:#666666;font-size:14px">Quota:[[${quota}]] person</p></td>
                      </tr>
                      <tr>
                       <td align="left" style="padding:0;Margin:0;padding-bottom:20px;padding-top:5px;font-size:0">
@@ -162,16 +162,16 @@ span.MsoHyperlinkFollowed {
                        </table></td>
                      </tr>
                      <tr>
-                      <td align="left" style="padding:0;Margin:0;padding-bottom:10px"><p style="Margin:0;mso-line-height-rule:exactly;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:24px;letter-spacing:0;color:#666666;font-size:16px">Alicias has invited to brodact join team on Trainering Management</p><p style="Margin:0;mso-line-height-rule:exactly;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:24px;letter-spacing:0;color:#666666;font-size:16px"><strong>Golang</strong> is simply dummy text of the printing and typesetting industry&nbsp;</p>​</td>
+                      <td align="left" style="padding:0;Margin:0;padding-bottom:10px"><p style="Margin:0;mso-line-height-rule:exactly;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:24px;letter-spacing:0;color:#666666;font-size:16px">New training has arrived</p><p style="Margin:0;mso-line-height-rule:exactly;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:24px;letter-spacing:0;color:#666666;font-size:16px"><strong>[[${title}]]</strong></p>​</td>
                      </tr>
                      <tr>
-                      <td align="left" style="padding:0;Margin:0"><p style="Margin:0;mso-line-height-rule:exactly;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:21px;letter-spacing:0;color:#666666;font-size:14px">Take a minute to complete your registartion by verifying email addres jeje@gmail.com ,simple click the button bellow</p></td>
+                      <td align="left" style="padding:0;Margin:0"><p style="Margin:0;mso-line-height-rule:exactly;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:21px;letter-spacing:0;color:#666666;font-size:14px">You can register yourself by simply clicking the button bellow</p></td>
                      </tr>
                      <tr>
-                      <td align="left" style="padding:0;Margin:0;padding-top:20px;padding-bottom:20px"><span class="es-button-border" style="border-style:solid;border-color:#4A7EB0;background:#2CB543;border-width:0px;display:inline-block;border-radius:0px;width:auto"><a th:href="@{http://localhost:9090/training}" class="es-button" target="_blank" style="mso-style-priority:100 !important;text-decoration:none !important;mso-line-height-rule:exactly;color:#4A7EB0;font-size:18px;padding:10px 25px;display:inline-block;background:#EFEFEF;border-radius:0px;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-weight:normal;font-style:normal;line-height:22px;width:auto;text-align:center;letter-spacing:0;mso-padding-alt:0;mso-border-alt:10px solid #EFEFEF">Training</a></span></td>
+                      <td align="left" style="padding:0;Margin:0;padding-top:20px;padding-bottom:20px"><span class="es-button-border" style="border-style:solid;border-color:#4A7EB0;background:#2CB543;border-width:0px;display:inline-block;border-radius:0px;width:auto"><a th:href="@{'http://localhost:9090/training/{id}'(id=${id})}" class="es-button" target="_blank" style="mso-style-priority:100 !important;text-decoration:none !important;mso-line-height-rule:exactly;color:#4A7EB0;font-size:18px;padding:10px 25px;display:inline-block;background:#EFEFEF;border-radius:0px;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-weight:normal;font-style:normal;line-height:22px;width:auto;text-align:center;letter-spacing:0;mso-padding-alt:0;mso-border-alt:10px solid #EFEFEF">Training</a></span></td>
                      </tr>
                      <tr>
-                      <td align="left" style="padding:0;Margin:0"><p style="Margin:0;mso-line-height-rule:exactly;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:21px;letter-spacing:0;color:#666666;font-size:14px">© {{ 14.2023 }} TM. All Rights Reserved.</p></td>
+                      <td align="left" style="padding:0;Margin:0"><p style="Margin:0;mso-line-height-rule:exactly;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:21px;letter-spacing:0;color:#666666;font-size:14px">©TM. All Rights Reserved.</p></td>
                      </tr>
                    </table></td>
                  </tr>
@@ -215,7 +215,7 @@ span.MsoHyperlinkFollowed {
                       <td esdev-links-color="#333333" align="left" class="es-m-txt-с es-m-txt-l" style="padding:0;Margin:0;padding-bottom:10px"><p style="Margin:0;mso-line-height-rule:exactly;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:30px;letter-spacing:0;color:#333333;font-size:14px"><a href="tel:123456789" style="mso-line-height-rule:exactly;text-decoration:none;color:#333333;font-size:20px;line-height:30px">123456789</a></p></td>
                      </tr>
                      <tr>
-                      <td class="es-m-txt-с" esdev-links-color="#333333" align="left" style="padding:0;Margin:0;padding-bottom:10px"><p style="Margin:0;mso-line-height-rule:exactly;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:21px;letter-spacing:0;color:#333333;font-size:14px"><a target="_blank" th:href="mailto:your@mail.com" style="mso-line-height-rule:exactly;text-decoration:underline;color:#333333;font-size:14px">your@mail.com</a></p></td>
+                      <td class="es-m-txt-с" esdev-links-color="#333333" align="left" style="padding:0;Margin:0;padding-bottom:10px"><p style="Margin:0;mso-line-height-rule:exactly;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:21px;letter-spacing:0;color:#333333;font-size:14px"><a target="_blank" href="#" style="mso-line-height-rule:exactly;text-decoration:underline;color:#333333;font-size:14px">your@mail.com</a></p></td>
                      </tr>
                      <tr>
                       <td align="left" style="padding:0;Margin:0;font-size:0">

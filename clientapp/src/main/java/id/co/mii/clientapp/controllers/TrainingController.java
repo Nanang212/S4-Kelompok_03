@@ -63,11 +63,14 @@ public class TrainingController {
       @RequestParam(required = false) Map<String, Object> params) {
       Training training = trainingService.getById(id);
       Employee loggedInEmployee = employeeService.getLoggedInUser();
+      List<Training> trainings = trainingService.getAllByTrainee(loggedInEmployee.getUser().getUsername());
+      Boolean isRegistered = trainings.contains(training);
       TrainingRegisterRequest trainingRegisterRequest = new TrainingRegisterRequest();
       trainingRegisterRequest.setTrainingId(training.getId());
       trainingRegisterRequest.setTraineeId(loggedInEmployee.getId());
       trainingRegisterRequest.setStatusId(2);
 
+      model.addAttribute("registered", isRegistered);
       model.addAllAttributes(params);
       model.addAttribute("training", training);
       model.addAttribute("loggedInEmp", loggedInEmployee);
