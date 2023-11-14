@@ -179,7 +179,7 @@ function downloadAttachment(button) {
     url: `/api/trainings/register/attachment/${id}`,
     contentType: "application/pdf",
     success: (response) => {
-
+      console.log(response)
     },
     error: (err) => {
       console.log(err);

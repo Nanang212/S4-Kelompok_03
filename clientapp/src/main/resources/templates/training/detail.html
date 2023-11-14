@@ -107,21 +107,22 @@
                     <button
                             class="block text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 rounded-full"
                             type="submit"
+                            onclick="showLoading()"
                     >
                       Broadcast
                     </button>
                   </form>
                   <button
-                  id="registerButton"
-                  data-modal-target="uploadFile"
-                  data-modal-toggle="uploadFile"
-                  class="block text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 rounded-full"
-                  type="submit"
-                  sec:authorize="hasRole('TRAINEE')"
-
-              >
-                  Register
-              </button> <!--menambahkan th:if tapi masih belum ke hide error loading-->
+                          id="registerButton"
+                          data-modal-target="uploadFile"
+                          data-modal-toggle="uploadFile"
+                          class="block text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 rounded-full"
+                          type="submit"
+                          sec:authorize="hasRole('TRAINEE')"
+                          th:attr="hidden=${registered}"
+                  >
+                    Register
+                  </button>
                 </div>
                 <div
                   id="uploadFile"
@@ -204,6 +205,17 @@
     </div>
     <div layout:fragment="script">
       <script th:src="@{/js/history.js}"></script>
+      <script>
+        function showLoading() {
+          Swal.fire({
+            html: '<div class="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-transparent"><div class="animate-spin rounded-full border-t-4 border-blue-500 border-solid h-12 w-12"></div></div>',
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            background: 'transparent',
+          });
+        }
+      </script>
     </div>
   </body>
 </html>

@@ -48,12 +48,12 @@
                     >
                       <h5
                         class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
-                        th:text="${training.title.length() >= 20 ? training.title.substring(0, 20) : training.title}"
+                        th:text="${training.title}"
                       ></h5>
                     </a>
                     <p
                       class="mb-3 font-normal text-gray-700 dark:text-gray-400"
-                      th:text="${training.description.length() >= 30 ? training.description.substring(0, 25) : training.description}"
+                      th:text="${training.description.length() >= 30 ? training.description.substring(0, 25) + '...' : training.description}"
                     ></p>
                     <div class="flex gap-3">
                       <a
