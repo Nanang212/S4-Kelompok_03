@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class TrainingRegisterService {
@@ -46,13 +47,29 @@ public class TrainingRegisterService {
 
   public byte[] getAttachment(Integer id) {
     return restTemplate
-            .exchange(url.concat("/attachment/" + id), HttpMethod.GET, null, new ParameterizedTypeReference<byte[]>() {})
+            .exchange(url.concat("/attachment/" + id), HttpMethod.GET, null, new ParameterizedTypeReference<byte[]>() {
+            })
             .getBody();
   }
 
   public TrainingRegister createCancellation(Integer id) {
     return restTemplate
-            .exchange(url.concat("/cancel/" + id), HttpMethod.POST, null, new ParameterizedTypeReference<TrainingRegister>() {})
+            .exchange(url.concat("/cancel/" + id), HttpMethod.POST, null, new ParameterizedTypeReference<TrainingRegister>() {
+            })
+            .getBody();
+  }
+
+  public List<TrainingRegisterResponse> getAllCancellation() {
+    return restTemplate
+            .exchange(url.concat("/cancel"), HttpMethod.GET, null, new ParameterizedTypeReference<List<TrainingRegisterResponse>>() {
+            })
+            .getBody();
+  }
+
+  public List<Map<String, Object>> getCancellationByIdGroupByTraining(Integer id) {
+    return restTemplate
+            .exchange(url.concat("/cancel/" + id), HttpMethod.GET, null, new ParameterizedTypeReference<List<Map<String, Object>>>() {
+            })
             .getBody();
   }
 
@@ -90,9 +107,17 @@ public class TrainingRegisterService {
             .getBody();
   }
 
-    public TrainingRegisterResponse getByIdGroupByTraining(Integer id) {
+  public List<TrainingRegisterResponse> getAllGroupByTraining() {
     return restTemplate
-            .exchange(url.concat("/register/training/{id}"), HttpMethod.GET, null, TrainingRegisterResponse.class)
+            .exchange(url.concat("/training"), HttpMethod.GET, null, new ParameterizedTypeReference<List<TrainingRegisterResponse>>() {
+            })
+            .getBody();
+  }
+
+  public List<Map<String, Object>> getByIdGroupByTraining(Integer id) {
+    return restTemplate
+            .exchange(url.concat("/training/" + id), HttpMethod.GET, null, new ParameterizedTypeReference<List<Map<String, Object>>>() {
+            })
             .getBody();
   }
 }

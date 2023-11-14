@@ -13,6 +13,7 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TrainingRegisterResponse {
+  private Integer id;
   private Training training;
   private Employee trainer;
   private List<Map<String, Object>> traineeStatus;

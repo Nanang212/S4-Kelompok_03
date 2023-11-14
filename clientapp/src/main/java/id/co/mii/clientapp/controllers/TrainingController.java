@@ -39,6 +39,11 @@ public class TrainingController {
   private AuthenticationSessionUtil authenticationSessionUtil;
   private StatusService statusService;
 
+  @GetMapping("/cancel")
+  public String getAllCancellation(Model model) {
+    return "training/cancellation/index";
+  }
+
   @GetMapping
   public String getAll(Model model) {
     List<String> authorities = authenticationSessionUtil
@@ -133,10 +138,22 @@ public class TrainingController {
 
   @GetMapping("/register/detail/{id}")
   public String getTrainingRegisterById(@PathVariable Integer id, Model model) {
-    TrainingRegister trainingRegister = trainingRegisterService.getById(id);
-    model.addAttribute("trainingRegister", trainingRegister);
+    List<String> authorities = authenticationSessionUtil
+            .authentication()
+            .getAuthorities()
+            .stream()
+            .map(GrantedAuthority::getAuthority)
+            .collect(Collectors.toList());
+    model.addAttribute("training", trainingService.getById(id));
+    model.addAttribute("authorities", authorities);
     model.addAttribute("id", id);
     return "training/register/detail";
   }
 
+  @GetMapping("/cancel/detail/{id}")
+  public String getTrainingCancellationById(@PathVariable Integer id, Model model) {
+    model.addAttribute("training", trainingService.getById(id));
+    model.addAttribute("id", id);
+    return "training/cancellation/detail";
+  }
 }

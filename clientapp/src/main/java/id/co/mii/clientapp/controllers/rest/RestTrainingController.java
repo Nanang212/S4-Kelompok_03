@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @AllArgsConstructor
@@ -69,6 +70,18 @@ public class RestTrainingController {
     }
   }
 
+  @GetMapping("/register/cancel")
+  public List<TrainingRegisterResponse> getAllCancellation() {
+    return trainingRegisterService.getAllCancellation();
+  }
+
+  @GetMapping("/register/cancel/{id}")
+  public ResponseEntity<List<Map<String, Object>>> getCancellationByIdGroupByTraining(@PathVariable Integer id) {
+    return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(trainingRegisterService.getCancellationByIdGroupByTraining(id));
+  }
+
   @PostMapping("/register/cancel/{id}")
   public TrainingRegister createCancellation(@PathVariable Integer id) {
     return trainingRegisterService.createCancellation(id);
@@ -98,8 +111,15 @@ public class RestTrainingController {
         .body(new Training());
   }
 
+  @GetMapping("/register/training")
+  public ResponseEntity<List<TrainingRegisterResponse>> getAllGroupByTraining() {
+    return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(trainingRegisterService.getAllGroupByTraining());
+  }
+
   @GetMapping("/register/training/{id}")
-  public ResponseEntity<TrainingRegisterResponse> getByIdGroupByTraining(@PathVariable Integer id) {
+  public ResponseEntity<List<Map<String, Object>>> getByIdGroupByTraining(@PathVariable Integer id) {
     return ResponseEntity
         .status(HttpStatus.OK)
         .body(trainingRegisterService.getByIdGroupByTraining(id));
