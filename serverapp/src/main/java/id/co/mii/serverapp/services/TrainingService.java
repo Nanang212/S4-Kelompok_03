@@ -35,7 +35,7 @@ public class TrainingService extends BaseService<Training, Integer> {
   public List<Training> getAll() {
     return super.getAll()
             .stream()
-            .sorted(Comparator.comparing(Training::getStartDate))
+            .sorted(Comparator.comparing(Training::getStartDate).reversed())
             .collect(Collectors.toList());
   }
 
