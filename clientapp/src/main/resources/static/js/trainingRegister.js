@@ -11,9 +11,10 @@ $(document).ready(function () {
   let dataTable = $("#table-training-registration").DataTable({
     ajax: {
       method: "GET",
-      url: "/api/trainings/register",
+      url: "/api/trainings/register/training",
       dataSrc: "",
-      data: { order: [["currentStatus.id", "desc"]] },//mencoba menambahkan urutan tapi masih belum berhasil
+      data: null,//mencoba menambahkan urutan tapi masih belum berhasil
+      // data: { order: [["currentStatus.id", "desc"]] },//mencoba menambahkan urutan tapi masih belum berhasil
     },
     columns: [
       {
@@ -26,7 +27,7 @@ $(document).ready(function () {
       {
         data: null,
         render: (data) => {
-          return `${data.training.trainer !== null ? data.training.trainer.user.username :'-' }`;
+          return `${data.trainer !== null ? data.trainer.user.username :'-' }`;
         },
       },
       // {
@@ -89,93 +90,30 @@ $(document).ready(function () {
         render: (data, type, row, meta) => {
           return `
               <div class="flex justify-start gap-3">
-                <button
-                type="button"
-                class="btn btn-primary btn-sm"
-                onclick="window.location.href='/training/register/detail/${data.id}'"
-              >
-                <ion-icon name="information-circle" size="large" class="text-blue-500"></ion-icon>
-              </button>
-                <!-- Button cancel -->
+              <!-- Button cancel -->
                 <button
                   type="button"
                   class="btn btn-danger btn-sm"
-                  registrationId="${data.id}"
+                  registrationId="${data.training.id}"
                   onclick="cancelTrainingRegistration(this)"
                   ${authorities.includes("TRAINEE") ? "" : "hidden"}
                 >
                   <ion-icon name="arrow-undo-circle" size="large" class="text-red-500"></ion-icon>
                 </button>
                 <button
-                    type="button"
-                    class="btn btn-warning btn-sm"
-                    registrationId="${data.id}"
-                    onclick="downloadAttachment(this)"
-                    title="Download attachment"
-                  >
-                  <ion-icon name="download" size="large" class="text-green-500"></ion-icon>
-                </button>
-                <!-- Button delete modal -->
-                <button
-                  type="button"
-                  class="btn btn-danger btn-sm"
-                  registrationId="${data.id}"
-                  onclick="deleteTrainingRegistration(this)"
-                  ${authorities.includes("ADMIN") ? "" : "hidden"}
+                type="button"
+                class="btn btn-primary btn-sm"
+                onclick="window.location.href='/training/register/detail/${data.training.id}'"
                 >
-                  <ion-icon name="trash" size="large" class="text-red-500"></ion-icon>
+                  <ion-icon name="information-circle" size="large" class="text-blue-500"></ion-icon>
                 </button>
               </div>
             `;
         },
       },
-    ],
-    columnDefs: [
-      {
-        targets: [3], // Index kolom "Status"
-        visible: showStatusColumn,
-      },
-
-    ],
+    ]
   });
 });
-
-
-
-function updateStatus(registrationId, newStatus) {
-  // Dapatkan nilai isChecked
-  let isChecked = $(`#checkbox-${newStatus}-${registrationId}`).prop("checked");
-
-  // Panggil fungsi untuk mengirim permintaan Ajax untuk memperbarui status di database
-  updateStatusInDatabase(registrationId, newStatus, isChecked);
-}
-
-function getStatusColors(statusId) {
-  switch (statusId) {
-    case 1:
-      return { bgColor: "green" };
-    case 2:
-      return { bgColor: "yellow" };
-    case 3:
-    case 4:
-      return { bgColor: "red" };
-    case 5:
-      return { bgColor: "blue" };
-    default:
-      return { bgColor: "black" };
-  }
-}
-
-function showToast(type, text) {
-  return Swal.fire({
-    toast: true,
-    position: "top-end",
-    showConfirmButton: false,
-    timer: 2000,
-    icon: type,
-    title: text,
-  });
-}
 
 function cancelTrainingRegistration(button) {
   let id = button.getAttribute("registrationId");
@@ -219,18 +157,30 @@ function cancelTrainingRegistration(button) {
   });
 }
 
-function downloadAttachment(button) {
-  let id = button.getAttribute("registrationId");
-  $.ajax({
-    method: "GET",
-    url: `/api/trainings/register/attachment/${id}`,
-    contentType: "application/pdf",
-    success: (response) => {
-      console.log(response);
-    },
-    error: (err) => {
-      console.log(err);
-    },
+function getStatusColors(statusId) {
+  switch (statusId) {
+    case 1:
+      return { bgColor: "green" };
+    case 2:
+      return { bgColor: "yellow" };
+    case 3:
+    case 4:
+      return { bgColor: "red" };
+    case 5:
+      return { bgColor: "blue" };
+    default:
+      return { bgColor: "black" };
+  }
+}
+
+function showToast(type, text) {
+  return Swal.fire({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 2000,
+    icon: type,
+    title: text,
   });
 }
 
@@ -250,48 +200,6 @@ function setStatus() {
     error: (err) => {
       console.log(err);
     },
-  });
-}
-
-function deleteTrainingRegistration(button) {
-  let id = button.getAttribute("registrationId");
-  Swal.fire({
-    title: `Are you sure want to delete training ?`,
-    text: "You won't be able to revert this!",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Yes, delete it!",
-  }).then((result) => {
-    if (result.isConfirmed) {
-      $.ajax({
-        method: "DELETE",
-        url: `/api/trainings/register/${id}`,
-        dataType: "JSON",
-        contentType: "application/json",
-        beforeSend: function () {
-          setCsrf();
-        },
-        success: (res) => {
-          Swal.fire({
-            position: "center",
-            icon: "success",
-            title: "Registration deleted...",
-            showConfirmButton: false,
-            timer: 2000,
-          });
-          $("#table-training-registration").DataTable().ajax.reload();
-        },
-        error: (err) => {
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "Something is wrong !!!",
-          });
-        },
-      });
-    }
   });
 }
 
@@ -322,43 +230,6 @@ $("#btnUpdateTrainingRegistration").one("click", (event) => {
     },
   });
 });
-
-function updateStatusInDatabase(registrationId, newStatus, isChecked) {
-  let loadingModal = Swal.fire({
-    html: '<div class="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-transparent"><div class="animate-spin rounded-full border-t-4 border-blue-500 border-solid h-12 w-12"></div></div>',
-    showConfirmButton: false,
-    allowOutsideClick: false,
-    allowEscapeKey: false,
-    background: 'transparent',
-  });
-
-  $.ajax({
-    method: "PUT",
-    url: `/api/trainings/register/${registrationId}`,
-    dataType: "JSON",
-    contentType: "application/json",
-    data: JSON.stringify({
-      statusId: newStatus,
-      isChecked: isChecked,
-    }),
-    beforeSend: function () {
-      setCsrf();
-    },
-    success: function (res) {
-      loadingModal.close();
-
-      showToast("success", "Training registration has been successfully updated").then(() => {
-        $("#table-training-registration").DataTable().ajax.reload();
-      });
-    },
-    error: function (error) {
-      loadingModal.close();
-
-      let errorJsn = error.responseJSON;
-      console.log(error);
-    },
-  });
-}
 
 
 

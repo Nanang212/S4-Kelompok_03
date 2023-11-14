@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layouts/main}"
+>
+<head>
+  <title>Training Registration</title>
+</head>
+<body>
+<!-- Content -->
+<section
+        id="trainingCancelSection"
+        th:attr="authorities=${authorities}"
+        class="container mt-5"
+        layout:fragment="content"
+>
+  <div class="mx-10">
+    <div class="flex justify-between">
+      <p class="font-bold text-4xl">Training Cancellation</p>
+    </div>
+    <div class="py-8">
+      <table id="table-training-cancellation" class="table-fixed display">
+        <thead class="table-light">
+        <tr>
+          <th width="25px">No</th>
+          <th>Title</th>
+          <th>Trainer</th>
+          <!-- <th width="201px" th:if="${!authorities.contains('TRAINEE')}">
+            Status
+          </th> -->
+          <th>Action</th>
+        </tr>
+        </thead>
+      </table>
+    </div>
+  </div>
+</section>
+
+<div layout:fragment="script">
+  <script th:src="@{/js/cancelTraining.js}"></script>
+</div>
+</body>
+</html>

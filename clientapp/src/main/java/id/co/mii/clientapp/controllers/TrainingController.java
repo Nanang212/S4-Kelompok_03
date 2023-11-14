@@ -2,6 +2,7 @@ package id.co.mii.clientapp.controllers;
 
 import id.co.mii.clientapp.models.Employee;
 import id.co.mii.clientapp.models.Status;
+import id.co.mii.clientapp.models.Survey;
 import id.co.mii.clientapp.models.Training;
 import id.co.mii.clientapp.models.TrainingRegister;
 import id.co.mii.clientapp.models.dto.request.TrainingRegisterRequest;
@@ -39,6 +40,11 @@ public class TrainingController {
   private TrainingRegisterService trainingRegisterService;
   private AuthenticationSessionUtil authenticationSessionUtil;
   private StatusService statusService;
+
+  @GetMapping("/cancel")
+  public String getAllCancellation(Model model) {
+    return "training/cancellation/index";
+  }
 
   @GetMapping
   public String getAll(Model model) {
@@ -108,7 +114,7 @@ public class TrainingController {
   }
 
   @GetMapping("/attend")
-  public String getAttendedTraining(Model model ) {
+  public String getAttendedTraining(Model model) {
     Employee loggedInEmp = employeeService.getLoggedInUser();
     model.addAttribute("trainings", trainingService.getAllByTrainee(loggedInEmp.getUser().getUsername()));
     return "training/attend";
@@ -134,10 +140,22 @@ public class TrainingController {
 
   @GetMapping("/register/detail/{id}")
   public String getTrainingRegisterById(@PathVariable Integer id, Model model) {
-    TrainingRegisterResponse trainingRegister = trainingRegisterService.getByIdGroupByTraining(id);
-    model.addAttribute("trainingRegister", trainingRegister);
+    List<String> authorities = authenticationSessionUtil
+            .authentication()
+            .getAuthorities()
+            .stream()
+            .map(GrantedAuthority::getAuthority)
+            .collect(Collectors.toList());
+    model.addAttribute("training", trainingService.getById(id));
+    model.addAttribute("authorities", authorities);
     model.addAttribute("id", id);
     return "training/register/detail";
   }
 
+  @GetMapping("/cancel/detail/{id}")
+  public String getTrainingCancellationById(@PathVariable Integer id, Model model) {
+    model.addAttribute("training", trainingService.getById(id));
+    model.addAttribute("id", id);
+    return "training/cancellation/detail";
+  }
 }

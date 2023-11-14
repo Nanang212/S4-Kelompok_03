@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import id.co.mii.clientapp.models.Survey;
+import id.co.mii.clientapp.models.TrainingRegister;
 import id.co.mii.clientapp.services.SurveyService;
+import id.co.mii.clientapp.services.TrainingRegisterService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -18,6 +20,7 @@ import lombok.Data;
 @RequestMapping("/survey")
 public class SurveyController {
     private SurveyService surveyService;
+    private TrainingRegisterService trainingRegisterService;
 
     @GetMapping
     public String getAll(Model model) {
@@ -25,15 +28,18 @@ public class SurveyController {
         return "training/survey";
     }
 
-    @GetMapping("/create/{trainingRegisterId}")
-    public String createView(@PathVariable("trainingRegisterId") Integer trainingRegisterId, Model model) {
-        model.addAttribute("trainingRegisterId", trainingRegisterId);
+    @GetMapping("/create/{trainingId}")
+    public String createView(@PathVariable("trainingId") Integer trainingId, Model model) {
+        Survey survey = new Survey();
+        TrainingRegister trainingRegister = trainingRegisterService.getByTrainingId(trainingId);
+        survey.setTrainingRegister(trainingRegister);
+        model.addAttribute("survey", survey);
         return "training/survey";
     }
 
     @PostMapping
-    public String create(Survey survey, Integer trainingRegisterId) {
-        surveyService.create(survey, trainingRegisterId);
+    public String create(Survey survey) {
+        surveyService.create(survey);
         return "redirect:/training/attend";
     }
 }
