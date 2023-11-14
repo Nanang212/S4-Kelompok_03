@@ -32,15 +32,6 @@ public class AuthController {
       model.addAttribute("error", error);
       return "auth/login";
     }
-    List<String> roles = session
-            .authentication()
-            .getAuthorities()
-            .stream()
-            .map(GrantedAuthority::getAuthority)
-            .collect(Collectors.toList());
-    if (roles.contains("ADMIN")) {
-      return "redirect:/dashboard";
-    }
     return "redirect:/training";
   }
 
@@ -48,6 +39,15 @@ public class AuthController {
   public String login(LoginRequest loginRequest) {
     if (!authService.login((loginRequest))) {
       return "redirect:/login?error=true";
+    }
+    List<String> roles = session
+            .authentication()
+            .getAuthorities()
+            .stream()
+            .map(GrantedAuthority::getAuthority)
+            .collect(Collectors.toList());
+    if (roles.contains("ROLE_ADMIN")) {
+      return "redirect:/dashboard";
     }
     return "redirect:/training";
   }
