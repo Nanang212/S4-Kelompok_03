@@ -1,65 +1,57 @@
 $(document).ready(function () {
-  let detailRegisterTraining = document.getElementById("detailRegisterTraining");
-  let authorities = detailRegisterTraining.getAttribute("authorities");
-  let id = detailRegisterTraining.getAttribute("trId")
-  let showStatusColumn = !authorities.includes("TRAINEE");
-    $("#detail-training-register").DataTable({
-      ajax: {
-        method: "GET",
-        url: "/api/trainings/register/training/" + id,
-        dataSrc: "",
+  let detailCancelTraining = document.getElementById("detailCancelTraining");
+  let id = detailCancelTraining.getAttribute("trId")
+  $("#detail-training-cancel").DataTable({
+    ajax: {
+      method: "GET",
+      url: "/api/trainings/register/cancel/" + id,
+      dataSrc: "",
+    },
+    columns: [
+      {
+        data: null,
+        render: function (data, type, row, meta) {
+          // Menghitung indeks berdasarkan posisi dalam data
+          return meta.row + 1;
+        },
       },
-      columns: [
-        {
-          data: null,
-          render: function (data, type, row, meta) {
-            // Menghitung indeks berdasarkan posisi dalam data
-            return meta.row + 1;
-          },
+      {
+        data: null,
+        render: (data) => {
+          return `${data.trainee !== null ? data.trainee.user.username :'-' }`;
         },
-        {
-          data: null,
-          render: (data) => {
-            return `${data.trainee !== null ? data.trainee.user.username :'-' }`;
-          },
-        },
-        {
-          data: null,
-          render: function (data, type, row, meta) {
-            if (!showStatusColumn) {
-              return "";
-            }
+      },
+      {
+        data: null,
+        render: function (data, type, row, meta) {
+          let checkboxCancelledId = `checkbox-4-${data.id}`;
+          let checkboxPendingId = `checkbox-5-${data.id}`;
+          let checkboxRejectId = `checkbox-3-${data.id}`;
 
-            let checkboxSuccessId = `checkbox-success-${meta.row}`;
-            let checkboxPendingId = `checkbox-pending-${meta.row}`;
-            let checkboxRejectId = `checkbox-reject-${meta.row}`;
+          let isStatusCancel = data.status.id === 4;
 
-            let isStatusSuccess = data.status.id === 1;
-
-            return `
+          return `
             <div class="flex items-center justify-center space-x-4">
               <div>
-                <label for="${checkboxSuccessId}">Success</label>
+                <label for="${checkboxCancelledId}">Cancelled</label>
                 <input
                   type="checkbox"
                   name="statusCheckbox_${data.id}"
-                  id="${checkboxSuccessId}"
-                  ${data.status.id === 1 ? "checked" : ""}
-                  onchange="updateStatus(${data.id}, 1)"
-                  ${authorities.includes("ADMIN") ? "" : "hidden"}
-                  ${isStatusSuccess ? "disabled" : ""}
+                  id="${checkboxCancelledId}"
+                  ${data.status.id === 4 ? "checked" : ""}
+                  onchange="updateStatusCancellation(${data.id}, 4)"
+                  ${isStatusCancel ? "disabled" : ""}
                 >
               </div>
               <div>
-                <label for="${checkboxPendingId}">Pending</label>
+                <label for="${checkboxPendingId}">Request Cancel</label>
                 <input
                   type="checkbox"
                   name="statusCheckbox_${data.id}"
                   id="${checkboxPendingId}"
-                  ${data.status.id === 2 ? "checked" : ""}
-                  onchange="updateStatus(${data.id}, 2)"
-                  ${authorities.includes("ADMIN") ? "" : "hidden"}
-                  ${isStatusSuccess ? "disabled" : ""}
+                  ${data.status.id === 5 ? "checked" : ""}
+                  onchange="updateStatusCancellation(${data.id}, 5)"
+                  ${isStatusCancel ? "disabled" : ""}
                 >
               </div>
               <div>
@@ -69,19 +61,18 @@ $(document).ready(function () {
                   name="statusCheckbox_${data.id}"
                   id="${checkboxRejectId}"
                   ${data.status.id === 3 ? "checked" : ""}
-                  onchange="updateStatus(${data.id}, 3)"
-                  ${authorities.includes("ADMIN") ? "" : "hidden"}
-                  ${isStatusSuccess ? "disabled" : ""}
+                  onchange="updateStatusCancellation(${data.id}, 3)"
+                  ${isStatusCancel ? "disabled" : ""}
                 >
               </div>
             </div>
           `;
-          },
         },
-        {
-          data: null,
-          render: (data, type, row, meta) => {
-            return `
+      },
+      {
+        data: null,
+        render: (data, type, row, meta) => {
+          return `
               <div class="flex justify-start gap-3">
                 <button
                     type="button"
@@ -98,33 +89,25 @@ $(document).ready(function () {
                   class="btn btn-danger btn-sm"
                   registrationId="${data.id}"
                   onclick="deleteTrainingRegistration(this)"
-                  ${authorities.includes("ADMIN") ? "" : "hidden"}
                 >
                   <ion-icon name="trash" size="large" class="text-red-500"></ion-icon>
                 </button>
               </div>
             `;
-          },
-        }
-      ],
-      columnDefs: [
-        {
-          targets: [2], // Index kolom "Status"
-          visible: showStatusColumn,
         },
-      ],
-    });
+      }
+    ]
   });
+});
 
-function updateStatus(registrationId, newStatus) {
+function updateStatusCancellation(registrationId, newStatus) {
   // Dapatkan nilai isChecked
   let isChecked = $(`#checkbox-${newStatus}-${registrationId}`).prop("checked");
-
   // Panggil fungsi untuk mengirim permintaan Ajax untuk memperbarui status di database
-  updateStatusInDatabase(registrationId, newStatus, isChecked);
+  updateStatusCancellationInDatabase(registrationId, newStatus, isChecked);
 }
 
-function updateStatusInDatabase(registrationId, newStatus, isChecked) {
+function updateStatusCancellationInDatabase(registrationId, newStatus, isChecked) {
   let loadingModal = Swal.fire({
     html: '<div class="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-transparent"><div class="animate-spin rounded-full border-t-4 border-blue-500 border-solid h-12 w-12"></div></div>',
     showConfirmButton: false,
@@ -147,10 +130,12 @@ function updateStatusInDatabase(registrationId, newStatus, isChecked) {
     },
     success: function (res) {
       showToast("success", "Training registration has been successfully updated").then(() => {
-        $("#detail-training-register").DataTable().ajax.reload();
+        $("#detail-training-cancel").DataTable().ajax.reload();
+        if (res.currentStatus.id === 3) {
+          updateStatusCancellationInDatabase(res.id, 1, true)
+        }
         loadingModal.close();
       });
-
     },
     error: function (error) {
       loadingModal.close();

@@ -3,6 +3,7 @@ package id.co.mii.serverapp.services;
 import id.co.mii.serverapp.models.*;
 import id.co.mii.serverapp.models.dto.requests.EmailRequest;
 import id.co.mii.serverapp.models.dto.requests.TrainingRequest;
+import id.co.mii.serverapp.repositories.TrainingRegisterRepository;
 import id.co.mii.serverapp.repositories.TrainingRepository;
 import id.co.mii.serverapp.services.base.BaseService;
 import id.co.mii.serverapp.utils.StringUtils;
@@ -28,6 +29,7 @@ public class TrainingService extends BaseService<Training, Integer> {
   private RoleService roleService;
   private StatusService statusService;
   private EmailService emailService;
+  private TrainingRegisterRepository trainingRegisterRepository;
 
   @Override
   public List<Training> getAll() {

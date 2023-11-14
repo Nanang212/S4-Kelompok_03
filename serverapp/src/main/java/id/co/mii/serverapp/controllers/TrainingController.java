@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @AllArgsConstructor
@@ -50,6 +51,27 @@ public class TrainingController {
             .body(trainingService.broadcastEmail(id));
   }
 
+  @GetMapping("/register/logged-in-emp/training/{id}")
+  public ResponseEntity<TrainingRegister> getByTrainingAndLoggedInEmployee(@PathVariable Integer id) {
+    return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(trainingRegisterService.getByTrainingAndLoggedInEmployee(id));
+  }
+
+  @GetMapping(value = "/register/cancel")
+  public ResponseEntity<List<TrainingRegisterResponse>> getAllTrainingCancellation() {
+    return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(trainingRegisterService.getAllCancellationGroupByTraining());
+  }
+
+  @GetMapping(value = "/register/cancel/{id}")
+  public ResponseEntity<List<Map<String, Object>>> getCancellationByIdGroupByTraining(@PathVariable Integer id) {
+    return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(trainingRegisterService.getCancellationByIdGroupByTraining(id));
+  }
+
   @GetMapping("/register")
   public ResponseEntity<List<TrainingRegister>> getAllTrainingRegister() {
     return ResponseEntity
@@ -65,7 +87,7 @@ public class TrainingController {
   }
 
   @GetMapping("/register/training/{id}")
-  public ResponseEntity<TrainingRegisterResponse> getByIdGroupByTraining(@PathVariable Integer id) {
+  public ResponseEntity<List<Map<String, Object>>> getByIdGroupByTraining(@PathVariable Integer id) {
     return ResponseEntity
             .status(HttpStatus.OK)
             .body(trainingRegisterService.getByIdGroupByTraining(id));
