@@ -27,7 +27,7 @@ $(document).ready(function () {
       {
         data: null,
         render: (data) => {
-          return `${data.trainee.user.username}`;
+          return `${data.training.trainer !== null ? data.training.trainer.user.username : '-'}`;
         },
       },
       // {
