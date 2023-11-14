@@ -21,13 +21,19 @@ public class SurveyService {
     @Value("${server.base.url}/survey")
     private String url;
 
-    public List<Survey> getAll() {
-        return restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<List<Survey>>() {}
-        ).getBody();
+    public List<Survey> ge(Integer id) {
+        return restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<List<Survey>>() {
+        }).getBody();
     }
 
-    public Survey create(Survey survey){
-        return restTemplate.exchange(url, HttpMethod.POST, new HttpEntity<>(survey), new ParameterizedTypeReference<Survey>() {}
-        ).getBody();
+    public Survey getById(Integer id) {
+        return restTemplate.exchange(url.concat("/" + id), HttpMethod.GET, null, Survey.class)
+                .getBody();
+    }
+
+    public Survey create(Survey survey) {
+        return restTemplate
+                .exchange(url, HttpMethod.POST, new HttpEntity<Survey>(survey), new ParameterizedTypeReference<Survey>() {
+                }).getBody();
     }
 }
