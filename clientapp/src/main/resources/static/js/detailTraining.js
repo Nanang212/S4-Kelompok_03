@@ -1,42 +1,45 @@
 $(document).ready(function () {
-  let detailRegisterTraining = document.getElementById("detailRegisterTraining");
+  let detailRegisterTraining = document.getElementById(
+    "detailRegisterTraining"
+  );
   let authorities = detailRegisterTraining.getAttribute("authorities");
-  let id = detailRegisterTraining.getAttribute("trId")
+  let id = detailRegisterTraining.getAttribute("trId");
   let showStatusColumn = !authorities.includes("TRAINEE");
-    $("#detail-training-register").DataTable({
-      ajax: {
-        method: "GET",
-        url: "/api/trainings/register/training/" + id,
-        dataSrc: "",
+  $("#detail-training-register").DataTable({
+    ajax: {
+      method: "GET",
+      url: "/api/trainings/register/training/" + id,
+      dataSrc: "",
+    },
+    columns: [
+      {
+        data: null,
+        render: function (data, type, row, meta) {
+          // Menghitung indeks berdasarkan posisi dalam data
+          return meta.row + 1;
+        },
       },
-      columns: [
-        {
-          data: null,
-          render: function (data, type, row, meta) {
-            // Menghitung indeks berdasarkan posisi dalam data
-            return meta.row + 1;
-          },
+      {
+        data: null,
+        render: (data) => {
+          return `${data.trainee !== null ? data.trainee.user.username : "-"}`;
         },
-        {
-          data: null,
-          render: (data) => {
-            return `${data.trainee !== null ? data.trainee.user.username :'-' }`;
-          },
-        },
-        {
-          data: null,
-          render: function (data, type, row, meta) {
-            if (!showStatusColumn) {
-              return "";
-            }
+      },
+      {
+        data: null,
+        render: function (data, type, row, meta) {
+          if (!showStatusColumn) {
+            return "";
+          }
 
-            let checkboxSuccessId = `checkbox-success-${meta.row}`;
-            let checkboxPendingId = `checkbox-pending-${meta.row}`;
-            let checkboxRejectId = `checkbox-reject-${meta.row}`;
+          let checkboxSuccessId = `checkbox-success-${meta.row}`;
+          let checkboxPendingId = `checkbox-pending-${meta.row}`;
+          let checkboxRejectId = `checkbox-reject-${meta.row}`;
 
-            let isStatusSuccessOrReject = data.status.id === 1 || data.status.id === 3;
+          let isStatusSuccessOrReject =
+            data.status.id === 1 || data.status.id === 3;
 
-            return `
+          return `
             <div class="flex items-center space-x-8">
               <div class="flex items-center flex-col">
                 <label for="${checkboxSuccessId}">Success</label>
@@ -76,15 +79,43 @@ $(document).ready(function () {
               </div>
             </div>
           `;
-          },
         },
-        {
-          data: "status.name"
+      },
+      {
+        data: "status.name",
+        render: function (data, type, row) {
+          let bgColorClass = "";
+          let paddingClass = "";
+          switch (row.status.id) {
+            case 1:
+              bgColorClass = "bg-green-400 text-black";
+              paddingClass = "px-3 py-1";
+              break;
+            case 2:
+              bgColorClass = "bg-yellow-400 text-black";
+              paddingClass = "px-3 py-1";
+              break;
+            case 3:
+            case 4:
+              bgColorClass = "bg-red-400 text-black";
+              paddingClass = "px-3 py-1";
+              break;
+            case 5:
+              bgColorClass = "bg-blue-400 text-black";
+              paddingClass = "px-3 py-1";
+              break;
+            default:
+              bgColorClass = "bg-gray-400 text-black";
+              paddingClass = "px-3 py-1";
+              break;
+          }
+          return `<div class="rounded-full inline-block ${bgColorClass} ${paddingClass}">${data}</div>`;
         },
-        {
-          data: null,
-          render: (data, type, row, meta) => {
-            return `
+      },
+      {
+        data: null,
+        render: (data, type, row, meta) => {
+          return `
               <div class="flex justify-start gap-3">
                 <button
                     type="button"
@@ -108,17 +139,17 @@ $(document).ready(function () {
                 </button>
               </div>
             `;
-          },
-        }
-      ],
-      columnDefs: [
-        {
-          targets: [2], // Index kolom "Status"
-          visible: showStatusColumn,
         },
-      ],
-    });
+      },
+    ],
+    columnDefs: [
+      {
+        targets: [2], // Index kolom "Status"
+        visible: showStatusColumn,
+      },
+    ],
   });
+});
 
 function updateStatus(registrationId, newStatus) {
   // Dapatkan nilai isChecked
@@ -134,7 +165,7 @@ function updateStatusInDatabase(registrationId, newStatus, isChecked) {
     showConfirmButton: false,
     allowOutsideClick: false,
     allowEscapeKey: false,
-    background: 'transparent',
+    background: "transparent",
   });
 
   $.ajax({
@@ -150,11 +181,13 @@ function updateStatusInDatabase(registrationId, newStatus, isChecked) {
       setCsrf();
     },
     success: function (res) {
-      showToast("success", "Training registration has been successfully updated").then(() => {
+      showToast(
+        "success",
+        "Training registration has been successfully updated"
+      ).then(() => {
         $("#detail-training-register").DataTable().ajax.reload();
         loadingModal.close();
       });
-
     },
     error: function (error) {
       loadingModal.close();
@@ -183,7 +216,7 @@ function downloadAttachment(button) {
     url: `/api/trainings/register/attachment/${id}`,
     contentType: "application/pdf",
     success: (response) => {
-      console.log(response)
+      console.log(response);
     },
     error: (err) => {
       console.log(err);
