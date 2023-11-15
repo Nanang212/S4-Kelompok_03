@@ -101,7 +101,7 @@ $('#btnSaveTraining').one("click", (event) => {
       description: $("#inputDescriptionTraining").val(),
       platformUrl: $("#inputUrlTraining").val(),
       trainerId: $("#inputTrainerTraining").val(),
-      isOnline: $("#inputLocationTraining").val() === "online",
+      isOnline: $("#locationOnline").is(':checked'),
     }),
     beforeSend : function () {
       setCsrf();
