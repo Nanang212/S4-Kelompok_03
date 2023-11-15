@@ -20,13 +20,13 @@
           >
             <!-- active & hover classes 'bg-primary-100 dark:bg-primary' -->
             <a
-              th:href="@{/dashboard}"
+              href="#"
               @click="$event.preventDefault(); open = !open"
               class="flex items-center p-2 text-gray-500 transition-colors rounded-md dark:text-light hover:bg-primary-100 dark:hover:bg-primary"
               :class="{'bg-primary-100 dark:bg-primary': isActive || open}"
               role="button"
               aria-haspopup="true"
-              :aria-expanded="open ? 'true' : 'false'"
+              :aria-expanded="(open || isActive) ? 'true' : 'false'"
             >
               <span aria-hidden="true">
                 <svg
@@ -238,6 +238,7 @@
                 Training Registration
               </a>
               <a
+                sec:authorize="hasRole('ADMIN')"
                 th:href="@{/training/cancel}"
                 role="menuitem"
                 class="block p-2 text-sm text-gray-400 transition-colors duration-200 rounded-md dark:text-gray-400 dark:hover:text-light hover:text-gray-700"
@@ -256,7 +257,6 @@
 
           <!-- Authentication links -->
           <div x-data="{ isActive: false, open: true}">
-            <!-- active & hover classes 'bg-primary-100 dark:bg-primary' -->
             <a
               href="#"
               @click="$event.preventDefault(); open = !open"

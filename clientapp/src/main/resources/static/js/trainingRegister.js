@@ -97,6 +97,7 @@ $(document).ready(function () {
                   registrationId="${data.training.id}"
                   onclick="cancelTrainingRegistration(this)"
                   ${authorities.includes("TRAINEE") ? "" : "hidden"}
+                  title = "cancel-training"
                 >
                   <ion-icon name="arrow-undo-circle" size="large" class="text-red-500"></ion-icon>
                 </button>
@@ -104,6 +105,7 @@ $(document).ready(function () {
                 type="button"
                 class="btn btn-primary btn-sm"
                 onclick="window.location.href='/training/register/detail/${data.training.id}'"
+                title = "detail-training"
                 >
                   <ion-icon name="information-circle" size="large" class="text-blue-500"></ion-icon>
                 </button>
