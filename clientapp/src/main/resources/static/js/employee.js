@@ -20,7 +20,7 @@ $(document).ready(function () {
         data: null,
         render: (data) => {
           return `
-              <div class="flex justify-center gap-2">
+              <div class="flex justify-start gap-2">
                 <!-- Button detail modal -->
                 <button
                 data-modal-target="detail"
@@ -28,7 +28,7 @@ $(document).ready(function () {
                 class="btn btn-warning btn-sm"
                 employeeId="${data.id}"
                 onclick="employee_detail(${data.id})"
-                title="Detail ${data.name}"
+                title="Detail-employee"
                 >
                   <ion-icon name="information-circle" size="large" class="text-blue-500"></ion-icon>
                 </button>
@@ -36,6 +36,7 @@ $(document).ready(function () {
                 <a
                   href="http://localhost:9090/employee/update/${data.id}"
                   class="btn btn-warning btn-sm"
+                  title = "Update-Employee"
                 >
                   <ion-icon name="create" size="large" class="text-yellow-500"></ion-icon>
               </a>
@@ -45,6 +46,7 @@ $(document).ready(function () {
                   class="btn btn-danger btn-sm"
                   employeeId="${data.id}"
                   onclick="deleteEmployee(this)"
+                  title = "Delete-Employee"
                 >
                   <ion-icon name="trash" size="large" class="text-red-500"></ion-icon>
                 </button>

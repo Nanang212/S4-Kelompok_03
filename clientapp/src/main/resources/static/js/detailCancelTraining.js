@@ -31,8 +31,8 @@ $(document).ready(function () {
           let isStatusCancel = data.status.id === 4;
 
           return `
-            <div class="flex items-center justify-center space-x-4">
-              <div>
+            <div class="flex items-center space-x-8 ">
+              <div class="flex items-center flex-col">
                 <label for="${checkboxCancelledId}">Cancelled</label>
                 <input
                   type="checkbox"
@@ -43,7 +43,7 @@ $(document).ready(function () {
                   ${isStatusCancel ? "disabled" : ""}
                 >
               </div>
-              <div>
+              <div class="flex items-center flex-col">
                 <label for="${checkboxPendingId}">Request Cancel</label>
                 <input
                   type="checkbox"
@@ -54,7 +54,7 @@ $(document).ready(function () {
                   ${isStatusCancel ? "disabled" : ""}
                 >
               </div>
-              <div>
+              <div class="flex items-center flex-col">
                 <label for="${checkboxRejectId}">Reject</label>
                 <input
                   type="checkbox"
@@ -89,6 +89,7 @@ $(document).ready(function () {
                   class="btn btn-danger btn-sm"
                   registrationId="${data.id}"
                   onclick="deleteTrainingRegistration(this)"
+                  title = "Delete"
                 >
                   <ion-icon name="trash" size="large" class="text-red-500"></ion-icon>
                 </button>
