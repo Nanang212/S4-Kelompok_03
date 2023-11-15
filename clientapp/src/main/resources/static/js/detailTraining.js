@@ -34,7 +34,7 @@ $(document).ready(function () {
             let checkboxPendingId = `checkbox-pending-${meta.row}`;
             let checkboxRejectId = `checkbox-reject-${meta.row}`;
 
-            let isStatusSuccess = data.status.id === 1;
+            let isStatusSuccessOrReject = data.status.id === 1 || data.status.id === 3;
 
             return `
             <div class="flex items-center space-x-8">
@@ -47,7 +47,7 @@ $(document).ready(function () {
                   ${data.status.id === 1 ? "checked" : ""}
                   onchange="updateStatus(${data.id}, 1)"
                   ${authorities.includes("ADMIN") ? "" : "hidden"}
-                  ${isStatusSuccess ? "disabled" : ""}
+                  ${isStatusSuccessOrReject ? "disabled" : ""}
                 >
               </div>
               <div class="flex items-center flex-col">
@@ -59,7 +59,7 @@ $(document).ready(function () {
                   ${data.status.id === 2 ? "checked" : ""}
                   onchange="updateStatus(${data.id}, 2)"
                   ${authorities.includes("ADMIN") ? "" : "hidden"}
-                  ${isStatusSuccess ? "disabled" : ""}
+                  ${isStatusSuccessOrReject ? "disabled" : ""}
                 >
               </div>
               <div class="flex items-center flex-col">
@@ -71,12 +71,15 @@ $(document).ready(function () {
                   ${data.status.id === 3 ? "checked" : ""}
                   onchange="updateStatus(${data.id}, 3)"
                   ${authorities.includes("ADMIN") ? "" : "hidden"}
-                  ${isStatusSuccess ? "disabled" : ""}
+                  ${isStatusSuccessOrReject ? "disabled" : ""}
                 >
               </div>
             </div>
           `;
           },
+        },
+        {
+          data: "status.name"
         },
         {
           data: null,
