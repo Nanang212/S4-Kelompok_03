@@ -97,8 +97,7 @@ public class TrainingRegisterService extends BaseService<TrainingRegister, Integ
     Status cancelled = statusService.getById(4);
     return training.getTrainingRegisters()
             .stream()
-            .filter(trainingRegister -> !trainingRegister.getCurrentStatus().equals(requestCancel))
-            .filter(trainingRegister -> !trainingRegister.getCurrentStatus().equals(cancelled))
+            .filter(trainingRegister -> !trainingRegister.getCurrentStatus().equals(requestCancel) && !trainingRegister.getCurrentStatus().equals(cancelled))
             .map(tr -> {
               Map<String, Object> map = new HashMap<>();
               map.put("id", tr.getId());
