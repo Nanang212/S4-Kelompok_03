@@ -49,6 +49,7 @@ $(document).ready(function () {
                   type="button"
                   class="btn btn-primary btn-sm"
                   onclick="window.location.href='/training/${data.id}'"
+                  title = "detail-training"
                 >
                   <ion-icon name="information-circle" size="large" class="text-blue-500"></ion-icon>
                 </button>
@@ -59,6 +60,7 @@ $(document).ready(function () {
                   trainingId="${data.id}"
                   onclick="window.location.href='/training/update/${data.id}'"
                   ${authorities.includes("ADMIN") ? "" : "hidden"}
+                  title = "Update-training"
                 >
                   <ion-icon name="create" size="large" class="text-yellow-500"></ion-icon>
                 </button>
@@ -69,6 +71,7 @@ $(document).ready(function () {
                   trainingId="${data.id}"
                   onclick="deleteTraining(this)"
                   ${authorities.includes("ADMIN") ? "" : "hidden"}
+                  title = "Delete-training"
                 >
                   <ion-icon name="trash" size="large" class="text-red-500"></ion-icon>
                 </button>

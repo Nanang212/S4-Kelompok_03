@@ -37,8 +37,8 @@ $(document).ready(function () {
             let isStatusSuccess = data.status.id === 1;
 
             return `
-            <div class="flex items-center justify-center space-x-4">
-              <div>
+            <div class="flex items-center space-x-8">
+              <div class="flex items-center flex-col">
                 <label for="${checkboxSuccessId}">Success</label>
                 <input
                   type="checkbox"
@@ -50,7 +50,7 @@ $(document).ready(function () {
                   ${isStatusSuccess ? "disabled" : ""}
                 >
               </div>
-              <div>
+              <div class="flex items-center flex-col">
                 <label for="${checkboxPendingId}">Pending</label>
                 <input
                   type="checkbox"
@@ -62,7 +62,7 @@ $(document).ready(function () {
                   ${isStatusSuccess ? "disabled" : ""}
                 >
               </div>
-              <div>
+              <div class="flex items-center flex-col">
                 <label for="${checkboxRejectId}">Reject</label>
                 <input
                   type="checkbox"
@@ -99,6 +99,7 @@ $(document).ready(function () {
                   registrationId="${data.id}"
                   onclick="deleteTrainingRegistration(this)"
                   ${authorities.includes("ADMIN") ? "" : "hidden"}
+                  title = "Delete-training"
                 >
                   <ion-icon name="trash" size="large" class="text-red-500"></ion-icon>
                 </button>
