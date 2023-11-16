@@ -1,3 +1,4 @@
+
 $(document).ready(function () {
   let trainingSection = document.getElementById("trainingSection");
   let authorities;

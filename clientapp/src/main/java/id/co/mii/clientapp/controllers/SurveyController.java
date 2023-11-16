@@ -23,9 +23,9 @@ public class SurveyController {
     private TrainingRegisterService trainingRegisterService;
 
     @GetMapping
-    public String getAll(Model model) {
+    public String getAll() {
         // model.addAttribute("title", "MCC 81");
-        return "training/survey";
+        return "training/listSurvey";
     }
 
     @GetMapping("/create/{trainingId}")

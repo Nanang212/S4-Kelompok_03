@@ -13,5 +13,4 @@ public class Survey {
     private Integer trainerCompotence;
     private Integer learningQuality;
     private TrainingRegister trainingRegister;
-    
 }

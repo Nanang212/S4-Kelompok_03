@@ -21,7 +21,7 @@ public class SurveyService {
     @Value("${server.base.url}/survey")
     private String url;
 
-    public List<Survey> ge(Integer id) {
+    public List<Survey> getAll() {
         return restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<List<Survey>>() {
         }).getBody();
     }
@@ -33,7 +33,7 @@ public class SurveyService {
 
     public Survey create(Survey survey) {
         return restTemplate
-                .exchange(url, HttpMethod.POST, new HttpEntity<Survey>(survey), new ParameterizedTypeReference<Survey>() {
+                .exchange(url, HttpMethod.POST, new HttpEntity<>(survey), new ParameterizedTypeReference<Survey>() {
                 }).getBody();
     }
 }
