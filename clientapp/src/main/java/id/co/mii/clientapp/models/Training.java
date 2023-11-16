@@ -26,4 +26,5 @@ public class Training {
   private Boolean isOnline;
   private Integer duration;
   private Employee trainer;
+  private Category category;
 }

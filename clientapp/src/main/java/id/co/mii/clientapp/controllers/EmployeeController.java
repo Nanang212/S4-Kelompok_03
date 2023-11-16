@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
 public class EmployeeController {
   private EmployeeService employeeService;
   private AuthenticationSessionUtil authenticationSessionUtil;
+  private RoleService roleService;
 
   @GetMapping
   public String getAll(Model model) {
@@ -64,6 +65,7 @@ public class EmployeeController {
   public String updateView(@PathVariable Integer id, Model model) {
 //    model.addAttribute("loggedInEmployee", employeeService.getLoggedInUser());
 //    model.addAttribute("id", id);
+    model.addAttribute("roles", roleService.getAll());
     model.addAttribute("employee", employeeService.getById(id));
     return "employee/update";
   }

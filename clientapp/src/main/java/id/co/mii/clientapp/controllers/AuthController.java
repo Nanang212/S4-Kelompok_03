@@ -49,7 +49,7 @@ public class AuthController {
     if (roles.contains("ROLE_ADMIN")) {
       return "redirect:/dashboard";
     }
-    return "redirect:/training";
+    return "redirect:/training/upcoming";
   }
 
   @GetMapping("/register")

@@ -27,6 +27,9 @@ public class Training extends BaseEntity {
   private String description;
   private Boolean isOnline;
   @ManyToOne
+  @JoinColumn(name = "category")
+  private Category category;
+  @ManyToOne
   @JoinColumn(name = "trainer")
   private Employee trainer;
   @OneToMany(mappedBy = "training", cascade = CascadeType.ALL)

@@ -22,9 +22,9 @@ public class TrainingService {
   @Autowired
   private RestTemplate restTemplate;
 
-  public List<Training> getAll() {
+  public List<Training> getAll(Integer categoryId) {
     return restTemplate
-        .exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<List<Training>>() {
+        .exchange(url.concat("?categoryId=" + (categoryId == null ? "" : categoryId)), HttpMethod.GET, null, new ParameterizedTypeReference<List<Training>>() {
         })
         .getBody();
   }
@@ -35,6 +35,14 @@ public class TrainingService {
             new ParameterizedTypeReference<List<Training>>() {
             })
         .getBody();
+  }
+
+  public List<Training> getAllByTrainer(String username) {
+    return restTemplate
+            .exchange(url.concat("/trainer/" + username), HttpMethod.GET, null,
+                    new ParameterizedTypeReference<List<Training>>() {
+                    })
+            .getBody();
   }
 
   public Training getById(Integer id) {

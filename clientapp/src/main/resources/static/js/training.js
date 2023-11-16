@@ -1,4 +1,3 @@
-
 $(document).ready(function () {
   let trainingSection = document.getElementById("trainingSection");
   let authorities;
@@ -6,10 +5,12 @@ $(document).ready(function () {
     authorities = trainingSection.getAttribute("authorities");
     authorities.includes('ADMIN') ? setTrainer() : null;
   }
+  let categoryId = $('#categoryId').val();
+  let isEnableForUpdate = $('#updateChecker').val() === 'true';
   $("#table-training").DataTable({
     ajax: {
       method: "GET",
-      url: "api/trainings",
+      url: `/api/trainings?categoryId=${categoryId}`,
       dataSrc: "",
     },
     columns: [
@@ -61,6 +62,7 @@ $(document).ready(function () {
                   trainingId="${data.id}"
                   onclick="window.location.href='/training/update/${data.id}'"
                   ${authorities.includes("ADMIN") ? "" : "hidden"}
+                  ${isEnableForUpdate ? "" : "hidden"}
                   title = "Update-training"
                 >
                   <ion-icon name="create" size="large" class="text-yellow-500"></ion-icon>
@@ -83,7 +85,6 @@ $(document).ready(function () {
     ],
   });
 });
-
 
 $('#btnSaveTraining').one("click", (event) => {
   event.preventDefault()
@@ -128,7 +129,6 @@ $('#btnSaveTraining').one("click", (event) => {
     },
   });
 })
-
 
 function setTrainer() {
   $.ajax({

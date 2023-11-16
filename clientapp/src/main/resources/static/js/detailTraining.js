@@ -4,7 +4,7 @@ $(document).ready(function () {
   );
   let authorities = detailRegisterTraining.getAttribute("authorities");
   let id = detailRegisterTraining.getAttribute("trId");
-  let showStatusColumn = !authorities.includes("TRAINEE");
+  let showStatusColumn = authorities.includes("ADMIN");
   $("#detail-training-register").DataTable({
     ajax: {
       method: "GET",

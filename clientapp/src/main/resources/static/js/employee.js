@@ -90,8 +90,9 @@ $('#updateEmployeeButton').one("click", (event) => {
       name: $('#updateEmployeeName').val(),
       phone: $('#updateEmployeePhone').val(),
       email: $('#updateEmployeeEmail').val(),
-      address: $('#updateEmployeeAddress').val(), // Add address
-      jobPosition: $('#updateEmployeeJobPosition').val(), // Add job position
+      address: $('#updateEmployeeAddress').val(),
+      jobPosition: $('#updateEmployeeJobPosition').val(),
+      roleIds: [$('#roleUpdateSelection').val()],
       username: $('#updateEmployeeUsername').val(),
       password: $('#updateEmployeePassword').val()
     }),
@@ -154,54 +155,6 @@ function createEmployee() {
   });
 }
 
-function updateEmployee(button) {
-  let employeeId = button.getAttribute("employeeId")
-  $.ajax({
-    method: "GET",
-    url: `api/employee/${employeeId}`,
-    dataType: "JSON",
-    contentType: "application/json",
-    success: (res) => {
-      $('#updateEmployeeName').val(res.name);
-      $('#updateEmployeePhone').val(res.phone);
-      $('#updateEmployeeEmail').val(res.email);
-      $('#updateEmployeeAddress').val(res.address);
-      $('#updateEmployeeJobPosition').val(res.jobPosition);
-      $('#updateEmployeeUsername').val(res.user.username);
-      $('#updateEmployeeButton').one("click", (event) => {
-        event.preventDefault()
-        $.ajax({
-          method: "PUT",
-          url: `api/employee/${res.id}`,
-          dataType: "JSON",
-          contentType: "application/json",
-          data: JSON.stringify({
-            name: $('#updateEmployeeName').val(),
-            phone: $('#updateEmployeePhone').val(),
-            email: $('#updateEmployeeEmail').val(),
-            address: $('#updateEmployeeAddress').val(), // Add address
-            jobPosition: $('#updateEmployeeJobPosition').val(), // Add job position
-            username: $('#updateEmployeeUsername').val()
-          }),
-          beforeSend : function () {
-            setCsrf();
-          },
-          success: (res) => {
-            $("#updateEmployeeModal").hide();
-            showToast("success", "Employee updated successfully");
-          },
-          error: (error) => {
-            showToast("error", "Failed to update employee");
-          },
-        });
-      })
-    },
-    error: (error) => {
-      console.log(error)
-    },
-  });
-}
-
 function deleteEmployee(button) {
   let id = button.getAttribute('employeeId')
   Swal.fire({
@@ -226,7 +179,7 @@ function deleteEmployee(button) {
           Swal.fire({
             position: "center",
             icon: "success",
-            title: "Training successfully deleted...",
+            title: "Employee successfully deleted...",
             showConfirmButton: false,
             timer: 2000,
           });

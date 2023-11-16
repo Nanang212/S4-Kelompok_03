@@ -18,5 +18,5 @@ public class EmployeeRequest {
   private String jobPosition;
   private String username;
   private String password;
-  private Set<Integer> roleIds = Collections.singleton(3);
+  private Set<Integer> roleIds;
 }
