@@ -4,6 +4,7 @@
   layout:decorate="~{layouts/main}"
 >
   <head>
+    <link rel="stylesheet" th:href="@{/css/addTrainingradio.css}" />
     <title>Training</title>
   </head>
   <body>
@@ -125,7 +126,7 @@
                   <label
                     for="inputDurationTraining"
                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >Duration</label
+                    >Duration in Hours</label
                   >
                   <input
                     type="number"
@@ -142,13 +143,16 @@
                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                         >Location</label
                       >
-                      <div class="flex items-center space-x-4">
+                      <div
+                        class="flex items-center space-x-4 map-point"
+                        id="r8-balloon-radio-group-wrapper"
+                      >
                         <input
                           type="radio"
                           id="locationOnline"
                           name="locationType"
                           value="online"
-                          class="text-blue-500 focus:ring-blue-500 dark:focus:ring-blue-500 dark:text-blue-500"
+                          class="text-blue-500 focus:ring-blue-500 dark:focus:ring-blue-500 dark:text-blue-500 radio r8-radio-float"
                           onchange="showAddressOrUrlPlatform('Save')"
                         />
                         <label
@@ -162,7 +166,7 @@
                           id="locationOnsite"
                           name="locationType"
                           value="onsite"
-                          class="text-green-500 focus:ring-green-500 dark:focus:ring-green-500 dark:text-green-500"
+                          class="text-blue-500 focus:ring-blue-500 dark:focus:ring-blue-500 dark:text-blue-500 radio r8-radio-float"
                           onchange="showAddressOrUrlPlatform('Save')"
                         />
                         <label
