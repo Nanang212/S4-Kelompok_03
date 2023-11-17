@@ -12,9 +12,9 @@ import java.util.Date;
 @NoArgsConstructor
 public class TrainingRequest {
   private String title;
-  @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm")
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Jakarta")
   private Date startDate;
-  @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm")
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Jakarta")
   private Date endDate;
   private Integer quota;
   private Integer duration;

@@ -57,10 +57,19 @@
                     ></p>
                     <div class="flex gap-3">
                       <a
+                        th:if="${#dates.createNow().after(training.endDate)}"
                         th:href="@{'http://localhost:9090/survey/create/{id}'(id=${training.id})}"
                         class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-green-700 rounded-lg hover-bg-blue-800 focus:ring-4 focus:outline-none focus-ring-blue-300 dark:bg-blue-600 dark:hover-bg-blue-700 dark:focus-ring-blue-800"
                       >
                         satisfaction survey
+                      </a>
+                      <a
+                        th:unless="${#dates.createNow().after(training.endDate)}"
+                        href="#"
+                        class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-gray-500 bg-gray-300 rounded-lg cursor-not-allowed"
+                        title="Survey can only be taken after the training ends"
+                      >
+                        survey (Unavailable)
                       </a>
                       <a
                         th:href="@{'http://localhost:9090/training/{id}'(id=${training.id})}"
