@@ -1813,14 +1813,14 @@
                     <span class="block">
                       <strong>Start Date :</strong>
                       <span
-                        th:text="${#dates.format(training.startDate, 'dd/MM/yyyy')}"
+                        th:text="${#dates.format(training.startDate,  'dd/MM/yyyy, HH:mm:ss')}"
                         class="ml-2 font-light"
                       ></span>
                     </span>
                     <span class="block mt-2">
                       <strong>End Date :</strong>
                       <span
-                        th:text="${#dates.format(training.endDate, 'dd/MM/yyyy')}"
+                        th:text="${#dates.format(training.endDate,  'dd/MM/yyyy, HH:mm:ss')}"
                         class="ml-2 font-light"
                       ></span>
                     </span>
@@ -1955,7 +1955,12 @@
                               type="file"
                             />
                             <div class="flex justify-start mr-auto">
-                              <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">PDF (MAX. 2MB).</p>
+                              <p
+                                class="mt-1 text-sm text-gray-500 dark:text-gray-300"
+                                id="file_input_help"
+                              >
+                                PDF (MAX. 2MB).
+                              </p>
                             </div>
                           </div>
                           <div class="flex justify-end ml-auto">
@@ -1963,6 +1968,7 @@
                               id="btnRegisterTraining"
                               type="submit"
                               class="w-24 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                              onclick="showRegistrationSuccess()"
                             >
                               Save
                             </button>
@@ -2014,6 +2020,21 @@
 
           // Kembali ke halaman sebelumnya
           history.back();
+        }
+
+        function showToast(type, text) {
+          return Swal.fire({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 2000,
+            icon: type,
+            title: text,
+          });
+        }
+
+        function showRegistrationSuccess() {
+          showToast("success", "Registration successful");
         }
       </script>
     </div>

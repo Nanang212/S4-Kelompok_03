@@ -1,40 +1,86 @@
 <!DOCTYPE html>
 <html
-        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-        layout:decorate="~{layouts/main}"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layouts/main}"
 >
-<head>
-  <title>Details Trainee</title>
-</head>
-<body>
-<!-- Content -->
-<section id="detailRegisterTraining" th:attr="authorities=${authorities}, trId=${id}" class="container mt-5 py-10" layout:fragment="content">
-  <div class="mx-10">
-    <div class="flex justify-between">
-      <p class="font-bold text-4xl">
-        [[${training.title}]]</p>
+  <head>
+    <title>Details Trainee</title>
+  </head>
+  <body>
+    <!-- Content -->
+    <section
+      id="detailRegisterTraining"
+      th:attr="authorities=${authorities}, trId=${id}"
+      class="container mt-5 py-10"
+      layout:fragment="content"
+    >
+      <div class="mx-10">
+        <div class="flex justify-between">
+          <p class="font-bold text-4xl">[[${training.title}]]</p>
+        </div>
+        <div class="flex justify-end ml-auto">
+          <button
+            class="block text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 rounded-full"
+            type="submit"
+            onclick="submitChangesToDatabase()"
+            sec:authorize="hasRole('ADMIN')"
+          >
+            Submit
+          </button>
+        </div>
+        <div class="py-8">
+          <table id="detail-training-register" class="table-fixed display">
+            <thead class="table-light">
+              <tr>
+                <th width="25px">No</th>
+                <th>Registered trainee</th>
+                <th width="300px" th:if="${!authorities.contains('TRAINEE')}">
+                  Status
+                </th>
+                <th width="201px">Current Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+      </div>
+
+      <!--Modal Preview-->
+      <div id="previewModal" class="fixed inset-0 z-50 overflow-y-auto hidden">
+        <div class="flex items-center justify-center min-h-screen px-4">
+          <div class="bg-white w-full max-w-4xl p-6 rounded-lg">
+            <div class="flex justify-between items-center mb-4">
+              <h2 class="text-lg font-bold">Attachment Preview</h2>
+              <button
+                onclick="closePreviewModal()"
+                class="text-gray-400 hover:text-gray-600 focus:outline-none"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M6 18L18 6M6 6l12 12"
+                  ></path>
+                </svg>
+              </button>
+            </div>
+            <iframe
+              id="previewFrame"
+              style="width: 100%; height: 600px"
+            ></iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+    <div layout:fragment="script">
+      <script th:src="@{/js/detailTraining.js}"></script>
     </div>
-    <div class="py-8">
-      <table id="detail-training-register" class="table-fixed display">
-        <thead class="table-light">
-        <tr>
-          <th width="25px">No</th>
-          <th >Registered trainee</th>
-          <th width="300px" th:if="${!authorities.contains('TRAINEE')}">
-            Status
-          </th>
-          <th width="201px">
-            Current Status
-          </th>
-          <th >Action</th>
-        </tr>
-        </thead>
-      </table>
-    </div>
-  </div>
-</section>
-<div layout:fragment="script">
-  <script th:src="@{/js/detailTraining.js}"></script>
-</div>
-</body>
+  </body>
 </html>
