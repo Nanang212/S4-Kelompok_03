@@ -200,6 +200,10 @@ public class TrainingService extends BaseService<Training, Integer> {
       Employee trainer = employeeService.getById(trainingRequest.getTrainerId());
       training.setTrainer(trainer);
     }
+    if (trainingRequest.getCategoryId() != null) {
+      Category category = categoryService.getById(trainingRequest.getCategoryId());
+      training.setCategory(category);
+    }
     return trainingRepository.save(training);
   }
 }
