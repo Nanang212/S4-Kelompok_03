@@ -23,4 +23,5 @@ public class TrainingRequest {
   private String description;
   private Boolean isOnline;
   private Integer trainerId;
+  private Integer categoryId;
 }

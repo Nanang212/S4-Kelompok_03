@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layouts/main}"
+>
+<head>
+  <title>Training</title>
+</head>
+<body>
+<!-- Content -->
+<section
+        id="trainingSection"
+        class="container py-10"
+        layout:fragment="content"
+>
+  <div class="mx-10">
+    <div class="flex justify-between">
+      <p class="font-bold text-4xl">List Of Survey</p>
+    </div>
+    <div class="py-8">
+      <table id="table-survey" class="table-fixed display">
+        <thead class="table-light">
+        <tr>
+          <th width="25px">No</th>
+          <th>Title</th>
+          <th>Start Date</th>
+          <th>End Date</th>
+          <th>Resource</th>
+          <th>Trainer Competence</th>
+          <th>Learning Quality</th>
+        </tr>
+        </thead>
+      </table>
+    </div>
+  </div>
+</section>
+
+<div layout:fragment="script">
+  <!-- <script th:src="@{/js/region.js}"></script> -->
+  <script th:src="@{/js/survey.js}"></script>
+</div>
+</body>
+</html>

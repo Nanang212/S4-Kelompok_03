@@ -101,10 +101,10 @@ public class TrainingController {
   }
 
   @GetMapping
-  public ResponseEntity<List<Training>> getAll() {
+  public ResponseEntity<List<Training>> getAll(@RequestParam(required = false) Integer categoryId) {
     return ResponseEntity
             .status(HttpStatus.OK)
-            .body(trainingService.getAll());
+            .body(trainingService.getAll(categoryId));
   }
 
   @GetMapping("/trainer/{username}")

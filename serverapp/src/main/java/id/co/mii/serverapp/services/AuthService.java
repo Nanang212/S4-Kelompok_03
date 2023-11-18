@@ -10,6 +10,7 @@ import id.co.mii.serverapp.repositories.EmployeeRepository;
 import id.co.mii.serverapp.repositories.UserRepository;
 import id.co.mii.serverapp.utils.StringUtils;
 import lombok.AllArgsConstructor;
+import org.modelmapper.Converters;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -63,7 +65,11 @@ public class AuthService {
     }
 
     user.setEmployee(employee);
-    user.setRoles(mapToRoles(employeeRequest.getRoleIds()));
+    if (employeeRequest.getRoleIds() != null) {
+      user.setRoles(mapToRoles(employeeRequest.getRoleIds()));
+    } else {
+      user.setRoles(Collections.singleton(roleService.getById(3)));
+    }
     user.setCreatedAt(LocalDateTime.now());
     user.setUpdatedAt(LocalDateTime.now());
 

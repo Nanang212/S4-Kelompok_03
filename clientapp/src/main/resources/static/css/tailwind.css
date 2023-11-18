@@ -2661,3 +2661,11 @@ video {
         grid-template-columns: repeat(4, minmax(0, 1fr));
     }
 }
+.dataTables_wrapper .dataTables_length select {
+  border: 1px solid #aaa;
+  border-radius: 3px;
+  padding: 5px;
+  background-color: transparent;
+  color: inherit;
+  padding: 5px 18px;
+}

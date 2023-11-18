@@ -33,35 +33,57 @@ public class TrainingRegisterService extends BaseService<TrainingRegister, Integ
   private TrainingRepository trainingRepository;
 
   public TrainingRegister getByTrainingAndLoggedInEmployee(Integer trainingId) {
+    Status success = statusService.getById(1);
     Training training = trainingService.getById(trainingId);
     Employee trainee = employeeService.getLoggedInEmployee();
     return trainingRegisterRepository
-            .findByTrainingAndTrainee(training, trainee)
+            .findByCurrentStatusAndTrainingAndTrainee(success, training, trainee)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Registration is not found"));
   }
 
   public List<TrainingRegisterResponse> getAllGroupByTraining(){
     List<Training> trainings = trainingService.getAll();
+    Employee loggedInEmp = employeeService.getLoggedInEmployee();
+    Role trainer = roleService.getById(2);
+    Role trainee = roleService.getById(3);
+    Status success = statusService.getById(1);
+    Status pending = statusService.getById(2);
+    if (loggedInEmp.getUser().getRoles().contains(trainer)) {
+      return trainings.stream()
+              .filter(training -> !training.getTrainingRegisters().isEmpty())
+              .filter(training -> training.getTrainer() != null && training.getTrainer().equals(loggedInEmp))
+              .map(this::customMapFrom)
+              .collect(Collectors.toList());
+    }
+    if (loggedInEmp.getUser().getRoles().contains(trainee)) {
+      return loggedInEmp.getTrainingRegisters()
+              .stream()
+              .filter(trainingRegister -> trainingRegister.getCurrentStatus().equals(success) || trainingRegister.getCurrentStatus().equals(pending))
+              .map(trainingRegister -> customMapFrom(trainingRegister.getTraining()))
+              .collect(Collectors.toList());
+    }
     return trainings.stream()
             .filter(training -> !training.getTrainingRegisters().isEmpty())
-            .map(training -> {
-              TrainingRegisterResponse trainingRegisterResponse = new TrainingRegisterResponse();
-              List<Map<String, Object>> traineeStatus = training.getTrainingRegisters()
-                      .stream()
-                      .map(trainingRegister -> {
-                        Map<String, Object> map = new HashMap<>();
-                        map.put("trainingRegisterId", trainingRegister.getId());
-                        map.put("trainee", trainingRegister.getTrainee());
-                        map.put("status", trainingRegister.getCurrentStatus());
-                        return map;
-                      })
-                      .collect(Collectors.toList());
-              trainingRegisterResponse.setTraining(training);
-              trainingRegisterResponse.setTrainer(training.getTrainer());
-              trainingRegisterResponse.setTraineeStatus(traineeStatus);
-              return trainingRegisterResponse;
+            .map(this::customMapFrom)
+            .collect(Collectors.toList());
+  }
+
+  private TrainingRegisterResponse customMapFrom(Training training) {
+    TrainingRegisterResponse trainingRegisterResponse = new TrainingRegisterResponse();
+    List<Map<String, Object>> traineeStatus = training.getTrainingRegisters()
+            .stream()
+            .map(trainingRegister -> {
+              Map<String, Object> map = new HashMap<>();
+              map.put("trainingRegisterId", trainingRegister.getId());
+              map.put("trainee", trainingRegister.getTrainee());
+              map.put("status", trainingRegister.getCurrentStatus());
+              return map;
             })
             .collect(Collectors.toList());
+    trainingRegisterResponse.setTraining(training);
+    trainingRegisterResponse.setTrainer(training.getTrainer());
+    trainingRegisterResponse.setTraineeStatus(traineeStatus);
+    return trainingRegisterResponse;
   }
 
   public List<TrainingRegisterResponse> getAllCancellationGroupByTraining(){

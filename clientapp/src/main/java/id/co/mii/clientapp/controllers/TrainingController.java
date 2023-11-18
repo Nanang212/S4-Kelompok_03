@@ -1,16 +1,9 @@
 package id.co.mii.clientapp.controllers;
 
-import id.co.mii.clientapp.models.Employee;
-import id.co.mii.clientapp.models.Status;
-import id.co.mii.clientapp.models.Survey;
-import id.co.mii.clientapp.models.Training;
-import id.co.mii.clientapp.models.TrainingRegister;
+import id.co.mii.clientapp.models.*;
 import id.co.mii.clientapp.models.dto.request.TrainingRegisterRequest;
 import id.co.mii.clientapp.models.dto.response.TrainingRegisterResponse;
-import id.co.mii.clientapp.services.EmployeeService;
-import id.co.mii.clientapp.services.StatusService;
-import id.co.mii.clientapp.services.TrainingRegisterService;
-import id.co.mii.clientapp.services.TrainingService;
+import id.co.mii.clientapp.services.*;
 import id.co.mii.clientapp.utils.AuthenticationSessionUtil;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
@@ -40,20 +33,52 @@ public class TrainingController {
   private TrainingRegisterService trainingRegisterService;
   private AuthenticationSessionUtil authenticationSessionUtil;
   private StatusService statusService;
+  private RoleService roleService;
+  private CategoryService categoryService;
 
   @GetMapping("/cancel")
   public String getAllCancellation(Model model) {
     return "training/cancellation/index";
   }
 
-  @GetMapping
-  public String getAll(Model model) {
+  @GetMapping("/done")
+  public String getDoneTraining(Model model) {
     List<String> authorities = authenticationSessionUtil
         .authentication()
         .getAuthorities()
         .stream()
         .map(GrantedAuthority::getAuthority)
         .collect(Collectors.toList());
+    model.addAttribute("category", categoryService.getById(1));
+    model.addAttribute("isEnableForUpdate", false);
+    model.addAttribute("authorities", authorities);
+    return "training/index";
+  }
+
+  @GetMapping("/ongoing")
+  public String getOngoingTraining(Model model) {
+    List<String> authorities = authenticationSessionUtil
+            .authentication()
+            .getAuthorities()
+            .stream()
+            .map(GrantedAuthority::getAuthority)
+            .collect(Collectors.toList());
+    model.addAttribute("category", categoryService.getById(2));
+    model.addAttribute("isEnableForUpdate", true);
+    model.addAttribute("authorities", authorities);
+    return "training/index";
+  }
+
+  @GetMapping("/upcoming")
+  public String getUpcomingTraining(Model model) {
+    List<String> authorities = authenticationSessionUtil
+            .authentication()
+            .getAuthorities()
+            .stream()
+            .map(GrantedAuthority::getAuthority)
+            .collect(Collectors.toList());
+    model.addAttribute("category", categoryService.getById(3));
+    model.addAttribute("isEnableForUpdate", true);
     model.addAttribute("authorities", authorities);
     return "training/index";
   }
@@ -119,7 +144,13 @@ public class TrainingController {
   @GetMapping("/attend")
   public String getAttendedTraining(Model model) {
     Employee loggedInEmp = employeeService.getLoggedInUser();
-    model.addAttribute("trainings", trainingService.getAllByTrainee(loggedInEmp.getUser().getUsername()));
+    Role trainer = roleService.getById(2);
+    Role trainee = roleService.getById(3);
+    if (loggedInEmp.getUser().getRoles().contains(trainer)) {
+      model.addAttribute("trainings", trainingService.getAllByTrainer(loggedInEmp.getUser().getUsername()));
+    } else if (loggedInEmp.getUser().getRoles().contains(trainee)) {
+      model.addAttribute("trainings", trainingService.getAllByTrainee(loggedInEmp.getUser().getUsername()));
+    }
     return "training/attend";
   }
 

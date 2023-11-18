@@ -24,8 +24,8 @@
           </div>
         </span>
 
-        <div class="flex flex-wrap items-center mt-10">
-          <div class="w-full md:w-5/12 px-4 mr-auto ml-auto">
+        <div class="flex flex-wrap mt-10">
+          <div class="w-full md:w-5/12 px-1 mr-auto ml-auto">
             <div
               class="bg-blueGray-800 text-black dark:text-white p-6 rounded-lg shadow-lg"
             >
@@ -1782,7 +1782,7 @@
               </a>
             </div>
           </div>
-          <div class="w-full md:w-4/12 px-4 mr-auto ml-auto">
+          <div class="w-full md:w-5/12 px-1 mr-auto ml-auto">
             <div
               class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-800"
             >
@@ -1813,14 +1813,14 @@
                     <span class="block">
                       <strong>Start Date :</strong>
                       <span
-                        th:text="${#dates.format(training.startDate,  'dd/MM/yyyy, HH:mm:ss')}"
+                        th:text="${#dates.format(training.startDate,  'dd MMMM yyyy, HH:mm')}"
                         class="ml-2 font-light"
                       ></span>
                     </span>
                     <span class="block mt-2">
                       <strong>End Date :</strong>
                       <span
-                        th:text="${#dates.format(training.endDate,  'dd/MM/yyyy, HH:mm:ss')}"
+                        th:text="${#dates.format(training.endDate, 'dd MMMM yyyy, HH:mm')}"
                         class="ml-2 font-light"
                       ></span>
                     </span>

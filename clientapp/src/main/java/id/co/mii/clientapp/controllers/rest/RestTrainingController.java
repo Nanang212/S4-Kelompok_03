@@ -27,8 +27,8 @@ public class RestTrainingController {
   private DashboardService dashboardService;
 
   @GetMapping
-  public List<Training> getAll() {
-    return trainingService.getAll();
+  public List<Training> getAll(@RequestParam(required = false) Integer categoryId) {
+    return trainingService.getAll(categoryId);
   }
 
   @GetMapping("/dashboard")

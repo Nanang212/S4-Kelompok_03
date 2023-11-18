@@ -1,6 +1,7 @@
 package id.co.mii.serverapp.repositories;
 
 import id.co.mii.serverapp.models.Employee;
+import id.co.mii.serverapp.models.Status;
 import id.co.mii.serverapp.models.Training;
 import id.co.mii.serverapp.models.TrainingRegister;
 import id.co.mii.serverapp.repositories.base.BaseRepository;
@@ -10,5 +11,5 @@ import java.util.Optional;
 
 @Repository
 public interface TrainingRegisterRepository extends BaseRepository<TrainingRegister, Integer> {
-  Optional<TrainingRegister> findByTrainingAndTrainee(Training training, Employee trainee);
+  Optional<TrainingRegister> findByCurrentStatusAndTrainingAndTrainee(Status currentStatus, Training training, Employee trainee);
 }

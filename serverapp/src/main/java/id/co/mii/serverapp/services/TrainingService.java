@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -29,10 +30,15 @@ public class TrainingService extends BaseService<Training, Integer> {
   private RoleService roleService;
   private StatusService statusService;
   private EmailService emailService;
-  private TrainingRegisterRepository trainingRegisterRepository;
+  private CategoryService categoryService;
 
-  @Override
-  public List<Training> getAll() {
+  public List<Training> getAll(Integer categoryId) {
+    if (categoryId != null) {
+      return trainingRepository.findAllByCategoryId(categoryId)
+              .stream()
+              .sorted(Comparator.comparing(Training::getStartDate).reversed())
+              .collect(Collectors.toList());
+    }
     return super.getAll()
             .stream()
             .sorted(Comparator.comparing(Training::getStartDate).reversed())
@@ -65,7 +71,6 @@ public class TrainingService extends BaseService<Training, Integer> {
     return (int) count;
   }
 
-// TODO : validasi input start date & end date
   public List<Training> getAllByTrainer(String username) {
     Employee employee = employeeService.findByUsername(username);
     Role admin = roleService.getById(1);
@@ -106,9 +111,19 @@ public class TrainingService extends BaseService<Training, Integer> {
   }
 
   public Training create(TrainingRequest trainingRequest) {
+    Category done = categoryService.getById(1);
+    Category ongoing = categoryService.getById(2);
+    Category upcoming = categoryService.getById(3);
     Training training = modelMapper.map(trainingRequest, Training.class);
     Employee currentEmp = employeeService.getLoggedInEmployee();
     Employee trainer = null;
+    Date currentDate = Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant());
+    if (trainingRequest.getStartDate().before(currentDate) || trainingRequest.getEndDate().before(currentDate)) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Trying to set start date or end date before current date");
+    }
+    if (trainingRequest.getStartDate().after(trainingRequest.getEndDate())) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Trying to set start date before end date");
+    }
     if (trainingRequest.getTrainerId() != null) {
       trainer = employeeService.getById(trainingRequest.getTrainerId());
       trainer.getTrainings()
@@ -131,6 +146,7 @@ public class TrainingService extends BaseService<Training, Integer> {
     training.setAvailSeat(training.getQuota());
     training.setCreatedBy(currentEmp.getUser().getUsername());
     training.setUpdatedBy(currentEmp.getUser().getUsername());
+    training.setCategory(upcoming);
     return create(training);
   }
 
@@ -182,6 +198,10 @@ public class TrainingService extends BaseService<Training, Integer> {
     if (trainingRequest.getTrainerId() != null) {
       Employee trainer = employeeService.getById(trainingRequest.getTrainerId());
       training.setTrainer(trainer);
+    }
+    if (trainingRequest.getCategoryId() != null) {
+      Category category = categoryService.getById(trainingRequest.getCategoryId());
+      training.setCategory(category);
     }
     return trainingRepository.save(training);
   }

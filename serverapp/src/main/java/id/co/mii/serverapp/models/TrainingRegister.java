@@ -34,5 +34,6 @@ public class TrainingRegister extends BaseEntity {
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   private List<History> histories;
   @OneToOne(mappedBy = "trainingRegister", cascade = CascadeType.ALL)
+  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   private Survey survey;
 }
