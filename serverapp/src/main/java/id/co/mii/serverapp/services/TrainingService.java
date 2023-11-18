@@ -71,7 +71,6 @@ public class TrainingService extends BaseService<Training, Integer> {
     return (int) count;
   }
 
-// TODO : validasi input start date & end date
   public List<Training> getAllByTrainer(String username) {
     Employee employee = employeeService.findByUsername(username);
     Role admin = roleService.getById(1);

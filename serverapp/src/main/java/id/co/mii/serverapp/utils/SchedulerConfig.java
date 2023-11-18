@@ -1,30 +1,18 @@
 package id.co.mii.serverapp.utils;
 
-import id.co.mii.serverapp.models.Category;
-import id.co.mii.serverapp.models.Training;
 import id.co.mii.serverapp.models.dto.requests.TrainingRequest;
 import id.co.mii.serverapp.services.CategoryService;
 import id.co.mii.serverapp.services.TrainingService;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.Trigger;
-import org.springframework.scheduling.TriggerContext;
 import org.springframework.scheduling.annotation.*;
 import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 import org.springframework.scheduling.support.CronTrigger;
 
-import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Optional;
-import java.util.TimeZone;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
