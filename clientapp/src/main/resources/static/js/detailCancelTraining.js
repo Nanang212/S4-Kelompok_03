@@ -33,7 +33,7 @@ $(document).ready(function () {
           return `
             <div class="flex items-center space-x-8 ">
               <div class="flex items-center flex-col">
-                <label for="${checkboxCancelledId}">Cancelled</label>
+              <label for="${checkboxCancelledId}" class="${data.status.id === 4 ? 'text-green-500' : 'text-gray-400'}">Accept</label>
                 <input
                   type="checkbox"
                   name="statusCheckbox_${data.id}"
@@ -41,10 +41,11 @@ $(document).ready(function () {
                   ${data.status.id === 4 ? "checked" : ""}
                   onchange="updateStatusCancellation(${data.id}, 4)"
                   ${isStatusCancel ? "disabled" : ""}
+                  class="h-5 w-5 rounded border-gray-300 ${data.status.id === 4 ? "text-green-600 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50 dark:focus:ring-opacity-40" : "text-gray-400"}"
                 >
               </div>
               <div class="flex items-center flex-col">
-                <label for="${checkboxPendingId}">Request Cancel</label>
+              <label for="${checkboxPendingId}" class="${data.status.id === 5 ? 'text-yellow-500' : 'text-gray-400'}">Request Cancel</label>
                 <input
                   type="checkbox"
                   name="statusCheckbox_${data.id}"
@@ -52,10 +53,11 @@ $(document).ready(function () {
                   ${data.status.id === 5 ? "checked" : ""}
                   onchange="updateStatusCancellation(${data.id}, 5)"
                   ${isStatusCancel ? "disabled" : ""}
+                  class="h-5 w-5 rounded border-gray-300 ${data.status.id === 5 ? "text-yellow-600 shadow-sm focus:border-yellow-300 focus:ring focus:ring-yellow-200 focus:ring-opacity-50 dark:focus:ring-opacity-40" : "text-gray-400"}"
                 >
               </div>
               <div class="flex items-center flex-col">
-                <label for="${checkboxRejectId}">Reject</label>
+              <label for="${checkboxRejectId}" class="${data.status.id === 3 ? 'text-red-500' : 'text-gray-400'}">Reject</label>
                 <input
                   type="checkbox"
                   name="statusCheckbox_${data.id}"
@@ -63,6 +65,7 @@ $(document).ready(function () {
                   ${data.status.id === 3 ? "checked" : ""}
                   onchange="updateStatusCancellation(${data.id}, 3)"
                   ${isStatusCancel ? "disabled" : ""}
+                  class="h-5 w-5 rounded border-gray-300 ${data.status.id === 3 ? "text-red-600 shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50 dark:focus:ring-opacity-40" : "text-gray-400"}"
                 >
               </div>
             </div>

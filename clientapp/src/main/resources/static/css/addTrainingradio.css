@@ -1,0 +1,110 @@
+
+:root {
+    --clr-white: white;
+    --clr-black: black;
+    --clr-silver: silver;
+    --clr-highlight: rgb(253, 252, 252);
+    --clr-gray-light: rgb(251, 3, 3);
+    --clr-gray-mid: gainsboro;
+    --clr-gray-dark: rgb(255, 254, 254);
+    --def-anim-dur: 250ms;
+    --def-anim-trans: ease-in-out;
+  }
+
+  * {
+    outline: none;
+  }
+
+
+  #r8-balloon-radio-group-wrapper {
+    width: 20rem;
+  }
+
+  #r8-balloon-radio-group-wrapper label {
+    display: block;
+    font-weight: 300;
+    text-align: center;
+    font-size: 0.9rem;
+  }
+
+  .r8-radio-float {
+    &:not([disabled]) {
+      &:hover {
+        background: var(--clr-gray-light);
+        box-shadow: 0 0 0.25rem var(--clr-white);
+        animation: stabilize 1 1s;
+        transform: rotateZ(45deg);
+
+        &:checked {
+          box-shadow: none;
+          animation: unset !important;
+        }
+
+        &::before {
+          border: 0.125rem solid var(--clr-highlight);
+        }
+
+        &::after {
+          opacity: 0.45;
+        }
+      }
+    }
+  }
+
+  .radio {
+    position: relative;
+    width: 2rem;
+    height: 2rem;
+    cursor: pointer;
+    pointer-events: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    transform-origin: center;
+    border: 0.05rem solid var(--clr-gray-dark);
+    border-radius: 50% 50% 0.2rem 50%;
+    background: var(--clr-gray-mid);
+    transition: all var(--def-anim-dur) var(--def-anim-trans);
+    transform: rotateZ(45deg);
+  }
+
+  .radio::before,
+  .radio::after {
+    position: absolute;
+    content: "";
+    border-radius: 50%;
+    transform: rotateZ(45deg);
+  }
+
+  .radio::before {
+    /* Centered disc */
+    top: 0.50rem;
+    left: 0.50rem;
+    width: 1rem;
+    height: 1rem;
+    background: var(--clr-white);
+    border: 0.125rem solid var(--clr-gray-mid);
+    box-shadow: 0 0 0.05rem rgba(var(--clr-black), 0.25);
+    pointer-events: all;
+    transition: all var(--def-anim-dur) var(--def-anim-trans);
+  }
+
+
+  .radio:checked {
+    background: var(--clr-gray-light);
+    transform: scale(1.2);
+    transition: background var(--def-anim-dur) var(--def-anim-trans);
+    transform: rotateZ(45deg);
+
+    &::before {
+      width: 0.75rem;
+      height: 0.75rem;
+      background: var(--clr-highlight);
+      border: 0.25rem solid rgba(var(--clr-white), 0.5);
+    }
+
+    &:disabled {
+      opacity: 0.4;
+      background: var(--clr-gray-light);
+    }
+  }
