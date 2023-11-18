@@ -1,6 +1,6 @@
 $(document).ready(function () {
   let detailCancelTraining = document.getElementById("detailCancelTraining");
-  let id = detailCancelTraining.getAttribute("trId")
+  let id = detailCancelTraining.getAttribute("trId");
   $("#detail-training-cancel").DataTable({
     ajax: {
       method: "GET",
@@ -18,7 +18,7 @@ $(document).ready(function () {
       {
         data: null,
         render: (data) => {
-          return `${data.trainee !== null ? data.trainee.user.username :'-' }`;
+          return `${data.trainee !== null ? data.trainee.user.username : "-"}`;
         },
       },
       {
@@ -33,7 +33,9 @@ $(document).ready(function () {
           return `
             <div class="flex items-center space-x-8 ">
               <div class="flex items-center flex-col">
-              <label for="${checkboxCancelledId}" class="${data.status.id === 4 ? 'text-green-500' : 'text-gray-400'}">Accept</label>
+              <label for="${checkboxCancelledId}" class="${
+            data.status.id === 4 ? "text-green-500" : "text-gray-400"
+          }">Accept</label>
                 <input
                   type="checkbox"
                   name="statusCheckbox_${data.id}"
@@ -41,11 +43,17 @@ $(document).ready(function () {
                   ${data.status.id === 4 ? "checked" : ""}
                   onchange="updateStatusCancellation(${data.id}, 4)"
                   ${isStatusCancel ? "disabled" : ""}
-                  class="h-5 w-5 rounded border-gray-300 ${data.status.id === 4 ? "text-green-600 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50 dark:focus:ring-opacity-40" : "text-gray-400"}"
+                  class="h-5 w-5 rounded border-gray-300 ${
+                    data.status.id === 4
+                      ? "text-green-600 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50 dark:focus:ring-opacity-40"
+                      : "text-gray-400"
+                  }"
                 >
               </div>
               <div class="flex items-center flex-col">
-              <label for="${checkboxPendingId}" class="${data.status.id === 5 ? 'text-yellow-500' : 'text-gray-400'}">Request Cancel</label>
+              <label for="${checkboxPendingId}" class="${
+            data.status.id === 5 ? "text-yellow-500" : "text-gray-400"
+          }">Request Cancel</label>
                 <input
                   type="checkbox"
                   name="statusCheckbox_${data.id}"
@@ -53,11 +61,17 @@ $(document).ready(function () {
                   ${data.status.id === 5 ? "checked" : ""}
                   onchange="updateStatusCancellation(${data.id}, 5)"
                   ${isStatusCancel ? "disabled" : ""}
-                  class="h-5 w-5 rounded border-gray-300 ${data.status.id === 5 ? "text-yellow-600 shadow-sm focus:border-yellow-300 focus:ring focus:ring-yellow-200 focus:ring-opacity-50 dark:focus:ring-opacity-40" : "text-gray-400"}"
+                  class="h-5 w-5 rounded border-gray-300 ${
+                    data.status.id === 5
+                      ? "text-yellow-600 shadow-sm focus:border-yellow-300 focus:ring focus:ring-yellow-200 focus:ring-opacity-50 dark:focus:ring-opacity-40"
+                      : "text-gray-400"
+                  }"
                 >
               </div>
               <div class="flex items-center flex-col">
-              <label for="${checkboxRejectId}" class="${data.status.id === 3 ? 'text-red-500' : 'text-gray-400'}">Reject</label>
+              <label for="${checkboxRejectId}" class="${
+            data.status.id === 3 ? "text-red-500" : "text-gray-400"
+          }">Reject</label>
                 <input
                   type="checkbox"
                   name="statusCheckbox_${data.id}"
@@ -65,9 +79,61 @@ $(document).ready(function () {
                   ${data.status.id === 3 ? "checked" : ""}
                   onchange="updateStatusCancellation(${data.id}, 3)"
                   ${isStatusCancel ? "disabled" : ""}
-                  class="h-5 w-5 rounded border-gray-300 ${data.status.id === 3 ? "text-red-600 shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50 dark:focus:ring-opacity-40" : "text-gray-400"}"
+                  class="h-5 w-5 rounded border-gray-300 ${
+                    data.status.id === 3
+                      ? "text-red-600 shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50 dark:focus:ring-opacity-40"
+                      : "text-gray-400"
+                  }"
                 >
               </div>
+            </div>
+          `;
+        },
+      },
+      {
+        data: "status.name",
+        render: function (data, type, row) {
+          let bgColorClass = "";
+          let paddingClass = "";
+          switch (row.status.id) {
+            case 1:
+              bgColorClass = "bg-green-400 text-black";
+              paddingClass = "px-3 py-1";
+              break;
+            case 2:
+              bgColorClass = "bg-yellow-400 text-black";
+              paddingClass = "px-3 py-1";
+              break;
+            case 3:
+            case 4:
+              bgColorClass = "bg-red-400 text-black";
+              paddingClass = "px-3 py-1";
+              break;
+            case 5:
+              bgColorClass = "bg-blue-400 text-black";
+              paddingClass = "px-3 py-1";
+              break;
+            default:
+              bgColorClass = "bg-gray-400 text-black";
+              paddingClass = "px-3 py-1";
+              break;
+          }
+          return `<div class="rounded-full inline-block ${bgColorClass} ${paddingClass}">${data}</div>`;
+        },
+      },
+      {
+        data: null,
+        render: function (data, type, row, meta) {
+          return `
+            <div class="flex items-center">
+              <input
+                type="text"
+                id="inputNotes_${data.id}"
+                class="w-full border border-gray-300 rounded p-2 mr-2"
+                placeholder="Add notes..."
+                value="${data.notes !== undefined ? data.notes : ""}"
+                onchange="saveNotes(${data.id})"
+              />
             </div>
           `;
         },
@@ -99,54 +165,110 @@ $(document).ready(function () {
               </div>
             `;
         },
-      }
-    ]
+      },
+    ],
   });
 });
 
 function updateStatusCancellation(registrationId, newStatus) {
-  // Dapatkan nilai isChecked
   let isChecked = $(`#checkbox-${newStatus}-${registrationId}`).prop("checked");
-  // Panggil fungsi untuk mengirim permintaan Ajax untuk memperbarui status di database
-  updateStatusCancellationInDatabase(registrationId, newStatus, isChecked);
+
+  let updatedData = JSON.parse(sessionStorage.getItem("updatedData")) || [];
+
+  // Cek apakah registrasi ini sudah ditambahkan ke dalam data perubahan
+  let existingIndex = updatedData.findIndex(item => item.id === registrationId);
+
+  if (existingIndex !== -1) {
+    // Jika sudah ada, update status saja
+    updatedData[existingIndex].newStatus = newStatus;
+    updatedData[existingIndex].isChecked = isChecked;
+  } else {
+    // Jika belum ada, tambahkan data perubahan
+    updatedData.push({ id: registrationId, newStatus, isChecked });
+  }
+
+  sessionStorage.setItem("updatedData", JSON.stringify(updatedData));
 }
 
-function updateStatusCancellationInDatabase(registrationId, newStatus, isChecked) {
+function saveNotes(id) {
+  const inputNotes = document.getElementById(`inputNotes_${id}`);
+  const notes = inputNotes.value;
+
+  let updatedNotes = JSON.parse(sessionStorage.getItem("updatedNotes")) || {};
+  updatedNotes[id] = notes;
+  sessionStorage.setItem("updatedNotes", JSON.stringify(updatedNotes));
+}
+
+function submitChangesCancelToDatabase() {
   let loadingModal = Swal.fire({
     html: '<div class="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-transparent"><div class="animate-spin rounded-full border-t-4 border-blue-500 border-solid h-12 w-12"></div></div>',
     showConfirmButton: false,
     allowOutsideClick: false,
     allowEscapeKey: false,
-    background: 'transparent',
+    background: "transparent",
   });
 
-  $.ajax({
-    method: "PUT",
-    url: `/api/trainings/register/${registrationId}`,
-    dataType: "JSON",
-    contentType: "application/json",
-    data: JSON.stringify({
-      statusId: newStatus,
-      isChecked: isChecked,
-    }),
-    beforeSend: function () {
-      setCsrf();
-    },
-    success: function (res) {
-      showToast("success", "Training registration has been successfully updated").then(() => {
-        $("#detail-training-cancel").DataTable().ajax.reload();
-        if (res.currentStatus.id === 3) {
-          updateStatusCancellationInDatabase(res.id, 1, true)
-        }
-        loadingModal.close();
-      });
-    },
-    error: function (error) {
-      loadingModal.close();
+  let updatedData = JSON.parse(sessionStorage.getItem("updatedData")) || [];
+  let updatedNotes = JSON.parse(sessionStorage.getItem("updatedNotes")) || {};
 
-      let errorJsn = error.responseJSON;
-      console.log(error);
-    },
+  // Ubah semua status yang direject menjadi success
+  updatedData.forEach(item => {
+    if (item.newStatus === 3) {
+      item.newStatus = 1; // Ubah status rejected (3) menjadi success (1)
+    }
+  });
+
+  // Kirim perubahan status dan catatan ke server
+  updateMultipleDataInDatabase(updatedData, updatedNotes, loadingModal);
+}
+
+function updateMultipleDataInDatabase(updatedData, updatedNotes, loadingModal) {
+  let totalRequests = updatedData.length; // Hitung total permintaan yang akan dikirim
+  let completedRequests = 0;
+
+  updatedData.forEach(item => {
+    let id = item.id;
+    let newStatus = item.newStatus;
+    let isChecked = item.isChecked;
+    let notes = updatedNotes[id];
+
+    $.ajax({
+      method: "PUT",
+      url: `/api/trainings/register/${id}`,
+      dataType: "JSON",
+      contentType: "application/json",
+      data: JSON.stringify({
+        statusId: newStatus,
+        isChecked: isChecked,
+        notes: notes,
+      }),
+      beforeSend: function () {
+        setCsrf();
+      },
+      success: function (res) {
+        completedRequests++;
+
+        if (completedRequests === totalRequests) {
+          showToast(
+            "success",
+            "Training registration has been successfully updated"
+          ).then(() => {
+            $("#detail-training-cancel").DataTable().ajax.reload();
+            loadingModal.close();
+            sessionStorage.removeItem("updatedData");
+            sessionStorage.removeItem("updatedNotes");
+          });
+        }
+      },
+      error: function (error) {
+        console.error("Error:", error);
+        completedRequests++;
+
+        if (completedRequests === totalRequests) {
+          loadingModal.close();
+        }
+      },
+    });
   });
 }
 
@@ -167,9 +289,7 @@ function downloadAttachment(button) {
     method: "GET",
     url: `/api/trainings/register/attachment/${id}`,
     contentType: "application/pdf",
-    success: (response) => {
-
-    },
+    success: (response) => {},
     error: (err) => {
       console.log(err);
     },
