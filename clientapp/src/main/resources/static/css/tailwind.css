@@ -1102,11 +1102,11 @@ video {
   .animate-spin {
     animation: spin 1s linear infinite;
 }
-  .cursor-pointer {
-    cursor: pointer;
-}
   .cursor-not-allowed {
     cursor: not-allowed;
+}
+  .cursor-pointer {
+    cursor: pointer;
 }
   .list-inside {
     list-style-position: inside;
@@ -1477,6 +1477,10 @@ video {
 }
   .p-px {
     padding: 1px;
+}
+  .px-1 {
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
 }
   .px-2 {
     padding-left: 0.5rem;
@@ -2660,12 +2664,4 @@ video {
     .xl\:grid-cols-4 {
         grid-template-columns: repeat(4, minmax(0, 1fr));
     }
-}
-.dataTables_wrapper .dataTables_length select {
-  border: 1px solid #aaa;
-  border-radius: 3px;
-  padding: 5px;
-  background-color: transparent;
-  color: inherit;
-  padding: 5px 18px;
 }

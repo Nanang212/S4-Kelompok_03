@@ -30,61 +30,6 @@ $(document).ready(function () {
           return `${data.trainer !== null ? data.trainer.user.username :'-' }`;
         },
       },
-      // {
-      //   data: null,
-      //   render: function (data, type, row, meta) {
-      //     if (!showStatusColumn) {
-      //       return "";
-      //     }
-
-      //     let checkboxSuccessId = `checkbox-success-${meta.row}`;
-      //     let checkboxPendingId = `checkbox-pending-${meta.row}`;
-      //     let checkboxRejectId = `checkbox-reject-${meta.row}`;
-
-      //     let isStatusSuccess = data.currentStatus.id === 1;
-
-      //     return `
-      //     <div class="flex items-center justify-center space-x-4">
-      //       <div>
-      //         <label for="${checkboxSuccessId}">Success</label>
-      //         <input
-      //           type="checkbox"
-      //           name="statusCheckbox_${data.id}"
-      //           id="${checkboxSuccessId}"
-      //           ${data.currentStatus.id === 1 ? "checked" : ""}
-      //           onchange="updateStatus(${data.id}, 1)"
-      //           ${authorities.includes("ADMIN") ? "" : "hidden"}
-      //           ${isStatusSuccess ? "disabled" : ""}
-      //         >
-      //       </div>
-      //       <div>
-      //         <label for="${checkboxPendingId}">Pending</label>
-      //         <input
-      //           type="checkbox"
-      //           name="statusCheckbox_${data.id}"
-      //           id="${checkboxPendingId}"
-      //           ${data.currentStatus.id === 2 ? "checked" : ""}
-      //           onchange="updateStatus(${data.id}, 2)"
-      //           ${authorities.includes("ADMIN") ? "" : "hidden"}
-      //           ${isStatusSuccess ? "disabled" : ""}
-      //         >
-      //       </div>
-      //       <div>
-      //         <label for="${checkboxRejectId}">Reject</label>
-      //         <input
-      //           type="checkbox"
-      //           name="statusCheckbox_${data.id}"
-      //           id="${checkboxRejectId}"
-      //           ${data.currentStatus.id === 3 ? "checked" : ""}
-      //           onchange="updateStatus(${data.id}, 3)"
-      //           ${authorities.includes("ADMIN") ? "" : "hidden"}
-      //           ${isStatusSuccess ? "disabled" : ""}
-      //         >
-      //       </div>
-      //     </div>
-      //   `;
-      //   },
-      // },
       {
         data: null,
         render: (data, type, row, meta) => {
@@ -119,45 +64,67 @@ $(document).ready(function () {
 
 function cancelTrainingRegistration(button) {
   let id = button.getAttribute("registrationId");
+
   Swal.fire({
-    title: `Are you sure want to cancel training ?`,
-    text: "You won't be able to revert this!",
-    icon: "warning",
+    title: 'Are you sure want to cancel training?',
+    html: `
+      <input
+        id="swal-input1"
+        class="swal2-input"
+        placeholder="Add notes (required)"
+        required
+      >
+    `,
     showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Yes, cancel !",
-  }).then((result) => {
-    if (result.isConfirmed) {
-      $.ajax({
-        method: "POST",
-        url: `/api/trainings/register/cancel/${id}`,
-        dataType: "JSON",
-        contentType: "application/json",
-        beforeSend: function () {
-          setCsrf();
-        },
-        success: (res) => {
-          Swal.fire({
-            position: "center",
-            icon: "success",
-            title: "Registration request to cancel...",
-            showConfirmButton: false,
-            timer: 2000,
-          });
-          $("#table-training-registration").DataTable().ajax.reload();
-        },
-        error: (err) => {
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "Something is wrong !!!",
-          });
-        },
-      });
-    }
+    confirmButtonText: 'Yes, cancel!',
+    preConfirm: () => {
+      const notes = Swal.getPopup().querySelector('#swal-input1').value;
+      if (!notes) {
+        Swal.showValidationMessage('Please enter notes');
+      }
+      else {
+        return $.ajax({
+          method: 'POST',
+          url: `/api/trainings/register/cancel/${id}`,
+          dataType: 'JSON',
+          contentType: 'application/json',
+          data: JSON.stringify({ notes: notes }),
+          beforeSend: function () {
+            setCsrf();
+          },
+          success: function (res) {
+            // Update status.notes in local data if successful
+            let table = $("#table-training-registration").DataTable();
+            let data = table.row($(button).parents('tr')).data();
+            if (data) {
+              data.status.notes = notes; // Add notes to status object in the local data
+              table.row($(button).parents('tr')).data(data).draw();
+            }
+            $("#table-training-registration").DataTable().ajax.reload();
+            Swal.fire({
+              icon: 'success',
+              title: 'Registration request to cancel...',
+              showConfirmButton: false,
+              timer: 2000
+            }).then(() => {
+              showToast('success', 'Successfully canceled the training.');
+            });
+          },
+          error: function (err) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'Something went wrong!',
+            });
+          }
+        });
+      }
+    },
+    allowOutsideClick: () => !Swal.isLoading()
   });
 }
+
+
 
 function getStatusColors(statusId) {
   switch (statusId) {

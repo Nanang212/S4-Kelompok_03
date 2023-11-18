@@ -42,7 +42,9 @@ $(document).ready(function () {
           return `
             <div class="flex items-center space-x-8">
               <div class="flex items-center flex-col">
-                <label for="${checkboxSuccessId}" class="${data.status.id === 1 ? 'text-green-500' : 'text-gray-400'}">Success</label>
+                <label for="${checkboxSuccessId}" class="${
+            data.status.id === 1 ? "text-green-500" : "text-gray-400"
+          }">Success</label>
                 <input
                   type="checkbox"
                   name="statusCheckbox_${data.id}"
@@ -51,11 +53,17 @@ $(document).ready(function () {
                   onchange="updateStatus(${data.id}, 1)"
                   ${authorities.includes("ADMIN") ? "" : "hidden"}
                   ${isStatusSuccessOrReject ? "disabled" : ""}
-                  class="h-5 w-5 rounded border-gray-300 ${data.status.id === 1 ? "text-green-600 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50 dark:focus:ring-opacity-40" : "text-gray-400"}"
+                  class="h-5 w-5 rounded border-gray-300 ${
+                    data.status.id === 1
+                      ? "text-green-600 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50 dark:focus:ring-opacity-40"
+                      : "text-gray-400"
+                  }"
                 >
               </div>
               <div class="flex items-center flex-col">
-                <label for="${checkboxPendingId}" class="${data.status.id === 2 ? 'text-yellow-500' : 'text-gray-400'}">Pending</label>
+                <label for="${checkboxPendingId}" class="${
+            data.status.id === 2 ? "text-yellow-500" : "text-gray-400"
+          }">Pending</label>
                 <input
                   type="checkbox"
                   name="statusCheckbox_${data.id}"
@@ -64,11 +72,17 @@ $(document).ready(function () {
                   onchange="updateStatus(${data.id}, 2)"
                   ${authorities.includes("ADMIN") ? "" : "hidden"}
                   ${isStatusSuccessOrReject ? "disabled" : ""}
-                  class="h-5 w-5 rounded border-gray-300 ${data.status.id === 2 ? "text-yellow-600 shadow-sm focus:border-yellow-300 focus:ring focus:ring-yellow-200 focus:ring-opacity-50 dark:focus:ring-opacity-40" : "text-gray-400"}"
+                  class="h-5 w-5 rounded border-gray-300 ${
+                    data.status.id === 2
+                      ? "text-yellow-600 shadow-sm focus:border-yellow-300 focus:ring focus:ring-yellow-200 focus:ring-opacity-50 dark:focus:ring-opacity-40"
+                      : "text-gray-400"
+                  }"
                 >
               </div>
               <div class="flex items-center flex-col">
-                <label for="${checkboxRejectId}" class="${data.status.id === 3 ? 'text-red-500' : 'text-gray-400'}">Reject</label>
+                <label for="${checkboxRejectId}" class="${
+            data.status.id === 3 ? "text-red-500" : "text-gray-400"
+          }">Reject</label>
                 <input
                   type="checkbox"
                   name="statusCheckbox_${data.id}"
@@ -77,7 +91,11 @@ $(document).ready(function () {
                   onchange="updateStatus(${data.id}, 3)"
                   ${authorities.includes("ADMIN") ? "" : "hidden"}
                   ${isStatusSuccessOrReject ? "disabled" : ""}
-                  class="h-5 w-5 rounded border-gray-300 ${data.status.id === 3 ? "text-red-600 shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50 dark:focus:ring-opacity-40" : "text-gray-400"}"
+                  class="h-5 w-5 rounded border-gray-300 ${
+                    data.status.id === 3
+                      ? "text-red-600 shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50 dark:focus:ring-opacity-40"
+                      : "text-gray-400"
+                  }"
                 >
               </div>
             </div>
@@ -113,6 +131,23 @@ $(document).ready(function () {
               break;
           }
           return `<div class="rounded-full inline-block ${bgColorClass} ${paddingClass}">${data}</div>`;
+        },
+      },
+      {
+        data: null,
+        render: function (data, type, row, meta) {
+          return `
+            <div class="flex items-center">
+              <input
+                type="text"
+                id="inputNotes_${data.id}"
+                class="w-full border border-gray-300 rounded p-2 mr-2"
+                placeholder="Add notes..."
+                value="${data.notes !== undefined ? data.notes : ""}"
+                onchange="saveNotes(${data.id})"
+              />
+            </div>
+          `;
         },
       },
       {
@@ -153,17 +188,30 @@ $(document).ready(function () {
   });
 });
 
-// let changedStatusData = {};
+function updateStatus(id, newStatus) {
+  let isChecked = $(`#checkbox-${newStatus}-${id}`).prop("checked");
 
-function updateStatus(registrationId, newStatus) {
-  // Dapatkan nilai isChecked
-  let isChecked = $(`#checkbox-${newStatus}-${registrationId}`).prop("checked");
+  let updatedData = JSON.parse(sessionStorage.getItem("updatedData")) || {};
 
-  // Panggil fungsi untuk mengirim permintaan Ajax untuk memperbarui status di database
-  updateStatusInDatabase(registrationId, newStatus, isChecked);
+  if (!updatedData[id]) {
+    updatedData[id] = {};
+  }
+
+  updatedData[id].newStatus = newStatus;
+  updatedData[id].isChecked = isChecked;
+  sessionStorage.setItem("updatedData", JSON.stringify(updatedData));
 }
 
-function updateStatusInDatabase(registrationId, newStatus, isChecked) {
+function saveNotes(id) {
+  const inputNotes = document.getElementById(`inputNotes_${id}`);
+  const notes = inputNotes.value;
+
+  let updatedNotes = JSON.parse(sessionStorage.getItem("updatedNotes")) || {};
+  updatedNotes[id] = notes;
+  sessionStorage.setItem("updatedNotes", JSON.stringify(updatedNotes));
+}
+
+function submitChangesToDatabase() {
   let loadingModal = Swal.fire({
     html: '<div class="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-transparent"><div class="animate-spin rounded-full border-t-4 border-blue-500 border-solid h-12 w-12"></div></div>',
     showConfirmButton: false,
@@ -172,74 +220,83 @@ function updateStatusInDatabase(registrationId, newStatus, isChecked) {
     background: "transparent",
   });
 
-  $.ajax({
-    method: "PUT",
-    url: `/api/trainings/register/${registrationId}`,
-    dataType: "JSON",
-    contentType: "application/json",
-    data: JSON.stringify({
-      statusId: newStatus,
-      isChecked: isChecked,
-    }),
-    beforeSend: function () {
-      setCsrf();
-    },
-    success: function (res) {
-      showToast(
-        "success",
-        "Training registration has been successfully updated"
-      ).then(() => {
-        $("#detail-training-register").DataTable().ajax.reload();
-        loadingModal.close();
-      });
-    },
-    error: function (error) {
-      loadingModal.close();
+  const updatedData = JSON.parse(sessionStorage.getItem("updatedData"));
+  const updatedNotes = JSON.parse(sessionStorage.getItem("updatedNotes"));
 
-      let errorJsn = error.responseJSON;
-      console.log(error);
-    },
-  });
+  updateMultipleDataInDatabase(updatedData, updatedNotes, loadingModal);
 }
 
-// // INI MENCOBA PAKAI CARA SUBMIT
+function updateMultipleDataInDatabase(updatedData, updatedNotes, loadingModal) {
+  let totalRequests = Object.keys(updatedData).length; // Hitung total permintaan yang akan dikirim
+  let completedRequests = 0;
 
-// let changedStatusData = [];
+  for (let id in updatedData) {
+    let newStatus = updatedData[id].newStatus;
+    let isChecked = updatedData[id].isChecked;
+    let notes = updatedNotes[id];
+    $.ajax({
+      method: "PUT",
+      url: `/api/trainings/register/${id}`,
+      dataType: "JSON",
+      contentType: "application/json",
+      data: JSON.stringify({
+        statusId: newStatus,
+        isChecked: isChecked,
+        notes: notes, // Tambahan: Mengirim notes ke backend
+      }),
+      beforeSend: function () {
+        setCsrf();
+      },
+      success: function (res) {
+        completedRequests++;
+
+        // Cek apakah semua permintaan sudah selesai
+        if (completedRequests === totalRequests) {
+          // Semua permintaan sudah selesai, tampilkan alert
+          showToast("success", "Data has been updated successfully.").then(
+            () => {
+              $("#detail-training-register").DataTable().ajax.reload();
+              loadingModal.close();
+
+              // Hapus data dari sessionStorage setelah selesai
+              sessionStorage.removeItem("updatedData");
+              sessionStorage.removeItem("updatedNotes");
+            }
+          );
+        }
+      },
+      error: function (error) {
+        // Tangani kesalahan jika ada
+        console.error("Error:", error);
+        completedRequests++;
+
+        // Cek apakah semua permintaan sudah selesai
+        if (completedRequests === totalRequests) {
+          // Jika semua permintaan selesai tetapi ada kesalahan, tetap tutup modal loading
+          loadingModal.close();
+        }
+      },
+    });
+  }
+}
+
+// let changedStatusData = {};
 
 // function updateStatus(registrationId, newStatus) {
+//   // Dapatkan nilai isChecked
 //   let isChecked = $(`#checkbox-${newStatus}-${registrationId}`).prop("checked");
 
-//   $(`#checkbox-success-${registrationId}`).prop("checked", newStatus === 1);
-//   $(`#checkbox-pending-${registrationId}`).prop("checked", newStatus === 2);
-//   $(`#checkbox-reject-${registrationId}`).prop("checked", newStatus === 3);
-
-//   $('input[type="checkbox"]').change(function () {
-//     $('input[type="checkbox"]').not(this).prop("checked", false);
-//   });
-
-//   // Periksa apakah status sudah ada dalam daftar perubahan
-//   let existingIndex = changedStatusData.findIndex(item => item.registrationId === registrationId);
-
-//   if (existingIndex > -1) {
-//     // Update status jika sudah ada dalam daftar perubahan
-//     changedStatusData[existingIndex].newStatus = newStatus;
-//   } else {
-//     // Tambahkan status baru ke daftar perubahan
-//     changedStatusData.push({
-//       registrationId: registrationId,
-//       newStatus: newStatus,
-//       isChecked: isChecked
-//     });
-//   }
+//   // Panggil fungsi untuk mengirim permintaan Ajax untuk memperbarui status di database
+//   updateStatusInDatabase(registrationId, newStatus, isChecked);
 // }
 
-// function submitChangesToDatabase() {
+// function updateStatusInDatabase(registrationId, newStatus, isChecked) {
 //   let loadingModal = Swal.fire({
 //     html: '<div class="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-transparent"><div class="animate-spin rounded-full border-t-4 border-blue-500 border-solid h-12 w-12"></div></div>',
-//         showConfirmButton: false,
-//         allowOutsideClick: false,
-//         allowEscapeKey: false,
-//         background: "transparent",
+//     showConfirmButton: false,
+//     allowOutsideClick: false,
+//     allowEscapeKey: false,
+//     background: "transparent",
 //   });
 
 //   $.ajax({
@@ -247,24 +304,27 @@ function updateStatusInDatabase(registrationId, newStatus, isChecked) {
 //     url: `/api/trainings/register/${registrationId}`,
 //     dataType: "JSON",
 //     contentType: "application/json",
-//     data: JSON.stringify(changedStatusData),
+//     data: JSON.stringify({
+//       statusId: newStatus,
+//       isChecked: isChecked,
+//     }),
 //     beforeSend: function () {
 //       setCsrf();
 //     },
 //     success: function (res) {
 //       showToast(
 //         "success",
-//         "Training registrations have been successfully updated"
+//         "Training registration has been successfully updated"
 //       ).then(() => {
 //         $("#detail-training-register").DataTable().ajax.reload();
 //         loadingModal.close();
-//         // Reset daftar perubahan setelah pengiriman berhasil
-//         changedStatusData = [];
 //       });
 //     },
 //     error: function (error) {
 //       loadingModal.close();
-//       console.error(error);
+
+//       let errorJsn = error.responseJSON;
+//       console.log(error);
 //     },
 //   });
 // }
@@ -286,25 +346,25 @@ function previewAttachment(button) {
     method: "GET",
     url: `/api/trainings/register/attachment/${id}`,
     xhrFields: {
-      responseType: 'blob'
+      responseType: "blob",
     },
-    success: function(response) {
-      const blob = new Blob([response], { type: 'application/pdf' });
+    success: function (response) {
+      const blob = new Blob([response], { type: "application/pdf" });
       const pdfUrl = URL.createObjectURL(blob);
-      const iframe = document.getElementById('previewFrame');
+      const iframe = document.getElementById("previewFrame");
       iframe.src = pdfUrl;
 
       // Tampilkan modal
-      $('#previewModal').removeClass('hidden');
+      $("#previewModal").removeClass("hidden");
     },
-    error: function(err) {
+    error: function (err) {
       console.log(err);
       // Tambahkan penanganan error sesuai kebutuhan aplikasi Anda
-    }
+    },
   });
 }
 function closePreviewModal() {
-  $('#previewModal').addClass('hidden');
+  $("#previewModal").addClass("hidden");
 }
 
 function deleteTrainingRegistration(button) {

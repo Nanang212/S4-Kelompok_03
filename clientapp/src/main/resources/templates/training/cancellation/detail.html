@@ -1,37 +1,53 @@
 <!DOCTYPE html>
 <html
-        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-        layout:decorate="~{layouts/main}"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layouts/main}"
 >
-<head>
-  <title>Details Trainee</title>
-</head>
-<body>
-<!-- Content -->
-<section id="detailCancelTraining" th:attr="trId=${id}" class="container mt-5 py-10" layout:fragment="content">
-  <div class="mx-10">
-    <div class="flex justify-between">
-      <p class="font-bold text-4xl">
-        Cancellation of [[${training.title}]]</p>
+  <head>
+    <title>Details Trainee</title>
+  </head>
+  <body>
+    <!-- Content -->
+    <section
+      id="detailCancelTraining"
+      th:attr="trId=${id}"
+      class="container mt-5 py-10"
+      layout:fragment="content"
+    >
+      <div class="mx-10">
+        <div class="flex justify-between">
+          <p class="font-bold text-4xl">
+            Cancellation of [[${training.title}]]
+          </p>
+        </div>
+        <div class="flex justify-end ml-auto">
+          <button
+            class="block text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 rounded-full"
+            type="submit"
+            onclick="submitChangesCancelToDatabase()"
+            sec:authorize="hasRole('ADMIN')"
+          >
+            Submit
+          </button>
+        </div>
+        <div class="py-8">
+          <table id="detail-training-cancel" class="table-fixed display">
+            <thead class="table-light">
+              <tr>
+                <th width="25px">No</th>
+                <th width="150px">Registered trainee</th>
+                <th width="250px">Status</th>
+                <th width="150px">Current Status</th>
+                <th width="201px">Notes</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+      </div>
+    </section>
+    <div layout:fragment="script">
+      <script th:src="@{/js/detailCancelTraining.js}"></script>
     </div>
-    <div class="py-8">
-      <table id="detail-training-cancel" class="table-fixed display">
-        <thead class="table-light">
-        <tr>
-          <th width="25px">No</th>
-          <th width="201px">Registered trainee</th>
-          <th width="350px">
-            Status
-          </th>
-          <th >Action</th>
-        </tr>
-        </thead>
-      </table>
-    </div>
-  </div>
-</section>
-<div layout:fragment="script">
-  <script th:src="@{/js/detailCancelTraining.js}"></script>
-</div>
-</body>
+  </body>
 </html>
