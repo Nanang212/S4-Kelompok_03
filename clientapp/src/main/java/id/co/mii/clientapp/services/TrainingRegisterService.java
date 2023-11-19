@@ -52,9 +52,9 @@ public class TrainingRegisterService {
         .getBody();
   }
 
-  public TrainingRegister createCancellation(Integer id) {
+  public TrainingRegister createCancellation(TrainingRegisterRequest trainingRegisterRequest) {
     return restTemplate
-        .exchange(url.concat("/cancel/" + id), HttpMethod.POST, null,
+        .exchange(url.concat("/cancel"), HttpMethod.POST, new HttpEntity<>(trainingRegisterRequest),
             new ParameterizedTypeReference<TrainingRegister>() {
             })
         .getBody();

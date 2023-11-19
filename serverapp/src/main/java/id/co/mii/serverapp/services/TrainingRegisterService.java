@@ -142,6 +142,7 @@ public class TrainingRegisterService extends BaseService<TrainingRegister, Integ
               map.put("id", tr.getId());
               map.put("trainee", tr.getTrainee());
               map.put("status", tr.getCurrentStatus());
+              map.put("reason", tr.getNotes());
               return map;
             })
             .collect(Collectors.toList());
@@ -160,10 +161,10 @@ public class TrainingRegisterService extends BaseService<TrainingRegister, Integ
   }
 
   @SneakyThrows
-  public TrainingRegister createCancellation(Integer id) {
+  public TrainingRegister createCancellation(TrainingRegisterRequest trainingRegisterRequest) {
     Status success = statusService.getById(1);
     Status requestCancel = statusService.getById(5);
-    Training training = trainingService.getById(id);
+    Training training = trainingService.getById(trainingRegisterRequest.getTrainingId());
     Employee loggedInEmp = employeeService.getLoggedInEmployee();
     TrainingRegister trainingRegister = training.getTrainingRegisters()
             .stream()
@@ -173,6 +174,7 @@ public class TrainingRegisterService extends BaseService<TrainingRegister, Integ
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Registration is not found"));
 
     trainingRegister.setCurrentStatus(requestCancel);
+    trainingRegister.setNotes(trainingRegisterRequest.getNotes());
     trainingRegister.setCreatedBy(loggedInEmp.getUser().getUsername());
     trainingRegister.setUpdatedBy(loggedInEmp.getUser().getUsername());
 
@@ -184,48 +186,11 @@ public class TrainingRegisterService extends BaseService<TrainingRegister, Integ
     History history = new History();
     history.setTrainingRegister(savedTrainingRegister);
     history.setStatus(requestCancel);
+    history.setNotes(trainingRegisterRequest.getNotes());
     historyService.create(history);
 
     return savedTrainingRegister;
   }
-
-//  @SneakyThrows
-//  public TrainingRegister createCancellation(Integer id) {
-//    TrainingRegister trainingRegister = getById(id);
-//    Status success = statusService.getById(1);
-//    Status requestCancel = statusService.getById(5);
-//    Training training = trainingRegister.getTraining();
-//    Employee trainee = trainingRegister.getTrainee();
-//    Employee loggedInEmp = employeeService.getLoggedInEmployee();
-//    if (!loggedInEmp.equals(trainee)) {
-//      Role admin = roleService.getById(1);
-//      if (!loggedInEmp.getUser().getRoles().contains(admin)) {
-//        throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Cannot request cancel other trainee");
-//      }
-//    }
-//    long count = getAll()
-//            .stream()
-//            .filter(tr -> tr.getTraining().equals(training) && tr.getTrainee().equals(trainee) && tr.getCurrentStatus().equals(success))
-//            .count();
-//    if (count == 0) {
-//      throw new ResponseStatusException(HttpStatus.CONFLICT, "Trainee not registered for this training");
-//    }
-//    trainingRegister.setCurrentStatus(requestCancel);
-//    trainingRegister.setCreatedBy(loggedInEmp.getUser().getUsername());
-//    trainingRegister.setUpdatedBy(loggedInEmp.getUser().getUsername());
-//
-//    TrainingRegister savedTrainingRegister = create(trainingRegister);
-//
-//    training.setAvailSeat(training.getAvailSeat() + 1);
-//    trainingRepository.save(training);
-//
-//    History history = new History();
-//    history.setTrainingRegister(savedTrainingRegister);
-//    history.setStatus(requestCancel);
-//    historyService.create(history);
-//
-//    return savedTrainingRegister;
-//  }
 
   public byte[] getAttachmentById(Integer id) {
     TrainingRegister trainingRegister = getById(id);

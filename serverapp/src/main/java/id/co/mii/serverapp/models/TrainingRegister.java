@@ -17,6 +17,7 @@ import java.util.List;
 @Entity
 @Table(name = "training_register")
 public class TrainingRegister extends BaseEntity {
+  private String notes;
   @ManyToOne
   @JoinColumn(name = "training")
   private Training training;
