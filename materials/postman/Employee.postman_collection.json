@@ -61,6 +61,15 @@
 			"response": []
 		},
 		{
+			"name": "get current employee",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{BASE_URL}}/employees/current"
+			},
+			"response": []
+		},
+		{
 			"name": "update",
 			"request": {
 				"method": "PUT",
@@ -83,7 +92,7 @@
 			"request": {
 				"method": "DELETE",
 				"header": [],
-				"url": "{{BASE_URL}}/employees/4"
+				"url": "{{BASE_URL}}/employees/3"
 			},
 			"response": []
 		}
