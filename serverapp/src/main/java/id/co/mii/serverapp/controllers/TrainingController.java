@@ -30,11 +30,11 @@ public class TrainingController {
             .body(trainingRegisterService.create(trainingRegisterRequest));
   }
 
-  @PostMapping(value = "/register/cancel/{id}")
-  public ResponseEntity<TrainingRegister> trainingCancellation(@PathVariable Integer id) {
+  @PostMapping(value = "/register/cancel")
+  public ResponseEntity<TrainingRegister> trainingCancellation(@RequestBody TrainingRegisterRequest trainingRegisterRequest) {
     return ResponseEntity
             .status(HttpStatus.CREATED)
-            .body(trainingRegisterService.createCancellation(id));
+            .body(trainingRegisterService.createCancellation(trainingRegisterRequest));
   }
 
   @PostMapping

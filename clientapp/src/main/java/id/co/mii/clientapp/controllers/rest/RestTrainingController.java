@@ -82,9 +82,9 @@ public class RestTrainingController {
             .body(trainingRegisterService.getCancellationByIdGroupByTraining(id));
   }
 
-  @PostMapping("/register/cancel/{id}")
-  public TrainingRegister createCancellation(@PathVariable Integer id) {
-    return trainingRegisterService.createCancellation(id);
+  @PostMapping("/register/cancel")
+  public TrainingRegister createCancellation(@RequestBody TrainingRegisterRequest trainingRegisterRequest) {
+    return trainingRegisterService.createCancellation(trainingRegisterRequest);
   }
 
   @PutMapping("/{id}")

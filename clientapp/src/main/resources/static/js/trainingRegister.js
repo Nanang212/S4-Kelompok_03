@@ -39,7 +39,7 @@ $(document).ready(function () {
                 <button
                   type="button"
                   class="btn btn-danger btn-sm"
-                  registrationId="${data.training.id}"
+                  trainingId="${data.training.id}"
                   onclick="cancelTrainingRegistration(this)"
                   ${authorities.includes("TRAINEE") ? "" : "hidden"}
                   title = "cancel-training"
@@ -63,7 +63,7 @@ $(document).ready(function () {
 });
 
 function cancelTrainingRegistration(button) {
-  let id = button.getAttribute("registrationId");
+  let id = button.getAttribute("trainingId");
 
   Swal.fire({
     title: 'Are you sure want to cancel training?',
@@ -85,10 +85,13 @@ function cancelTrainingRegistration(button) {
       else {
         return $.ajax({
           method: 'POST',
-          url: `/api/trainings/register/cancel/${id}`,
+          url: `/api/trainings/register/cancel`,
           dataType: 'JSON',
           contentType: 'application/json',
-          data: JSON.stringify({ notes: notes }),
+          data: JSON.stringify({
+            trainingId: id,
+            notes: notes
+          }),
           beforeSend: function () {
             setCsrf();
           },
@@ -97,7 +100,6 @@ function cancelTrainingRegistration(button) {
             let table = $("#table-training-registration").DataTable();
             let data = table.row($(button).parents('tr')).data();
             if (data) {
-              data.status.notes = notes; // Add notes to status object in the local data
               table.row($(button).parents('tr')).data(data).draw();
             }
             $("#table-training-registration").DataTable().ajax.reload();
@@ -150,25 +152,6 @@ function showToast(type, text) {
     timer: 2000,
     icon: type,
     title: text,
-  });
-}
-
-function setStatus() {
-  $.ajax({
-    method: "GET",
-    url: `/api/status`,
-    dataType: "JSON",
-    contentType: "application/json",
-    success: (response) => {
-      $.each(response, (index, value) => {
-        $(`#statusSelection`).append(
-          `<option value="${value.id}">${value.name}</option>`
-        );
-      });
-    },
-    error: (err) => {
-      console.log(err);
-    },
   });
 }
 
