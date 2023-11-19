@@ -36,13 +36,13 @@ _(silahkan edit sesuai kebutuhan, ex:)_
 
 ### **`Prioritas Tugas:`**
 
-- (silahkan edit sesuai kebutuhan atau bisa dilink pada `Progress of Project` - ke **spreadsheet**)
+- [Progress of Project](https://docs.google.com/spreadsheets/d/1R7yZBrodP9P-yMeD7EkBUmcaf96r7IL6/edit?usp=sharing&ouid=113007715946386251863&rtpof=true&sd=true)
 
 ---
 
 ### **`Pembagian Tugas:`**
 
-- (silahkan edit sesuai kebutuhan atau bisa dilink pada `Progress of Project` - ke **spreadsheet**)
+- [Progress of Project](https://docs.google.com/spreadsheets/d/1R7yZBrodP9P-yMeD7EkBUmcaf96r7IL6/edit?usp=sharing&ouid=113007715946386251863&rtpof=true&sd=true)
 
 ---
 

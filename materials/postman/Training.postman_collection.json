@@ -1,0 +1,390 @@
+{
+	"info": {
+		"_postman_id": "723259e8-274f-46b1-99b2-44c4fdd392a4",
+		"name": "Training",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "20687796"
+	},
+	"item": [
+		{
+			"name": "Training register",
+			"item": [
+				{
+					"name": "get all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/trainings/register",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"trainings",
+								"register"
+							],
+							"query": [
+								{
+									"key": "title",
+									"value": "Mastering spring boot",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all by training",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/trainings/register/logged-in-emp/training/1",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"trainings",
+								"register",
+								"logged-in-emp",
+								"training",
+								"1"
+							],
+							"query": [
+								{
+									"key": "title",
+									"value": "Mastering spring boot",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all by training Copy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/trainings/register/training",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"trainings",
+								"register",
+								"training"
+							],
+							"query": [
+								{
+									"key": "title",
+									"value": "Mastering spring boot",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all cancellation",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/trainings/register/cancel",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"trainings",
+								"register",
+								"cancel"
+							],
+							"query": [
+								{
+									"key": "title",
+									"value": "Mastering spring boot",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get cancellation by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/trainings/register/cancel/1",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"trainings",
+								"register",
+								"cancel",
+								"1"
+							],
+							"query": [
+								{
+									"key": "title",
+									"value": "Mastering spring boot",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get by id group by training",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/trainings/register/training/1",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"trainings",
+								"register",
+								"training",
+								"1"
+							],
+							"query": [
+								{
+									"key": "title",
+									"value": "Mastering spring boot",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get attachment",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/trainings/register/attachment/11",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"trainings",
+								"register",
+								"attachment",
+								"11"
+							],
+							"query": [
+								{
+									"key": "title",
+									"value": "Mastering spring boot",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "attachment",
+									"type": "file",
+									"src": []
+								},
+								{
+									"key": "trainingId",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "traineeId",
+									"value": "5",
+									"type": "text"
+								}
+							]
+						},
+						"url": "{{BASE_URL}}/trainings/register"
+					},
+					"response": []
+				},
+				{
+					"name": "create cancellation",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "{{BASE_URL}}/trainings/register/cancel/1"
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"statusId\": 3,\r\n    \"notes\": \"askdnkasldnaslkd\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{BASE_URL}}/trainings/register/14"
+					},
+					"response": []
+				},
+				{
+					"name": "delete Copy",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{BASE_URL}}/trainings/register/5"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Survey",
+			"item": [
+				{
+					"name": "get all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/survey",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"survey"
+							],
+							"query": [
+								{
+									"key": "title",
+									"value": "Mastering spring boot",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "create",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"tes pelatihan 9\",\r\n    \"startDate\": \"2023-11-16T13:00:00\",\r\n    \"endDate\": \"2023-11-16T13:00:10\",\r\n    \"quota\": 10,\r\n    \"duration\": 8,\r\n    \"isOnline\": true,\r\n    \"description\" : \"dksaldsakldjnasldnasklndakslndkals\",\r\n    \"platformUrl\": \"meet.google.com/asdsafaf\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{BASE_URL}}/trainings"
+			},
+			"response": []
+		},
+		{
+			"name": "get all",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/trainings?categoryId=2",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"trainings"
+					],
+					"query": [
+						{
+							"key": "categoryId",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all by trainer",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{BASE_URL}}/trainings/trainer/usep"
+			},
+			"response": []
+		},
+		{
+			"name": "get all by trainee",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{BASE_URL}}/trainings/trainee/fazri"
+			},
+			"response": []
+		},
+		{
+			"name": "get by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{BASE_URL}}/trainings/1"
+			},
+			"response": []
+		},
+		{
+			"name": "update",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"endDate\": \"2023-11-16T13:10:00\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{BASE_URL}}/trainings/1"
+			},
+			"response": []
+		},
+		{
+			"name": "delete",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "{{BASE_URL}}/trainings/5"
+			},
+			"response": []
+		}
+	]
+}
