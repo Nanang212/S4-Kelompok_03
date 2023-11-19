@@ -168,22 +168,47 @@ $(document).ready(function () {
       },
     ],
   });
+  $('#detail-training-cancel tbody').on('change', 'input[type="checkbox"]', function () {
+    const checkboxes = $(this).closest('tr').find('input[type="checkbox"]');
+    checkboxes.prop('checked', false);
+    $(this).prop('checked', true);
+  });
 });
 
+// function updateStatus(id, newStatus) {
+//   const checkboxes = $(`input[name="statusCheckbox_${id}"]`);
+//   checkboxes.prop('checked', false);
+
+//   // Check checkbox yang dipilih
+//   $(`#checkbox-${newStatus}-${id}`).prop('checked', true);
+
+//   let updatedData = JSON.parse(sessionStorage.getItem("updatedData")) || {};
+
+//   if (!updatedData[id]) {
+//     updatedData[id] = {};
+//   }
+
+//   updatedData[id].newStatus = newStatus;
+//   updatedData[id].isChecked = true; // Menandai bahwa checkbox telah diperiksa
+//   sessionStorage.setItem("updatedData", JSON.stringify(updatedData));
+// }
+
 function updateStatusCancellation(registrationId, newStatus) {
+  const checkboxes = $(`#detail-training-cancel input[name="statusCheckbox_${registrationId}"]`);
+
+  checkboxes.prop('checked', false); // Uncheck semua checkbox terlebih dahulu
+  $(`#checkbox-${newStatus}-${registrationId}`).prop('checked', true); // Check checkbox yang dipilih
+
   let isChecked = $(`#checkbox-${newStatus}-${registrationId}`).prop("checked");
 
   let updatedData = JSON.parse(sessionStorage.getItem("updatedData")) || [];
 
-  // Cek apakah registrasi ini sudah ditambahkan ke dalam data perubahan
   let existingIndex = updatedData.findIndex(item => item.id === registrationId);
 
   if (existingIndex !== -1) {
-    // Jika sudah ada, update status saja
     updatedData[existingIndex].newStatus = newStatus;
     updatedData[existingIndex].isChecked = isChecked;
   } else {
-    // Jika belum ada, tambahkan data perubahan
     updatedData.push({ id: registrationId, newStatus, isChecked });
   }
 
