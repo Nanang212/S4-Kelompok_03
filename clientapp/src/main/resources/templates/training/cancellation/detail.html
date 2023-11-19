@@ -40,10 +40,43 @@
                 <th width="250px">Status</th>
                 <th width="150px">Current Status</th>
                 <th width="201px">Notes</th>
-                <th>Action</th>
+                <th width="80px">Action</th>
               </tr>
             </thead>
           </table>
+        </div>
+      </div>
+
+      <div id="previewModal" class="fixed inset-0 z-50 overflow-y-auto hidden">
+        <div class="flex items-center justify-center min-h-screen px-4">
+          <div class="bg-white w-full max-w-4xl p-6 rounded-lg">
+            <div class="flex justify-between items-center mb-4">
+              <h2 class="text-lg font-bold">Attachment Preview</h2>
+              <button
+                onclick="closePreviewModal()"
+                class="text-gray-400 hover:text-gray-600 focus:outline-none"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M6 18L18 6M6 6l12 12"
+                  ></path>
+                </svg>
+              </button>
+            </div>
+            <iframe
+              id="previewFrame"
+              style="width: 100%; height: 600px"
+            ></iframe>
+          </div>
         </div>
       </div>
     </section>

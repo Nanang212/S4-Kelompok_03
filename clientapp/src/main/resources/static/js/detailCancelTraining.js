@@ -2,6 +2,7 @@ $(document).ready(function () {
   let detailCancelTraining = document.getElementById("detailCancelTraining");
   let id = detailCancelTraining.getAttribute("trId");
   $("#detail-training-cancel").DataTable({
+    scrollX: true,
     ajax: {
       method: "GET",
       url: "/api/trainings/register/cancel/" + id,
@@ -34,7 +35,8 @@ $(document).ready(function () {
           let checkboxPendingId = `checkbox-5-${data.id}`;
           let checkboxRejectId = `checkbox-3-${data.id}`;
 
-          let isStatusCancelOrReject = data.status.id === 4 || data.status.id === 3;
+          let isStatusCancelOrReject =
+            data.status.id === 4 || data.status.id === 3;
 
           return `
             <div class="flex items-center space-x-8 ">
@@ -149,15 +151,14 @@ $(document).ready(function () {
         render: (data, type, row, meta) => {
           return `
               <div class="flex justify-start gap-3">
-                <button
-                    type="button"
-                    class="btn btn-warning btn-sm"
-                    registrationId="${data.id}"
-                    onclick="downloadAttachment(this)"
-                    title="Download attachment"
-                  >
-                  <ion-icon name="download" size="large" class="text-green-500"></ion-icon>
-                </button>
+              <button
+              type="button"
+              registrationId="${data.id}"
+              onclick="previewAttachment(this)"
+              title="Preview attachment"
+            >
+              <ion-icon name="eye" size="large" class="text-green-500"></ion-icon>
+            </button>
                 <!-- Button delete modal -->
                 <button
                   type="button"
@@ -174,11 +175,15 @@ $(document).ready(function () {
       },
     ],
   });
-  $('#detail-training-cancel tbody').on('change', 'input[type="checkbox"]', function () {
-    const checkboxes = $(this).closest('tr').find('input[type="checkbox"]');
-    checkboxes.prop('checked', false);
-    $(this).prop('checked', true);
-  });
+  $("#detail-training-cancel tbody").on(
+    "change",
+    'input[type="checkbox"]',
+    function () {
+      const checkboxes = $(this).closest("tr").find('input[type="checkbox"]');
+      checkboxes.prop("checked", false);
+      $(this).prop("checked", true);
+    }
+  );
 });
 
 // function updateStatus(id, newStatus) {
@@ -200,16 +205,20 @@ $(document).ready(function () {
 // }
 
 function updateStatusCancellation(registrationId, newStatus) {
-  const checkboxes = $(`#detail-training-cancel input[name="statusCheckbox_${registrationId}"]`);
+  const checkboxes = $(
+    `#detail-training-cancel input[name="statusCheckbox_${registrationId}"]`
+  );
 
-  checkboxes.prop('checked', false); // Uncheck semua checkbox terlebih dahulu
-  $(`#checkbox-${newStatus}-${registrationId}`).prop('checked', true); // Check checkbox yang dipilih
+  checkboxes.prop("checked", false); // Uncheck semua checkbox terlebih dahulu
+  $(`#checkbox-${newStatus}-${registrationId}`).prop("checked", true); // Check checkbox yang dipilih
 
   let isChecked = $(`#checkbox-${newStatus}-${registrationId}`).prop("checked");
 
   let updatedData = JSON.parse(sessionStorage.getItem("updatedData")) || [];
 
-  let existingIndex = updatedData.findIndex(item => item.id === registrationId);
+  let existingIndex = updatedData.findIndex(
+    (item) => item.id === registrationId
+  );
 
   if (existingIndex !== -1) {
     updatedData[existingIndex].newStatus = newStatus;
@@ -243,7 +252,7 @@ function submitChangesCancelToDatabase() {
   let updatedNotes = JSON.parse(sessionStorage.getItem("updatedNotes")) || {};
 
   // Ubah semua status yang direject menjadi success
-  updatedData.forEach(item => {
+  updatedData.forEach((item) => {
     if (item.newStatus === 3) {
       item.newStatus = 1; // Ubah status rejected (3) menjadi success (1)
     }
@@ -257,7 +266,7 @@ function updateMultipleDataInDatabase(updatedData, updatedNotes, loadingModal) {
   let totalRequests = updatedData.length; // Hitung total permintaan yang akan dikirim
   let completedRequests = 0;
 
-  updatedData.forEach(item => {
+  updatedData.forEach((item) => {
     let id = item.id;
     let newStatus = item.newStatus;
     let isChecked = item.isChecked;
@@ -314,18 +323,59 @@ function showToast(type, text) {
   });
 }
 
-function downloadAttachment(button) {
+function previewAttachment(button) {
   let id = button.getAttribute("registrationId");
   $.ajax({
     method: "GET",
     url: `/api/trainings/register/attachment/${id}`,
-    contentType: "application/pdf",
-    success: (response) => {},
-    error: (err) => {
+    xhrFields: {
+      responseType: "blob",
+    },
+    success: function (response) {
+      const blob = new Blob([response], { type: "application/pdf" });
+      const pdfUrl = URL.createObjectURL(blob);
+      const iframe = document.getElementById("previewFrame");
+      iframe.src = pdfUrl;
+
+      // Tampilkan modal
+      $("#previewModal").removeClass("hidden");
+    },
+    error: function (err) {
       console.log(err);
+      // Tambahkan penanganan error sesuai kebutuhan aplikasi Anda
     },
   });
 }
+function closePreviewModal() {
+  $("#previewModal").addClass("hidden");
+}
+
+// function previewAttachment(button) {
+//   let id = button.getAttribute("registrationId");
+//   $.ajax({
+//     method: "GET",
+//     url: `/api/trainings/register/attachment/${id}`,
+//     xhrFields: {
+//       responseType: "blob",
+//     },
+//     success: function (response) {
+//       const blob = new Blob([response], { type: "application/pdf" });
+//       const pdfUrl = URL.createObjectURL(blob);
+//       const iframe = document.getElementById("previewFrame");
+//       iframe.src = pdfUrl;
+
+//       // Tampilkan modal
+//       $("#previewModal").removeClass("hidden");
+//     },
+//     error: function (err) {
+//       console.log(err);
+//       // Tambahkan penanganan error sesuai kebutuhan aplikasi Anda
+//     },
+//   });
+// }
+// function closePreviewModal() {
+//   $("#previewModal").addClass("hidden");
+// }
 
 function deleteTrainingRegistration(button) {
   let id = button.getAttribute("registrationId");
