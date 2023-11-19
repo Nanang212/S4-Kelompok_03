@@ -23,12 +23,18 @@ $(document).ready(function () {
       },
       {
         data: null,
+        render: (data) => {
+          return `${data.reason !== null ? data.reason : "-"}`;
+        },
+      },
+      {
+        data: null,
         render: function (data, type, row, meta) {
           let checkboxCancelledId = `checkbox-4-${data.id}`;
           let checkboxPendingId = `checkbox-5-${data.id}`;
           let checkboxRejectId = `checkbox-3-${data.id}`;
 
-          let isStatusCancel = data.status.id === 4;
+          let isStatusCancelOrReject = data.status.id === 4 || data.status.id === 3;
 
           return `
             <div class="flex items-center space-x-8 ">
@@ -42,7 +48,7 @@ $(document).ready(function () {
                   id="${checkboxCancelledId}"
                   ${data.status.id === 4 ? "checked" : ""}
                   onchange="updateStatusCancellation(${data.id}, 4)"
-                  ${isStatusCancel ? "disabled" : ""}
+                  ${isStatusCancelOrReject ? "disabled" : ""}
                   class="h-5 w-5 rounded border-gray-300 ${
                     data.status.id === 4
                       ? "text-green-600 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50 dark:focus:ring-opacity-40"
@@ -60,7 +66,7 @@ $(document).ready(function () {
                   id="${checkboxPendingId}"
                   ${data.status.id === 5 ? "checked" : ""}
                   onchange="updateStatusCancellation(${data.id}, 5)"
-                  ${isStatusCancel ? "disabled" : ""}
+                  ${isStatusCancelOrReject ? "disabled" : ""}
                   class="h-5 w-5 rounded border-gray-300 ${
                     data.status.id === 5
                       ? "text-yellow-600 shadow-sm focus:border-yellow-300 focus:ring focus:ring-yellow-200 focus:ring-opacity-50 dark:focus:ring-opacity-40"
@@ -78,7 +84,7 @@ $(document).ready(function () {
                   id="${checkboxRejectId}"
                   ${data.status.id === 3 ? "checked" : ""}
                   onchange="updateStatusCancellation(${data.id}, 3)"
-                  ${isStatusCancel ? "disabled" : ""}
+                  ${isStatusCancelOrReject ? "disabled" : ""}
                   class="h-5 w-5 rounded border-gray-300 ${
                     data.status.id === 3
                       ? "text-red-600 shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50 dark:focus:ring-opacity-40"
