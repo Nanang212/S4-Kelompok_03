@@ -186,10 +186,20 @@ $(document).ready(function () {
       },
     ],
   });
+  $('#detail-training-register tbody').on('change', 'input[type="checkbox"]', function () {
+    const checkboxes = $(this).closest('tr').find('input[type="checkbox"]');
+    checkboxes.prop('checked', false);
+    $(this).prop('checked', true);
+  });
 });
 
+
 function updateStatus(id, newStatus) {
-  let isChecked = $(`#checkbox-${newStatus}-${id}`).prop("checked");
+  const checkboxes = $(`input[name="statusCheckbox_${id}"]`);
+  checkboxes.prop('checked', false);
+
+  // Check checkbox yang dipilih
+  $(`#checkbox-${newStatus}-${id}`).prop('checked', true);
 
   let updatedData = JSON.parse(sessionStorage.getItem("updatedData")) || {};
 
@@ -198,7 +208,7 @@ function updateStatus(id, newStatus) {
   }
 
   updatedData[id].newStatus = newStatus;
-  updatedData[id].isChecked = isChecked;
+  updatedData[id].isChecked = true; // Menandai bahwa checkbox telah diperiksa
   sessionStorage.setItem("updatedData", JSON.stringify(updatedData));
 }
 
